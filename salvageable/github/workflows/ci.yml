@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  flutter:
+    name: Flutter (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    env:
+      CI: "true"
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2022]
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: "3.38.4"
+          cache: true
+
+      - name: Dev checks (Linux)
+        if: runner.os != 'Windows'
+        run: bash ./scripts/check.sh
+
+      - name: Dev checks (Windows)
+        if: runner.os == 'Windows'
+        run: pwsh -File ./scripts/check.ps1

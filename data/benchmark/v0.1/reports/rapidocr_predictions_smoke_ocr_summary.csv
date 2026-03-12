@@ -1,0 +1,2 @@
+engine_name,evaluation_slice,sample_count,avg_cer,avg_wer,avg_body_token_recall,avg_scam_span_recall
+rapidocr_onnxruntime,india_sms_clean,10,0.333370,0.333370,0.977778,0.883333

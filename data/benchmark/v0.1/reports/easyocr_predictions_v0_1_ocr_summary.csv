@@ -1,0 +1,7 @@
+engine_name,evaluation_slice,sample_count,avg_cer,avg_wer,avg_body_token_recall,avg_scam_span_recall
+easyocr,india_sms_clean,30,0.429239,0.429239,0.939179,0.933333
+easyocr,india_sms_medium,5,0.371330,0.371330,0.911218,0.933333
+easyocr,india_whatsapp_medium,5,0.593719,0.593719,0.952874,1.000000
+easyocr,us_email_hard,10,0.813808,0.813808,0.949159,0.950000
+easyocr,us_whatsapp_hard,10,0.333802,0.333802,0.891217,0.866667
+easyocr,us_whatsapp_medium,20,0.510007,0.510007,0.940962,0.941667

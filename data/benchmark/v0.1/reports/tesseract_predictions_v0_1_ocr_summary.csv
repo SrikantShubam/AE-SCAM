@@ -1,0 +1,7 @@
+engine_name,evaluation_slice,sample_count,avg_cer,avg_wer,avg_body_token_recall,avg_scam_span_recall
+tesseract,india_sms_clean,30,0.409612,0.409612,0.981209,1.000000
+tesseract,india_sms_medium,5,0.343962,0.343962,0.964532,0.933333
+tesseract,india_whatsapp_medium,5,0.591286,0.591286,0.966667,1.000000
+tesseract,us_email_hard,10,0.785655,0.785655,0.973125,1.000000
+tesseract,us_whatsapp_hard,10,0.210093,0.210093,0.968171,0.866667
+tesseract,us_whatsapp_medium,20,0.491771,0.491771,0.975197,1.000000

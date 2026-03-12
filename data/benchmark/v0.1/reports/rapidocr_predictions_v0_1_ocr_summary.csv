@@ -1,0 +1,7 @@
+engine_name,evaluation_slice,sample_count,avg_cer,avg_wer,avg_body_token_recall,avg_scam_span_recall
+rapidocr_onnxruntime,india_sms_clean,30,0.401988,0.401988,0.973094,0.861111
+rapidocr_onnxruntime,india_sms_medium,5,0.332983,0.332983,0.961039,0.966667
+rapidocr_onnxruntime,india_whatsapp_medium,5,0.591286,0.591286,1.000000,1.000000
+rapidocr_onnxruntime,us_email_hard,10,0.775090,0.775090,0.913842,0.850000
+rapidocr_onnxruntime,us_whatsapp_hard,10,0.305815,0.305815,0.888761,0.850000
+rapidocr_onnxruntime,us_whatsapp_medium,20,0.498241,0.498241,0.906959,0.925000

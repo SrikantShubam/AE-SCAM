@@ -1,0 +1,627 @@
+sample_id,source_group,source_name,image_path,has_gold_text,gold_text,ground_truth_label,market,channel,quality_tier,evaluation_slice
+syn_v0_1_001,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_001.png,true,Freemsg: 1-month unlimited free calls! Activate SmartCall Txt: CALL to No: 68866. Subscriptn3gbp/wk unlimited calls Help: 08448714184 Stop?txt stop landlineonly,scam,india,sms,clean,india_sms_clean
+syn_v0_1_002,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_002.png,true,Hello. They are going to the village pub at 8 so either come here or there accordingly. Ok?,not_scam,india,sms,clean,india_sms_clean
+syn_v0_1_003,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_003.png,true,"Hi, Mobile no.  &lt;#&gt;  has added you in their contact list on www.fullonsms.com It s a great place to send free sms to people For more visit fullonsms.com",not_scam,india,sms,clean,india_sms_clean
+syn_v0_1_004,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_004.png,true,83039 62735=£450 UK Break AccommodationVouchers terms & conditions apply. 2 claim you mustprovide your claim number which is 15541,scam,india,sms,clean,india_sms_clean
+syn_v0_1_005,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_005.png,true,Hey mr  and I are going to the sea view and having a couple of gays I mean games! Give me a bell when ya finish,not_scam,india,sms,clean,india_sms_clean
+syn_v0_1_006,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_006.png,true,I'm awake oh. What's up.,not_scam,india,sms,clean,india_sms_clean
+syn_v0_1_007,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_007.png,true,Here is your discount code RP176781. To stop further messages reply stop. www.regalportfolio.co.uk. Customer Services 08717205546,scam,india,sms,clean,india_sms_clean
+syn_v0_1_008,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_008.png,true,"If you don't, your prize will go to another customer. T&C at www.t-c.biz 18+ 150p/min Polo Ltd",scam,india,sms,clean,india_sms_clean
+syn_v0_1_009,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_009.png,true,No 1 POLYPHONIC tone 4 ur mob every week! Just txt PT2 to 87575. 1st Tone FREE ! so get txtin now and tell ur friends. 150p/tone. 16 reply HL 4info,scam,india,sms,clean,india_sms_clean
+syn_v0_1_010,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_010.png,true,"Wow ... I love you sooo much, you know ? I can barely stand it ! I wonder how your day goes and if you are well, my love ... I think of you and miss you",not_scam,india,sms,clean,india_sms_clean
+syn_v0_1_011,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_011.png,true,"Call me da, i am waiting for your call.",not_scam,india,sms,clean,india_sms_clean
+syn_v0_1_012,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_012.png,true,Send a logo 2 ur lover - 2 names joined by a heart. Txt LOVE NAME1 NAME2 MOBNO eg LOVE ADAM EVE 07123456789 to 87077 Yahoo! POBox36504W45WQ TxtNO 4 no ads 150p,scam,india,sms,clean,india_sms_clean
+syn_v0_1_013,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_013.png,true,U have a secret admirer who is looking 2 make contact with U-find out who they R*reveal who thinks UR so special-call on 09058094599,scam,india,sms,clean,india_sms_clean
+syn_v0_1_014,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_014.png,true,Ringtone Club: Gr8 new polys direct to your mobile every week !,scam,india,sms,clean,india_sms_clean
+syn_v0_1_015,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_015.png,true,You can donate £2.50 to UNICEF's Asian Tsunami disaster support fund by texting DONATE to 864233. £2.50 will be added to your next bill,scam,india,sms,clean,india_sms_clean
+syn_v0_1_016,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_016.png,true,Filthy stories and GIRLS waiting for your,scam,india,sms,clean,india_sms_clean
+syn_v0_1_017,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_017.png,true,Nope but i'll b going 2 sch on fri quite early lor cos mys sis got paper in da morn :-),not_scam,india,sms,clean,india_sms_clean
+syn_v0_1_018,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_018.png,true,"Oh! Shit, I thought that was your trip! Loooooool ... That just makes SO much more sense now ... *grins* and the sofa reference was ... The ""sleep on a couch"" link you sent me ... Wasn't that how you went on your trip ? Oh ... And didn't your babe go with you for that celebration with your rents?",not_scam,india,sms,clean,india_sms_clean
+syn_v0_1_019,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_019.png,true,I will spoil you in bed as well :),not_scam,india,sms,clean,india_sms_clean
+syn_v0_1_020,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_020.png,true,I don't know u and u don't know me. Send CHAT to 86688 now and let's find each other! Only 150p/Msg rcvd.,scam,india,sms,clean,india_sms_clean
+syn_v0_1_021,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_021.png,true,1st wk FREE! Gr8 tones str8 2 u each wk. Txt NOKIA ON to 8007 for Classic Nokia tones or HIT ON to 8007 for Polys. Nokia/150p Poly/200p 16+,scam,india,sms,clean,india_sms_clean
+syn_v0_1_022,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_022.png,true,Congratulations ur awarded 500 of CD vouchers or 125gift guaranteed & Free entry 2 100 wkly draw txt MUSIC to 87066 TnCs www.Ldew.com1win150ppmx3age16,scam,india,sms,clean,india_sms_clean
+syn_v0_1_023,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_023.png,true,network operator. The service is free. For T & C's visit 80488.biz,scam,india,sms,clean,india_sms_clean
+syn_v0_1_024,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_024.png,true,"Sir, I have been late in paying rent for the past few months and had to pay a $ &lt;#&gt;  charge. I felt it would be inconsiderate of me to nag about something you give at great cost to yourself and that's why i didnt speak up. I however am in a recession and wont be able to pay the charge this month hence my askin well ahead of month's end. Can you please help. Thanks",not_scam,india,sms,clean,india_sms_clean
+syn_v0_1_025,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_025.png,true,Have a great trip to India. And bring the light to everyone not just with the project but with everyone that is lucky to see you smile. Bye. Abiola,not_scam,india,sms,clean,india_sms_clean
+syn_v0_1_026,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_026.png,true,dating:i have had two of these. Only started after i sent a text to talk sport radio last week. Any connection do you think or coincidence?,scam,india,sms,clean,india_sms_clean
+syn_v0_1_027,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_027.png,true,Pls speak with me. I wont ask anything other then you friendship.,not_scam,india,sms,clean,india_sms_clean
+syn_v0_1_028,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_028.png,true,Send me the new number,not_scam,india,sms,clean,india_sms_clean
+syn_v0_1_029,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_029.png,true,"No, I was trying it all weekend ;V",not_scam,india,sms,clean,india_sms_clean
+syn_v0_1_030,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/clean/syn_v0_1_030.png,true,"URGENT! Your mobile No *********** WON a £2,000 Bonus Caller Prize on 02/06/03! This is the 2nd attempt to reach YOU! Call 09066362220 ASAP! BOX97N7QP, 150ppm",scam,india,sms,clean,india_sms_clean
+syn_v0_1_031,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/medium/syn_v0_1_031.png,true,"It's not that you make me cry. It's just that when all our stuff happens on top of everything else, it pushes me over the edge. You don't underdtand how often i cry over my sorry, sorry life.",not_scam,india,sms,medium,india_sms_medium
+syn_v0_1_032,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/medium/syn_v0_1_032.png,true,URGENT! We are trying to contact U. Todays draw shows that you have won a £800 prize GUARANTEED. Call 09050003092 from land line. Claim C52. Valid 12hrs only,scam,india,sms,medium,india_sms_medium
+syn_v0_1_033,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/sms/india/medium/syn_v0_1_033.png,true,"Mila, age23, blonde, new in UK. I look sex with UK guys. if u like fun with me. Text MTALK to 69866.18 . 30pp/txt 1st 5free. £1.50 increments. Help08718728876",scam,india,sms,medium,india_sms_medium
+syn_v0_1_034,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/medium/syn_v0_1_034.png,true,In meeting da. I will call you,not_scam,india,sms,medium,india_sms_medium
+syn_v0_1_035,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/sms/india/medium/syn_v0_1_035.png,true,"Nationwide has noticed your debit card was recently used on 29-11-2016 15:04:43, at APPLE ONLINE STORE for 1267.00 GBP If not you please urgently call fraud prevention on 03303800231 or Int +443303800231. Do not reply by SMS http://www.Nationwide.co.uk",scam,india,sms,medium,india_sms_medium
+syn_v0_1_036,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/india/medium/syn_v0_1_036.png,true,Ok. Me watching tv too.,not_scam,india,whatsapp,medium,india_whatsapp_medium
+syn_v0_1_037,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/whatsapp/india/medium/syn_v0_1_037.png,true,"Got what it takes 2 take part in the WRC Rally in Oz? U can with Lucozade Energy! Text RALLY LE to 61200 (25p), see packs or lucozade.co.uk/wrc & itcould be u!",scam,india,whatsapp,medium,india_whatsapp_medium
+syn_v0_1_038,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/india/medium/syn_v0_1_038.png,true,"Hi, the SEXYCHAT girls are waiting for you to text them. Text now for a great night chatting. send STOP to stop this service",scam,india,whatsapp,medium,india_whatsapp_medium
+syn_v0_1_039,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/india/medium/syn_v0_1_039.png,true,Check audrey's status right now,not_scam,india,whatsapp,medium,india_whatsapp_medium
+syn_v0_1_040,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/whatsapp/india/medium/syn_v0_1_040.png,true,I am in your office na.,not_scam,india,whatsapp,medium,india_whatsapp_medium
+syn_v0_1_041,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_041.png,true,"call now 08707509020 Just 20p per min NTT Ltd, PO Box 1327 Croydon CR9 5WB 0870..k",scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_042,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_042.png,true,"Urgent UR awarded a complimentary trip to EuroDisinc Trav, Aco&Entry41 Or £1000. To claim txt DIS to 87121 18+6*£1.50(moreFrmMob. ShrAcomOrSglSuplt)10, LS1 3AJ",scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_043,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_043.png,true,The battery is for mr adewale my uncle. Aka Egbon,not_scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_044,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_044.png,true,Sad story of a Man - Last week was my b'day. My Wife did'nt wish me. My Parents forgot n so did my Kids . I went to work. Even my Colleagues did not wish.,not_scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_045,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_045.png,true,"Hi Steven Malone, We have identified some unusual activity on your account. Log in via the secure ink to avoid account suspension http:l/natwestauth.xyz",scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_046,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_046.png,true,Customer service annoncement. You have a New Years delivery waiting for you. Please call 07046744435 now to arrange delivery,scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_047,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_047.png,true,"Hi babe its Chloe, how r u? I was smashed on saturday night, it was great! How was your weekend? U been missing me? SP visionsms.com Text stop to stop 150p/text",scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_048,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_048.png,true,URGENT! Your Mobile number has been awarded with a £2000 prize GUARANTEED. Call 09061790321 from land line. Claim 3030. Valid 12hrs only 150ppm,scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_049,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_049.png,true,No message..no responce..what happend? Is everything fine?,not_scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_050,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_050.png,true,Why do you ask princess?,not_scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_051,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_051.png,true,ILL B DOWN SOON,not_scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_052,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_052.png,true,URGENT! We are trying to contact U. Todays draw shows that you have won a £800 prize GUARANTEED. Call 09050001809 from land line. Claim M95. Valid12hrs only,scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_053,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_053.png,true,If we win its really no 1 side for long time.,not_scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_054,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_054.png,true,When you are big..| God will bring success.,not_scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_055,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_055.png,true,yeah sure thing mate haunt got all my stuff sorted but im going sound anyway promoting hex for .by the way who is this? dont know number. Joke,not_scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_056,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_056.png,true,Gud ni8.swt drms.take care,not_scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_057,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_057.png,true,A lot of this sickness thing going round. Take it easy. Hope u feel better soon. Lol,not_scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_058,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_058.png,true,Gudnite....tc�sweet dreams..,not_scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_059,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_059.png,true,Valentines Day Special! Win over £1000 in our quiz and take your partner on the trip of a lifetime! Send GO to 83600 now. 150p/msg rcvd. CustCare:08718720201.,scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_060,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/medium/syn_v0_1_060.png,true,God's love has no limit. God's grace has no measure. God's power has no boundaries. May u have God's endless blessings always in ur life...!! Gud ni8,not_scam,us,whatsapp,medium,us_whatsapp_medium
+syn_v0_1_061,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/hard/syn_v0_1_061.png,true,We tried to contact you re your reply to our offer of 750 mins 150 textand a new video phone call 08002988890 now or reply for free delivery tomorrow,scam,us,whatsapp,hard,us_whatsapp_hard
+syn_v0_1_062,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/whatsapp/us/hard/syn_v0_1_062.png,true,"Oh ! A half hour is much longer in Syria than Canada, eh ? Wow you must get SO much more work done in a day than us with all that extra time ! *grins*",not_scam,us,whatsapp,hard,us_whatsapp_hard
+syn_v0_1_063,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/whatsapp/us/hard/syn_v0_1_063.png,true,"Loan for any purpose £500 - £75,000. Homeowners + Tenants welcome. Have you been previously refused? We can still help. Call Free 0800 1956669 or text back 'help'",scam,us,whatsapp,hard,us_whatsapp_hard
+syn_v0_1_064,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/hard/syn_v0_1_064.png,true,Great! I shoot big loads so get ready!,not_scam,us,whatsapp,hard,us_whatsapp_hard
+syn_v0_1_065,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/whatsapp/us/hard/syn_v0_1_065.png,true,You have got tallent but you are wasting.,not_scam,us,whatsapp,hard,us_whatsapp_hard
+syn_v0_1_066,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/whatsapp/us/hard/syn_v0_1_066.png,true,"Dear Voucher Holder, To claim this weeks offer, at your PC please go to http://www.wtlp.co.uk/text. Ts&Cs apply.",scam,us,whatsapp,hard,us_whatsapp_hard
+syn_v0_1_067,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/hard/syn_v0_1_067.png,true,<Forwarded from 21870000>Hi - this is your Mailbox Messaging SMS alert. You have 40 matches. Please call back on 09056242159 to retrieve your messages and matches cc100p/min,scam,us,whatsapp,hard,us_whatsapp_hard
+syn_v0_1_068,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/whatsapp/us/hard/syn_v0_1_068.png,true,"URGENT! Your mobile No *********** WON a £2,000 Bonus Caller Prize on 02/06/03! This is the 2nd attempt to reach YOU! Call 09066362220 ASAP! BOX97N7QP, 150ppm",scam,us,whatsapp,hard,us_whatsapp_hard
+syn_v0_1_069,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/hard/syn_v0_1_069.png,true,Me too baby! I promise to treat you well! I bet you will take good care of me...,not_scam,us,whatsapp,hard,us_whatsapp_hard
+syn_v0_1_070,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/whatsapp/us/hard/syn_v0_1_070.png,true,$9 Only!Sales on Official Oakley Sunglasses Online Store. 2016 New Styles All Up To 75% OFF. Final Day Flash Sale And Free Returns. Official Oakley Sunglasses Outlets At: http:// www.oakleyoutletsco.com,scam,us,whatsapp,hard,us_whatsapp_hard
+syn_v0_1_071,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/email/us/hard/syn_v0_1_071.png,true,Haha... dont be angry with yourself... Take it as a practice for the real thing. =),not_scam,us,email,hard,us_email_hard
+syn_v0_1_072,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/email/us/hard/syn_v0_1_072.png,true,How. Its a little difficult but its a simple way to enter this place,not_scam,us,email,hard,us_email_hard
+syn_v0_1_073,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/email/us/hard/syn_v0_1_073.png,true,Sounds like something that someone testing me would sayy,not_scam,us,email,hard,us_email_hard
+syn_v0_1_074,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/email/us/hard/syn_v0_1_074.png,true,"complimentary 4 STAR Ibiza Holiday or £10,000 cash needs your URGENT collection. 09066364349 NOW from Landline not to lose out! Box434SK38WP150PPM18+",scam,us,email,hard,us_email_hard
+syn_v0_1_075,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/email/us/hard/syn_v0_1_075.png,true,"As a valued customer, I am pleased to advise you that following recent review of your Mob No. you are awarded with a £1500 Bonus Prize, call 09066364589",scam,us,email,hard,us_email_hard
+syn_v0_1_076,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/email/us/hard/syn_v0_1_076.png,true,Yes princess! I want to please you every night. Your wish is my command...,not_scam,us,email,hard,us_email_hard
+syn_v0_1_077,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/email/us/hard/syn_v0_1_077.png,true,"Auction round 4. The highest bid is now £54. Next maximum bid is £71. To bid, send BIDS e. g. 10 (to bid £10) to 83383. Good luck.",scam,us,email,hard,us_email_hard
+syn_v0_1_078,synthetic,mendeley_sms_phishing,data/synthetic/renders/v0_1/email/us/hard/syn_v0_1_078.png,true,"I love you !!! You know? Can you feel it? Does it make your belly warm? I wish it does, my love ... I shall meet you in your dreams, Ahmad ... *adoring kiss*",not_scam,us,email,hard,us_email_hard
+syn_v0_1_079,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/email/us/hard/syn_v0_1_079.png,true,CLAIRE here am havin borin time & am now alone U wanna cum over 2nite? Chat now 09099725823 hope 2 C U Luv CLAIRE xx Calls£1/minmoremobsEMSPOBox45PO139WA,scam,us,email,hard,us_email_hard
+syn_v0_1_080,synthetic,uci_sms_spam_collection,data/synthetic/renders/v0_1/email/us/hard/syn_v0_1_080.png,true,"cmon babe, make me horny, *turn* me on! Txt me your fantasy now babe -) Im hot, sticky and need you now. All replies cost £1.50. 2 cancel send STOP",scam,us,email,hard,us_email_hard
+phish_iris_alibaba (37),stress,phish_iris,data/raw/stress/phish_iris/subset/phishIRIS_DL_Dataset/train/alibaba/alibaba (37).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_boa (40),stress,phish_iris,data/raw/stress/phish_iris/subset/phishIRIS_DL_Dataset/train/boa/boa (40).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_chase (52),stress,phish_iris,data/raw/stress/phish_iris/subset/phishIRIS_DL_Dataset/train/chase/chase (52).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_other (143),stress,phish_iris,data/raw/stress/phish_iris/subset/phishIRIS_DL_Dataset/train/other/other (143).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_other (84),stress,phish_iris,data/raw/stress/phish_iris/subset/phishIRIS_DL_Dataset/train/other/other (84).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_yahoo (45),stress,phish_iris,data/raw/stress/phish_iris/subset/phishIRIS_DL_Dataset/train/yahoo/yahoo (45).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_adobe_test (11),stress,phish_iris,data/raw/stress/phish_iris/subset/val/adobe/adobe_test (11).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_adobe_test (12),stress,phish_iris,data/raw/stress/phish_iris/subset/val/adobe/adobe_test (12).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_adobe_test (18),stress,phish_iris,data/raw/stress/phish_iris/subset/val/adobe/adobe_test (18).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_adobe_test (2),stress,phish_iris,data/raw/stress/phish_iris/subset/val/adobe/adobe_test (2).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_adobe_test (20),stress,phish_iris,data/raw/stress/phish_iris/subset/val/adobe/adobe_test (20).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_adobe_test (23),stress,phish_iris,data/raw/stress/phish_iris/subset/val/adobe/adobe_test (23).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_adobe_test (25),stress,phish_iris,data/raw/stress/phish_iris/subset/val/adobe/adobe_test (25).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_adobe_test (7),stress,phish_iris,data/raw/stress/phish_iris/subset/val/adobe/adobe_test (7).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_alibaba_test (10),stress,phish_iris,data/raw/stress/phish_iris/subset/val/alibaba/alibaba_test (10).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_alibaba_test (11),stress,phish_iris,data/raw/stress/phish_iris/subset/val/alibaba/alibaba_test (11).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_alibaba_test (15),stress,phish_iris,data/raw/stress/phish_iris/subset/val/alibaba/alibaba_test (15).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_alibaba_test (17),stress,phish_iris,data/raw/stress/phish_iris/subset/val/alibaba/alibaba_test (17).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_alibaba_test (19),stress,phish_iris,data/raw/stress/phish_iris/subset/val/alibaba/alibaba_test (19).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_alibaba_test (5),stress,phish_iris,data/raw/stress/phish_iris/subset/val/alibaba/alibaba_test (5).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_amazon_test (1),stress,phish_iris,data/raw/stress/phish_iris/subset/val/amazon/amazon_test (1).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_amazon_test (2),stress,phish_iris,data/raw/stress/phish_iris/subset/val/amazon/amazon_test (2).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_amazon_test (3),stress,phish_iris,data/raw/stress/phish_iris/subset/val/amazon/amazon_test (3).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_amazon_test (4),stress,phish_iris,data/raw/stress/phish_iris/subset/val/amazon/amazon_test (4).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_amazon_test (6),stress,phish_iris,data/raw/stress/phish_iris/subset/val/amazon/amazon_test (6).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_amazon_test (7),stress,phish_iris,data/raw/stress/phish_iris/subset/val/amazon/amazon_test (7).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_amazon_test (8),stress,phish_iris,data/raw/stress/phish_iris/subset/val/amazon/amazon_test (8).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_apple_test (1),stress,phish_iris,data/raw/stress/phish_iris/subset/val/apple/apple_test (1).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_apple_test (11),stress,phish_iris,data/raw/stress/phish_iris/subset/val/apple/apple_test (11).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_apple_test (14),stress,phish_iris,data/raw/stress/phish_iris/subset/val/apple/apple_test (14).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_apple_test (2),stress,phish_iris,data/raw/stress/phish_iris/subset/val/apple/apple_test (2).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_apple_test (5),stress,phish_iris,data/raw/stress/phish_iris/subset/val/apple/apple_test (5).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_apple_test (6),stress,phish_iris,data/raw/stress/phish_iris/subset/val/apple/apple_test (6).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_apple_test (7),stress,phish_iris,data/raw/stress/phish_iris/subset/val/apple/apple_test (7).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_apple_test (8),stress,phish_iris,data/raw/stress/phish_iris/subset/val/apple/apple_test (8).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_boa_test (16),stress,phish_iris,data/raw/stress/phish_iris/subset/val/boa/boa_test (16).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_boa_test (22),stress,phish_iris,data/raw/stress/phish_iris/subset/val/boa/boa_test (22).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_boa_test (23),stress,phish_iris,data/raw/stress/phish_iris/subset/val/boa/boa_test (23).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_boa_test (5),stress,phish_iris,data/raw/stress/phish_iris/subset/val/boa/boa_test (5).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_boa_test (6),stress,phish_iris,data/raw/stress/phish_iris/subset/val/boa/boa_test (6).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_chase_test (11),stress,phish_iris,data/raw/stress/phish_iris/subset/val/chase/chase_test (11).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_chase_test (20),stress,phish_iris,data/raw/stress/phish_iris/subset/val/chase/chase_test (20).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_chase_test (6),stress,phish_iris,data/raw/stress/phish_iris/subset/val/chase/chase_test (6).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_dhl_test (16),stress,phish_iris,data/raw/stress/phish_iris/subset/val/dhl/dhl_test (16).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_dhl_test (23),stress,phish_iris,data/raw/stress/phish_iris/subset/val/dhl/dhl_test (23).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_dhl_test (4),stress,phish_iris,data/raw/stress/phish_iris/subset/val/dhl/dhl_test (4).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_dhl_test (6),stress,phish_iris,data/raw/stress/phish_iris/subset/val/dhl/dhl_test (6).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_dropbox_test (11),stress,phish_iris,data/raw/stress/phish_iris/subset/val/dropbox/dropbox_test (11).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_dropbox_test (14),stress,phish_iris,data/raw/stress/phish_iris/subset/val/dropbox/dropbox_test (14).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_dropbox_test (18),stress,phish_iris,data/raw/stress/phish_iris/subset/val/dropbox/dropbox_test (18).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_dropbox_test (21),stress,phish_iris,data/raw/stress/phish_iris/subset/val/dropbox/dropbox_test (21).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_dropbox_test (23),stress,phish_iris,data/raw/stress/phish_iris/subset/val/dropbox/dropbox_test (23).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_dropbox_test (8),stress,phish_iris,data/raw/stress/phish_iris/subset/val/dropbox/dropbox_test (8).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_facebook_test (11),stress,phish_iris,data/raw/stress/phish_iris/subset/val/facebook/facebook_test (11).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_facebook_test (17),stress,phish_iris,data/raw/stress/phish_iris/subset/val/facebook/facebook_test (17).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_facebook_test (18),stress,phish_iris,data/raw/stress/phish_iris/subset/val/facebook/facebook_test (18).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_facebook_test (2),stress,phish_iris,data/raw/stress/phish_iris/subset/val/facebook/facebook_test (2).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_facebook_test (25),stress,phish_iris,data/raw/stress/phish_iris/subset/val/facebook/facebook_test (25).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_facebook_test (9),stress,phish_iris,data/raw/stress/phish_iris/subset/val/facebook/facebook_test (9).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_linkedin_test (1),stress,phish_iris,data/raw/stress/phish_iris/subset/val/linkedin/linkedin_test (1).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_linkedin_test (2),stress,phish_iris,data/raw/stress/phish_iris/subset/val/linkedin/linkedin_test (2).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_linkedin_test (3),stress,phish_iris,data/raw/stress/phish_iris/subset/val/linkedin/linkedin_test (3).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_linkedin_test (4),stress,phish_iris,data/raw/stress/phish_iris/subset/val/linkedin/linkedin_test (4).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_microsoft_test (11),stress,phish_iris,data/raw/stress/phish_iris/subset/val/microsoft/microsoft_test (11).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_microsoft_test (18),stress,phish_iris,data/raw/stress/phish_iris/subset/val/microsoft/microsoft_test (18).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_microsoft_test (2),stress,phish_iris,data/raw/stress/phish_iris/subset/val/microsoft/microsoft_test (2).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_microsoft_test (23),stress,phish_iris,data/raw/stress/phish_iris/subset/val/microsoft/microsoft_test (23).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_microsoft_test (26),stress,phish_iris,data/raw/stress/phish_iris/subset/val/microsoft/microsoft_test (26).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_microsoft_test (27),stress,phish_iris,data/raw/stress/phish_iris/subset/val/microsoft/microsoft_test (27).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_microsoft_test (31),stress,phish_iris,data/raw/stress/phish_iris/subset/val/microsoft/microsoft_test (31).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_microsoft_test (37),stress,phish_iris,data/raw/stress/phish_iris/subset/val/microsoft/microsoft_test (37).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_paypal_test (22),stress,phish_iris,data/raw/stress/phish_iris/subset/val/paypal/paypal_test (22).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_paypal_test (39),stress,phish_iris,data/raw/stress/phish_iris/subset/val/paypal/paypal_test (39).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_paypal_test (41),stress,phish_iris,data/raw/stress/phish_iris/subset/val/paypal/paypal_test (41).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_paypal_test (49),stress,phish_iris,data/raw/stress/phish_iris/subset/val/paypal/paypal_test (49).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_paypal_test (53),stress,phish_iris,data/raw/stress/phish_iris/subset/val/paypal/paypal_test (53).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_paypal_test (59),stress,phish_iris,data/raw/stress/phish_iris/subset/val/paypal/paypal_test (59).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_paypal_test (7),stress,phish_iris,data/raw/stress/phish_iris/subset/val/paypal/paypal_test (7).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_paypal_test (9),stress,phish_iris,data/raw/stress/phish_iris/subset/val/paypal/paypal_test (9).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_wellsfargo_test (10),stress,phish_iris,data/raw/stress/phish_iris/subset/val/wellsfargo/wellsfargo_test (10).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_wellsfargo_test (12),stress,phish_iris,data/raw/stress/phish_iris/subset/val/wellsfargo/wellsfargo_test (12).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_wellsfargo_test (15),stress,phish_iris,data/raw/stress/phish_iris/subset/val/wellsfargo/wellsfargo_test (15).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_wellsfargo_test (22),stress,phish_iris,data/raw/stress/phish_iris/subset/val/wellsfargo/wellsfargo_test (22).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_wellsfargo_test (4),stress,phish_iris,data/raw/stress/phish_iris/subset/val/wellsfargo/wellsfargo_test (4).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_yahoo_test (15),stress,phish_iris,data/raw/stress/phish_iris/subset/val/yahoo/yahoo_test (15).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_yahoo_test (22),stress,phish_iris,data/raw/stress/phish_iris/subset/val/yahoo/yahoo_test (22).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_yahoo_test (25),stress,phish_iris,data/raw/stress/phish_iris/subset/val/yahoo/yahoo_test (25).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_yahoo_test (6),stress,phish_iris,data/raw/stress/phish_iris/subset/val/yahoo/yahoo_test (6).png,false,,,unknown,unknown,stress,stress_phish_iris
+phish_iris_yahoo_test (8),stress,phish_iris,data/raw/stress/phish_iris/subset/val/yahoo/yahoo_test (8).png,false,,,unknown,unknown,stress,stress_phish_iris
+circl_abashed-careless-ordinary-crew,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/abashed-careless-ordinary-crew.png,false,,,unknown,unknown,stress,stress_circl
+circl_ablaze-jazzy-tangy-file,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/ablaze-jazzy-tangy-file.png,false,,,unknown,unknown,stress,stress_circl
+circl_ablaze-lean-grubby-particular,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/ablaze-lean-grubby-particular.png,false,,,unknown,unknown,stress,stress_circl
+circl_able-yellow-defective-variety,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/able-yellow-defective-variety.png,false,,,unknown,unknown,stress,stress_circl
+circl_abstracted-colossal-rich-race,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/abstracted-colossal-rich-race.png,false,,,unknown,unknown,stress,stress_circl
+circl_abstracted-excellent-plastic-insect,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/abstracted-excellent-plastic-insect.png,false,,,unknown,unknown,stress,stress_circl
+circl_abundant-various-adjoining-tap,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/abundant-various-adjoining-tap.png,false,,,unknown,unknown,stress,stress_circl
+circl_abusive-gabby-statuesque-nurse,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/abusive-gabby-statuesque-nurse.png,false,,,unknown,unknown,stress,stress_circl
+circl_accidental-eager-grumpy-writer,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/accidental-eager-grumpy-writer.png,false,,,unknown,unknown,stress,stress_circl
+circl_accurate-scintillating-picayune-administration,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/accurate-scintillating-picayune-administration.png,false,,,unknown,unknown,stress,stress_circl
+circl_adamant-accidental-hellish-feature,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/adamant-accidental-hellish-feature.png,false,,,unknown,unknown,stress,stress_circl
+circl_adamant-spicy-absurd-economics,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/adamant-spicy-absurd-economics.png,false,,,unknown,unknown,stress,stress_circl
+circl_adhesive-concerned-expensive-competition,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/adhesive-concerned-expensive-competition.png,false,,,unknown,unknown,stress,stress_circl
+circl_adhoc-racial-condemned-letter,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/adhoc-racial-condemned-letter.png,false,,,unknown,unknown,stress,stress_circl
+circl_adjoining-handsomely-female-scene,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/adjoining-handsomely-female-scene.png,false,,,unknown,unknown,stress,stress_circl
+circl_adventurous-sleepy-public-joke,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/adventurous-sleepy-public-joke.png,false,,,unknown,unknown,stress,stress_circl
+circl_aggressive-defiant-imminent-bottle,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/aggressive-defiant-imminent-bottle.png,false,,,unknown,unknown,stress,stress_circl
+circl_alike-idiotic-shy-fail,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/alike-idiotic-shy-fail.png,false,,,unknown,unknown,stress,stress_circl
+circl_alleged-abashed-clumsy-life,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/alleged-abashed-clumsy-life.png,false,,,unknown,unknown,stress,stress_circl
+circl_amazing-daily-handy-speech,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/amazing-daily-handy-speech.png,false,,,unknown,unknown,stress,stress_circl
+circl_ambitious-curious-picayune-shock,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/ambitious-curious-picayune-shock.png,false,,,unknown,unknown,stress,stress_circl
+circl_amuck-perpetual-rightful-control,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/amuck-perpetual-rightful-control.png,false,,,unknown,unknown,stress,stress_circl
+circl_angry-puffy-sick-pin,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/angry-puffy-sick-pin.png,false,,,unknown,unknown,stress,stress_circl
+circl_angry-victorious-pricey-proof,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/angry-victorious-pricey-proof.png,false,,,unknown,unknown,stress,stress_circl
+circl_ashamed-robust-acrid-physics,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/ashamed-robust-acrid-physics.png,false,,,unknown,unknown,stress,stress_circl
+circl_aspiring-assorted-bumpy-highway,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/aspiring-assorted-bumpy-highway.png,false,,,unknown,unknown,stress,stress_circl
+circl_aspiring-repulsive-good-camera,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/aspiring-repulsive-good-camera.png,false,,,unknown,unknown,stress,stress_circl
+circl_astonishing-premium-complete-love,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/astonishing-premium-complete-love.png,false,,,unknown,unknown,stress,stress_circl
+circl_attractive-maddening-romantic-sort,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/attractive-maddening-romantic-sort.png,false,,,unknown,unknown,stress,stress_circl
+circl_auspicious-fragile-cute-corner,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/auspicious-fragile-cute-corner.png,false,,,unknown,unknown,stress,stress_circl
+circl_available-satisfying-spiky-black,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/available-satisfying-spiky-black.png,false,,,unknown,unknown,stress,stress_circl
+circl_aware-difficult-foamy-nurse,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/aware-difficult-foamy-nurse.png,false,,,unknown,unknown,stress,stress_circl
+circl_awesome-complete-overwrought-platform,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/awesome-complete-overwrought-platform.png,false,,,unknown,unknown,stress,stress_circl
+circl_awesome-neighborly-black-wonder,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/awesome-neighborly-black-wonder.png,false,,,unknown,unknown,stress,stress_circl
+circl_awful-nasty-heartbreaking-appointment,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/awful-nasty-heartbreaking-appointment.png,false,,,unknown,unknown,stress,stress_circl
+circl_beautiful-brown-flat-shoe,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/beautiful-brown-flat-shoe.png,false,,,unknown,unknown,stress,stress_circl
+circl_beautiful-earsplitting-plastic-management,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/beautiful-earsplitting-plastic-management.png,false,,,unknown,unknown,stress,stress_circl
+circl_belligerent-nine-delicious-ground,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/belligerent-nine-delicious-ground.png,false,,,unknown,unknown,stress,stress_circl
+circl_best-labored-penitent-copy,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/best-labored-penitent-copy.png,false,,,unknown,unknown,stress,stress_circl
+circl_best-rural-wise-design,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/best-rural-wise-design.png,false,,,unknown,unknown,stress,stress_circl
+circl_better-smart-opposite-television,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/better-smart-opposite-television.png,false,,,unknown,unknown,stress,stress_circl
+circl_blushing-furry-tiresome-highlight,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/blushing-furry-tiresome-highlight.png,false,,,unknown,unknown,stress,stress_circl
+circl_brainy-colorful-tightfisted-south,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/brainy-colorful-tightfisted-south.png,false,,,unknown,unknown,stress,stress_circl
+circl_brief-obscene-huge-discount,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/brief-obscene-huge-discount.png,false,,,unknown,unknown,stress,stress_circl
+circl_bright-delicious-apathetic-distance,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/bright-delicious-apathetic-distance.png,false,,,unknown,unknown,stress,stress_circl
+circl_bright-embarrassed-venomous-hair,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/bright-embarrassed-venomous-hair.png,false,,,unknown,unknown,stress,stress_circl
+circl_bright-oceanic-old-grab,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/bright-oceanic-old-grab.png,false,,,unknown,unknown,stress,stress_circl
+circl_bright-wiry-silly-shelter,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/bright-wiry-silly-shelter.png,false,,,unknown,unknown,stress,stress_circl
+circl_broad-round-unbecoming-scheme,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/broad-round-unbecoming-scheme.png,false,,,unknown,unknown,stress,stress_circl
+circl_broad-sweet-cooing-newspaper,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/broad-sweet-cooing-newspaper.png,false,,,unknown,unknown,stress,stress_circl
+circl_cagey-stereotyped-wholesale-society,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/cagey-stereotyped-wholesale-society.png,false,,,unknown,unknown,stress,stress_circl
+circl_calculating-protective-creepy-look,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/calculating-protective-creepy-look.png,false,,,unknown,unknown,stress,stress_circl
+circl_careless-classy-vast-chest,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/careless-classy-vast-chest.png,false,,,unknown,unknown,stress,stress_circl
+circl_ceaseless-ajar-lovely-estate,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/ceaseless-ajar-lovely-estate.png,false,,,unknown,unknown,stress,stress_circl
+circl_ceaseless-unequaled-malicious-ride,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/ceaseless-unequaled-malicious-ride.png,false,,,unknown,unknown,stress,stress_circl
+circl_certain-mushy-picayune-revenue,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/certain-mushy-picayune-revenue.png,false,,,unknown,unknown,stress,stress_circl
+circl_charming-defeated-voracious-beat,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/charming-defeated-voracious-beat.png,false,,,unknown,unknown,stress,stress_circl
+circl_cheap-curly-bad-river,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/cheap-curly-bad-river.png,false,,,unknown,unknown,stress,stress_circl
+circl_chubby-unnatural-spurious-structure,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/chubby-unnatural-spurious-structure.png,false,,,unknown,unknown,stress,stress_circl
+circl_clammy-lovely-demonic-guidance,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/clammy-lovely-demonic-guidance.png,false,,,unknown,unknown,stress,stress_circl
+circl_clear-honorable-red-command,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/clear-honorable-red-command.png,false,,,unknown,unknown,stress,stress_circl
+circl_clear-real-clumsy-disk,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/clear-real-clumsy-disk.png,false,,,unknown,unknown,stress,stress_circl
+circl_closed-secretive-icy-issue,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/closed-secretive-icy-issue.png,false,,,unknown,unknown,stress,stress_circl
+circl_coherent-determined-sour-foot,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/coherent-determined-sour-foot.png,false,,,unknown,unknown,stress,stress_circl
+circl_cold-gaping-undesirable-training,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/cold-gaping-undesirable-training.png,false,,,unknown,unknown,stress,stress_circl
+circl_colorful-macho-ratty-treat,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/colorful-macho-ratty-treat.png,false,,,unknown,unknown,stress,stress_circl
+circl_colorful-phobic-shocking-army,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/colorful-phobic-shocking-army.png,false,,,unknown,unknown,stress,stress_circl
+circl_common-jumbled-excited-charge,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/common-jumbled-excited-charge.png,false,,,unknown,unknown,stress,stress_circl
+circl_common-unarmed-bustling-game,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/common-unarmed-bustling-game.png,false,,,unknown,unknown,stress,stress_circl
+circl_condemned-separate-quiet-concept,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/condemned-separate-quiet-concept.png,false,,,unknown,unknown,stress,stress_circl
+circl_conscious-cloistered-ablaze-health,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/conscious-cloistered-ablaze-health.png,false,,,unknown,unknown,stress,stress_circl
+circl_cooing-soft-rotten-insurance,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/cooing-soft-rotten-insurance.png,false,,,unknown,unknown,stress,stress_circl
+circl_cool-dead-whispering-present,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/cool-dead-whispering-present.png,false,,,unknown,unknown,stress,stress_circl
+circl_cowardly-willing-efficacious-poem,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/cowardly-willing-efficacious-poem.png,false,,,unknown,unknown,stress,stress_circl
+circl_crowded-stingy-disgusting-serve,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/crowded-stingy-disgusting-serve.png,false,,,unknown,unknown,stress,stress_circl
+circl_cultured-loud-equable-injury,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/cultured-loud-equable-injury.png,false,,,unknown,unknown,stress,stress_circl
+circl_curved-fluttering-upbeat-energy,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/curved-fluttering-upbeat-energy.png,false,,,unknown,unknown,stress,stress_circl
+circl_cut-somber-exclusive-university,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/cut-somber-exclusive-university.png,false,,,unknown,unknown,stress,stress_circl
+circl_daffy-malicious-spiky-student,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/daffy-malicious-spiky-student.png,false,,,unknown,unknown,stress,stress_circl
+circl_damaged-ratty-disgusting-square,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/damaged-ratty-disgusting-square.png,false,,,unknown,unknown,stress,stress_circl
+circl_dangerous-vast-big-replacement,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/dangerous-vast-big-replacement.png,false,,,unknown,unknown,stress,stress_circl
+circl_dashing-delicious-insidious-science,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/dashing-delicious-insidious-science.png,false,,,unknown,unknown,stress,stress_circl
+circl_dashing-wide-diligent-sad,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/dashing-wide-diligent-sad.png,false,,,unknown,unknown,stress,stress_circl
+circl_deafening-boorish-imported-nothing,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/deafening-boorish-imported-nothing.png,false,,,unknown,unknown,stress,stress_circl
+circl_dear-curvy-known-ease,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/dear-curvy-known-ease.png,false,,,unknown,unknown,stress,stress_circl
+circl_decisive-murky-windy-amount,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/decisive-murky-windy-amount.png,false,,,unknown,unknown,stress,stress_circl
+circl_decisive-vagabond-unknown-science,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/decisive-vagabond-unknown-science.png,false,,,unknown,unknown,stress,stress_circl
+circl_dependent-feigned-premium-candy,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/dependent-feigned-premium-candy.png,false,,,unknown,unknown,stress,stress_circl
+circl_dependent-hellish-hurt-diet,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/dependent-hellish-hurt-diet.png,false,,,unknown,unknown,stress,stress_circl
+circl_determined-steadfast-spicy-kind,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/determined-steadfast-spicy-kind.png,false,,,unknown,unknown,stress,stress_circl
+circl_devilish-unwritten-fast-wake,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/devilish-unwritten-fast-wake.png,false,,,unknown,unknown,stress,stress_circl
+circl_different-glossy-smart-clock,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/different-glossy-smart-clock.png,false,,,unknown,unknown,stress,stress_circl
+circl_dirty-debonair-gainful-strip,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/dirty-debonair-gainful-strip.png,false,,,unknown,unknown,stress,stress_circl
+circl_dirty-willing-brainy-plane,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/dirty-willing-brainy-plane.png,false,,,unknown,unknown,stress,stress_circl
+circl_disgusting-brawny-spectacular-plate,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/disgusting-brawny-spectacular-plate.png,false,,,unknown,unknown,stress,stress_circl
+circl_dispensable-snotty-luxuriant-policy,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/dispensable-snotty-luxuriant-policy.png,false,,,unknown,unknown,stress,stress_circl
+circl_divergent-vagabond-purring-response,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/divergent-vagabond-purring-response.png,false,,,unknown,unknown,stress,stress_circl
+circl_dizzy-rampant-snobbish-setting,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/dizzy-rampant-snobbish-setting.png,false,,,unknown,unknown,stress,stress_circl
+circl_domineering-acid-alleged-bridge,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/domineering-acid-alleged-bridge.png,false,,,unknown,unknown,stress,stress_circl
+circl_dramatic-ugliest-awake-king,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/dramatic-ugliest-awake-king.png,false,,,unknown,unknown,stress,stress_circl
+circl_dreary-comfortable-brawny-working,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/dreary-comfortable-brawny-working.png,false,,,unknown,unknown,stress,stress_circl
+circl_dry-puzzling-six-fear,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/dry-puzzling-six-fear.png,false,,,unknown,unknown,stress,stress_circl
+circl_dynamic-prickly-tasteless-bus,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/dynamic-prickly-tasteless-bus.png,false,,,unknown,unknown,stress,stress_circl
+circl_eager-anxious-idiotic-topic,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/eager-anxious-idiotic-topic.png,false,,,unknown,unknown,stress,stress_circl
+circl_eager-smiling-substantial-support,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/eager-smiling-substantial-support.png,false,,,unknown,unknown,stress,stress_circl
+circl_economic-exultant-spurious-self,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/economic-exultant-spurious-self.png,false,,,unknown,unknown,stress,stress_circl
+circl_economic-hesitant-modern-junior,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/economic-hesitant-modern-junior.png,false,,,unknown,unknown,stress,stress_circl
+circl_economic-orange-quaint-news,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/economic-orange-quaint-news.png,false,,,unknown,unknown,stress,stress_circl
+circl_elastic-messy-cynical-catch,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/elastic-messy-cynical-catch.png,false,,,unknown,unknown,stress,stress_circl
+circl_elated-woebegone-fretful-farm,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/elated-woebegone-fretful-farm.png,false,,,unknown,unknown,stress,stress_circl
+circl_electric-steep-tenuous-north,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/electric-steep-tenuous-north.png,false,,,unknown,unknown,stress,stress_circl
+circl_elegant-vast-ambitious-parent,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/elegant-vast-ambitious-parent.png,false,,,unknown,unknown,stress,stress_circl
+circl_elite-nutty-opposite-weight,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/elite-nutty-opposite-weight.png,false,,,unknown,unknown,stress,stress_circl
+circl_enthusiastic-plain-resolute-bus,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/enthusiastic-plain-resolute-bus.png,false,,,unknown,unknown,stress,stress_circl
+circl_envious-pumped-flat-dream,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/envious-pumped-flat-dream.png,false,,,unknown,unknown,stress,stress_circl
+circl_exclusive-sweltering-rampant-party,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/exclusive-sweltering-rampant-party.png,false,,,unknown,unknown,stress,stress_circl
+circl_faint-muddled-physical-husband,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/faint-muddled-physical-husband.png,false,,,unknown,unknown,stress,stress_circl
+circl_fair-shut-concerned-one,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/fair-shut-concerned-one.png,false,,,unknown,unknown,stress,stress_circl
+circl_false-muddled-windy-view,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/false-muddled-windy-view.png,false,,,unknown,unknown,stress,stress_circl
+circl_fanatical-absurd-abject-cancel,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/fanatical-absurd-abject-cancel.png,false,,,unknown,unknown,stress,stress_circl
+circl_fascinated-incandescent-silky-sport,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/fascinated-incandescent-silky-sport.png,false,,,unknown,unknown,stress,stress_circl
+circl_fast-grouchy-snotty-bet,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/fast-grouchy-snotty-bet.png,false,,,unknown,unknown,stress,stress_circl
+circl_fat-noxious-doubtful-walk,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/fat-noxious-doubtful-walk.png,false,,,unknown,unknown,stress,stress_circl
+circl_faulty-pathetic-past-error,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/faulty-pathetic-past-error.png,false,,,unknown,unknown,stress,stress_circl
+circl_fearful-responsible-magenta-memory,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/fearful-responsible-magenta-memory.png,false,,,unknown,unknown,stress,stress_circl
+circl_feigned-separate-many-surround,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/feigned-separate-many-surround.png,false,,,unknown,unknown,stress,stress_circl
+circl_festive-cagey-economic-initiative,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/festive-cagey-economic-initiative.png,false,,,unknown,unknown,stress,stress_circl
+circl_fierce-aromatic-smelly-judge,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/fierce-aromatic-smelly-judge.png,false,,,unknown,unknown,stress,stress_circl
+circl_fixed-light-tenuous-minimum,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/fixed-light-tenuous-minimum.png,false,,,unknown,unknown,stress,stress_circl
+circl_flagrant-comfortable-towering-juice,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/flagrant-comfortable-towering-juice.png,false,,,unknown,unknown,stress,stress_circl
+circl_flaky-premium-wasteful-god,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/flaky-premium-wasteful-god.png,false,,,unknown,unknown,stress,stress_circl
+circl_flawless-yummy-faint-occasion,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/flawless-yummy-faint-occasion.png,false,,,unknown,unknown,stress,stress_circl
+circl_foolish-second-orange-note,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/foolish-second-orange-note.png,false,,,unknown,unknown,stress,stress_circl
+circl_foolish-thoughtful-fluffy-distance,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/foolish-thoughtful-fluffy-distance.png,false,,,unknown,unknown,stress,stress_circl
+circl_forgetful-panoramic-bitter-blue,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/forgetful-panoramic-bitter-blue.png,false,,,unknown,unknown,stress,stress_circl
+circl_fortunate-changeable-eatable-market,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/fortunate-changeable-eatable-market.png,false,,,unknown,unknown,stress,stress_circl
+circl_four-shaggy-last-essay,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/four-shaggy-last-essay.png,false,,,unknown,unknown,stress,stress_circl
+circl_freezing-thankful-unequaled-shelter,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/freezing-thankful-unequaled-shelter.png,false,,,unknown,unknown,stress,stress_circl
+circl_frequent-rainy-clean-problem,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/frequent-rainy-clean-problem.png,false,,,unknown,unknown,stress,stress_circl
+circl_fresh-tacky-inconclusive-press,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/fresh-tacky-inconclusive-press.png,false,,,unknown,unknown,stress,stress_circl
+circl_frightened-different-likeable-sort,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/frightened-different-likeable-sort.png,false,,,unknown,unknown,stress,stress_circl
+circl_furry-unable-rotten-entertainment,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/furry-unable-rotten-entertainment.png,false,,,unknown,unknown,stress,stress_circl
+circl_fuzzy-nifty-disastrous-bonus,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/fuzzy-nifty-disastrous-bonus.png,false,,,unknown,unknown,stress,stress_circl
+circl_gainful-thinkable-boiling-piano,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/gainful-thinkable-boiling-piano.png,false,,,unknown,unknown,stress,stress_circl
+circl_gamy-tearful-burly-church,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/gamy-tearful-burly-church.png,false,,,unknown,unknown,stress,stress_circl
+circl_garrulous-superb-luxuriant-tomorrow,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/garrulous-superb-luxuriant-tomorrow.png,false,,,unknown,unknown,stress,stress_circl
+circl_gaudy-colossal-solid-call,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/gaudy-colossal-solid-call.png,false,,,unknown,unknown,stress,stress_circl
+circl_gentle-polite-lowly-atmosphere,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/gentle-polite-lowly-atmosphere.png,false,,,unknown,unknown,stress,stress_circl
+circl_giddy-shallow-null-raw,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/giddy-shallow-null-raw.png,false,,,unknown,unknown,stress,stress_circl
+circl_goofy-obeisant-charming-role,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/goofy-obeisant-charming-role.png,false,,,unknown,unknown,stress,stress_circl
+circl_graceful-nutty-wonderful-nobody,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/graceful-nutty-wonderful-nobody.png,false,,,unknown,unknown,stress,stress_circl
+circl_grandiose-forgetful-marked-initiative,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/grandiose-forgetful-marked-initiative.png,false,,,unknown,unknown,stress,stress_circl
+circl_grateful-stingy-faded-pack,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/grateful-stingy-faded-pack.png,false,,,unknown,unknown,stress,stress_circl
+circl_gray-boundless-rapid-group,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/gray-boundless-rapid-group.png,false,,,unknown,unknown,stress,stress_circl
+circl_greasy-heartbreaking-married-race,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/greasy-heartbreaking-married-race.png,false,,,unknown,unknown,stress,stress_circl
+circl_greasy-imminent-thankful-bus,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/greasy-imminent-thankful-bus.png,false,,,unknown,unknown,stress,stress_circl
+circl_greasy-possible-capable-today,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/greasy-possible-capable-today.png,false,,,unknown,unknown,stress,stress_circl
+circl_green-melodic-foamy-silly,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/green-melodic-foamy-silly.png,false,,,unknown,unknown,stress,stress_circl
+circl_groovy-far-large-sector,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/groovy-far-large-sector.png,false,,,unknown,unknown,stress,stress_circl
+circl_grotesque-festive-devilish-advantage,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/grotesque-festive-devilish-advantage.png,false,,,unknown,unknown,stress,stress_circl
+circl_gruesome-silly-illustrious-grab,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/gruesome-silly-illustrious-grab.png,false,,,unknown,unknown,stress,stress_circl
+circl_gruesome-spiteful-guarded-annual,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/gruesome-spiteful-guarded-annual.png,false,,,unknown,unknown,stress,stress_circl
+circl_gullible-excited-parallel-speed,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/gullible-excited-parallel-speed.png,false,,,unknown,unknown,stress,stress_circl
+circl_guttural-xenophobic-divergent-marketing,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/guttural-xenophobic-divergent-marketing.png,false,,,unknown,unknown,stress,stress_circl
+circl_habitual-aboard-handy-officer,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/habitual-aboard-handy-officer.png,false,,,unknown,unknown,stress,stress_circl
+circl_habitual-ordinary-purring-shame,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/habitual-ordinary-purring-shame.png,false,,,unknown,unknown,stress,stress_circl
+circl_half-luxuriant-handy-depth,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/half-luxuriant-handy-depth.png,false,,,unknown,unknown,stress,stress_circl
+circl_halting-abounding-vigorous-log,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/halting-abounding-vigorous-log.png,false,,,unknown,unknown,stress,stress_circl
+circl_halting-weak-free-sentence,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/halting-weak-free-sentence.png,false,,,unknown,unknown,stress,stress_circl
+circl_handsomely-marvelous-same-screen,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/handsomely-marvelous-same-screen.png,false,,,unknown,unknown,stress,stress_circl
+circl_handsomely-wasteful-drunk-newspaper,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/handsomely-wasteful-drunk-newspaper.png,false,,,unknown,unknown,stress,stress_circl
+circl_handy-second-disastrous-shopping,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/handy-second-disastrous-shopping.png,false,,,unknown,unknown,stress,stress_circl
+circl_healthy-nebulous-silent-feel,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/healthy-nebulous-silent-feel.png,false,,,unknown,unknown,stress,stress_circl
+circl_heavy-disillusioned-unnatural-camp,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/heavy-disillusioned-unnatural-camp.png,false,,,unknown,unknown,stress,stress_circl
+circl_helpful-offbeat-important-introduction,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/helpful-offbeat-important-introduction.png,false,,,unknown,unknown,stress,stress_circl
+circl_hesitant-curly-freezing-day,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/hesitant-curly-freezing-day.png,false,,,unknown,unknown,stress,stress_circl
+circl_hesitant-harmonious-low-nature,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/hesitant-harmonious-low-nature.png,false,,,unknown,unknown,stress,stress_circl
+circl_hideous-marked-gratis-flow,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/hideous-marked-gratis-flow.png,false,,,unknown,unknown,stress,stress_circl
+circl_highfalutin-waiting-kaput-complaint,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/highfalutin-waiting-kaput-complaint.png,false,,,unknown,unknown,stress,stress_circl
+circl_hissing-mundane-waggish-fruit,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/hissing-mundane-waggish-fruit.png,false,,,unknown,unknown,stress,stress_circl
+circl_hissing-unused-hypnotic-list,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/hissing-unused-hypnotic-list.png,false,,,unknown,unknown,stress,stress_circl
+circl_homely-humdrum-puffy-failure,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/homely-humdrum-puffy-failure.png,false,,,unknown,unknown,stress,stress_circl
+circl_hot-mature-electric-blue,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/hot-mature-electric-blue.png,false,,,unknown,unknown,stress,stress_circl
+circl_humorous-thin-disgusted-eye,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/humorous-thin-disgusted-eye.png,false,,,unknown,unknown,stress,stress_circl
+circl_hurt-spiky-stormy-special,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/hurt-spiky-stormy-special.png,false,,,unknown,unknown,stress,stress_circl
+circl_hushed-zany-dysfunctional-wall,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/hushed-zany-dysfunctional-wall.png,false,,,unknown,unknown,stress,stress_circl
+circl_husky-rich-crooked-debt,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/husky-rich-crooked-debt.png,false,,,unknown,unknown,stress,stress_circl
+circl_illegal-alcoholic-perfect-appeal,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/illegal-alcoholic-perfect-appeal.png,false,,,unknown,unknown,stress,stress_circl
+circl_imminent-dapper-standing-personality,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/imminent-dapper-standing-personality.png,false,,,unknown,unknown,stress,stress_circl
+circl_impossible-standing-vengeful-punch,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/impossible-standing-vengeful-punch.png,false,,,unknown,unknown,stress,stress_circl
+circl_incompetent-abnormal-funny-basis,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/incompetent-abnormal-funny-basis.png,false,,,unknown,unknown,stress,stress_circl
+circl_inconclusive-unequal-super-clerk,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/inconclusive-unequal-super-clerk.png,false,,,unknown,unknown,stress,stress_circl
+circl_industrious-onerous-past-smile,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/industrious-onerous-past-smile.png,false,,,unknown,unknown,stress,stress_circl
+circl_infamous-noisy-rare-bitter,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/infamous-noisy-rare-bitter.png,false,,,unknown,unknown,stress,stress_circl
+circl_innocent-chief-spurious-television,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/innocent-chief-spurious-television.png,false,,,unknown,unknown,stress,stress_circl
+circl_inquisitive-hellish-roomy-display,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/inquisitive-hellish-roomy-display.png,false,,,unknown,unknown,stress,stress_circl
+circl_inquisitive-intelligent-miscreant-part,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/inquisitive-intelligent-miscreant-part.png,false,,,unknown,unknown,stress,stress_circl
+circl_irritating-statuesque-poor-tooth,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/irritating-statuesque-poor-tooth.png,false,,,unknown,unknown,stress,stress_circl
+circl_irritating-uninterested-uneven-driver,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/irritating-uninterested-uneven-driver.png,false,,,unknown,unknown,stress,stress_circl
+circl_jazzy-spotty-fresh-bottom,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/jazzy-spotty-fresh-bottom.png,false,,,unknown,unknown,stress,stress_circl
+circl_jealous-guttural-aloof-spend,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/jealous-guttural-aloof-spend.png,false,,,unknown,unknown,stress,stress_circl
+circl_jealous-undesirable-jazzy-necessary,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/jealous-undesirable-jazzy-necessary.png,false,,,unknown,unknown,stress,stress_circl
+circl_jobless-safe-spiky-chocolate,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/jobless-safe-spiky-chocolate.png,false,,,unknown,unknown,stress,stress_circl
+circl_juicy-equal-rural-rock,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/juicy-equal-rural-rock.png,false,,,unknown,unknown,stress,stress_circl
+circl_juicy-ugliest-scrawny-delay,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/juicy-ugliest-scrawny-delay.png,false,,,unknown,unknown,stress,stress_circl
+circl_juvenile-waiting-adorable-mall,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/juvenile-waiting-adorable-mall.png,false,,,unknown,unknown,stress,stress_circl
+circl_kaput-foamy-nippy-charge,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/kaput-foamy-nippy-charge.png,false,,,unknown,unknown,stress,stress_circl
+circl_kaput-unhealthy-rigid-system,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/kaput-unhealthy-rigid-system.png,false,,,unknown,unknown,stress,stress_circl
+circl_kind-flippant-scary-friend,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/kind-flippant-scary-friend.png,false,,,unknown,unknown,stress,stress_circl
+circl_known-disturbed-curved-schedule,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/known-disturbed-curved-schedule.png,false,,,unknown,unknown,stress,stress_circl
+circl_known-flaky-crowded-lift,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/known-flaky-crowded-lift.png,false,,,unknown,unknown,stress,stress_circl
+circl_known-present-holistic-care,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/known-present-holistic-care.png,false,,,unknown,unknown,stress,stress_circl
+circl_lacking-nasty-fertile-country,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/lacking-nasty-fertile-country.png,false,,,unknown,unknown,stress,stress_circl
+circl_lame-exciting-scattered-request,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/lame-exciting-scattered-request.png,false,,,unknown,unknown,stress,stress_circl
+circl_lamentable-eminent-miscreant-arm,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/lamentable-eminent-miscreant-arm.png,false,,,unknown,unknown,stress,stress_circl
+circl_learned-selfish-elfin-growth,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/learned-selfish-elfin-growth.png,false,,,unknown,unknown,stress,stress_circl
+circl_legal-aspiring-sturdy-air,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/legal-aspiring-sturdy-air.png,false,,,unknown,unknown,stress,stress_circl
+circl_lethal-tense-voiceless-resort,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/lethal-tense-voiceless-resort.png,false,,,unknown,unknown,stress,stress_circl
+circl_like-overt-fantastic-profile,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/like-overt-fantastic-profile.png,false,,,unknown,unknown,stress,stress_circl
+circl_like-ready-clean-bathroom,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/like-ready-clean-bathroom.png,false,,,unknown,unknown,stress,stress_circl
+circl_likeable-innate-judicious-can,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/likeable-innate-judicious-can.png,false,,,unknown,unknown,stress,stress_circl
+circl_lively-agreeable-devilish-budget,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/lively-agreeable-devilish-budget.png,false,,,unknown,unknown,stress,stress_circl
+circl_lively-familiar-cheap-progress,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/lively-familiar-cheap-progress.png,false,,,unknown,unknown,stress,stress_circl
+circl_lively-smart-efficient-ask,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/lively-smart-efficient-ask.png,false,,,unknown,unknown,stress,stress_circl
+circl_living-solid-ritzy-file,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/living-solid-ritzy-file.png,false,,,unknown,unknown,stress,stress_circl
+circl_lonely-colossal-creepy-mobile,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/lonely-colossal-creepy-mobile.png,false,,,unknown,unknown,stress,stress_circl
+circl_lopsided-actually-squealing-swim,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/lopsided-actually-squealing-swim.png,false,,,unknown,unknown,stress,stress_circl
+circl_low-silky-happy-double,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/low-silky-happy-double.png,false,,,unknown,unknown,stress,stress_circl
+circl_luxuriant-naughty-red-football,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/luxuriant-naughty-red-football.png,false,,,unknown,unknown,stress,stress_circl
+circl_magnificent-demonic-faint-recommendation,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/magnificent-demonic-faint-recommendation.png,false,,,unknown,unknown,stress,stress_circl
+circl_majestic-labored-better-pop,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/majestic-labored-better-pop.png,false,,,unknown,unknown,stress,stress_circl
+circl_maniacal-skinny-ordinary-suggestion,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/maniacal-skinny-ordinary-suggestion.png,false,,,unknown,unknown,stress,stress_circl
+circl_married-imminent-sticky-following,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/married-imminent-sticky-following.png,false,,,unknown,unknown,stress,stress_circl
+circl_materialistic-pushy-chemical-possible,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/materialistic-pushy-chemical-possible.png,false,,,unknown,unknown,stress,stress_circl
+circl_mean-rightful-helpless-park,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/mean-rightful-helpless-park.png,false,,,unknown,unknown,stress,stress_circl
+circl_meaty-puzzled-tangy-touch,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/meaty-puzzled-tangy-touch.png,false,,,unknown,unknown,stress,stress_circl
+circl_medical-yielding-highfalutin-tourist,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/medical-yielding-highfalutin-tourist.png,false,,,unknown,unknown,stress,stress_circl
+circl_meek-opposite-dysfunctional-implement,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/meek-opposite-dysfunctional-implement.png,false,,,unknown,unknown,stress,stress_circl
+circl_melodic-marvelous-eatable-calendar,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/melodic-marvelous-eatable-calendar.png,false,,,unknown,unknown,stress,stress_circl
+circl_melodic-organic-obsequious-stranger,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/melodic-organic-obsequious-stranger.png,false,,,unknown,unknown,stress,stress_circl
+circl_merciful-crabby-cultured-brush,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/merciful-crabby-cultured-brush.png,false,,,unknown,unknown,stress,stress_circl
+circl_mere-husky-loutish-bread,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/mere-husky-loutish-bread.png,false,,,unknown,unknown,stress,stress_circl
+circl_mere-rich-youthful-training,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/mere-rich-youthful-training.png,false,,,unknown,unknown,stress,stress_circl
+circl_mere-small-cute-wing,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/mere-small-cute-wing.png,false,,,unknown,unknown,stress,stress_circl
+circl_messy-soggy-purring-tomorrow,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/messy-soggy-purring-tomorrow.png,false,,,unknown,unknown,stress,stress_circl
+circl_minor-amazing-overjoyed-nurse,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/minor-amazing-overjoyed-nurse.png,false,,,unknown,unknown,stress,stress_circl
+circl_mixed-painful-wonderful-youth,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/mixed-painful-wonderful-youth.png,false,,,unknown,unknown,stress,stress_circl
+circl_moldy-melted-enchanting-use,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/moldy-melted-enchanting-use.png,false,,,unknown,unknown,stress,stress_circl
+circl_mountainous-bawdy-swift-grandfather,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/mountainous-bawdy-swift-grandfather.png,false,,,unknown,unknown,stress,stress_circl
+circl_muddled-nice-hanging-piano,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/muddled-nice-hanging-piano.png,false,,,unknown,unknown,stress,stress_circl
+circl_mundane-joyous-rough-confusion,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/mundane-joyous-rough-confusion.png,false,,,unknown,unknown,stress,stress_circl
+circl_murky-grateful-wacky-vacation,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/murky-grateful-wacky-vacation.png,false,,,unknown,unknown,stress,stress_circl
+circl_murky-wiggly-shy-piece,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/murky-wiggly-shy-piece.png,false,,,unknown,unknown,stress,stress_circl
+circl_naughty-numberless-wasteful-responsibility,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/naughty-numberless-wasteful-responsibility.png,false,,,unknown,unknown,stress,stress_circl
+circl_nauseating-workable-windy-sink,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/nauseating-workable-windy-sink.png,false,,,unknown,unknown,stress,stress_circl
+circl_neat-alcoholic-raspy-interest,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/neat-alcoholic-raspy-interest.png,false,,,unknown,unknown,stress,stress_circl
+circl_neat-fierce-stupendous-strain,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/neat-fierce-stupendous-strain.png,false,,,unknown,unknown,stress,stress_circl
+circl_nebulous-left-dashing-dimension,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/nebulous-left-dashing-dimension.png,false,,,unknown,unknown,stress,stress_circl
+circl_neighborly-political-stupid-due,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/neighborly-political-stupid-due.png,false,,,unknown,unknown,stress,stress_circl
+circl_nervous-past-unbiased-date,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/nervous-past-unbiased-date.png,false,,,unknown,unknown,stress,stress_circl
+circl_nice-plucky-blue-stick,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/nice-plucky-blue-stick.png,false,,,unknown,unknown,stress,stress_circl
+circl_nippy-succinct-feigned-letter,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/nippy-succinct-feigned-letter.png,false,,,unknown,unknown,stress,stress_circl
+circl_normal-adorable-annoyed-election,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/normal-adorable-annoyed-election.png,false,,,unknown,unknown,stress,stress_circl
+circl_nostalgic-two-silly-support,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/nostalgic-two-silly-support.png,false,,,unknown,unknown,stress,stress_circl
+circl_null-hungry-wry-success,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/null-hungry-wry-success.png,false,,,unknown,unknown,stress,stress_circl
+circl_numerous-misty-meek-today,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/numerous-misty-meek-today.png,false,,,unknown,unknown,stress,stress_circl
+circl_numerous-sticky-earthy-evidence,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/numerous-sticky-earthy-evidence.png,false,,,unknown,unknown,stress,stress_circl
+circl_nutritious-incandescent-workable-handle,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/nutritious-incandescent-workable-handle.png,false,,,unknown,unknown,stress,stress_circl
+circl_observant-plucky-lumpy-garage,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/observant-plucky-lumpy-garage.png,false,,,unknown,unknown,stress,stress_circl
+circl_obtainable-squeamish-demonic-protection,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/obtainable-squeamish-demonic-protection.png,false,,,unknown,unknown,stress,stress_circl
+circl_old-wet-evasive-influence,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/old-wet-evasive-influence.png,false,,,unknown,unknown,stress,stress_circl
+circl_one-naive-filthy-membership,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/one-naive-filthy-membership.png,false,,,unknown,unknown,stress,stress_circl
+circl_onerous-bent-voracious-ambition,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/onerous-bent-voracious-ambition.png,false,,,unknown,unknown,stress,stress_circl
+circl_onerous-curly-stereotyped-bathroom,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/onerous-curly-stereotyped-bathroom.png,false,,,unknown,unknown,stress,stress_circl
+circl_onerous-shut-early-membership,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/onerous-shut-early-membership.png,false,,,unknown,unknown,stress,stress_circl
+circl_open-handsomely-clean-fun,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/open-handsomely-clean-fun.png,false,,,unknown,unknown,stress,stress_circl
+circl_optimal-old-hurried-cigarette,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/optimal-old-hurried-cigarette.png,false,,,unknown,unknown,stress,stress_circl
+circl_orange-lyrical-gaudy-energy,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/orange-lyrical-gaudy-energy.png,false,,,unknown,unknown,stress,stress_circl
+circl_ordinary-blushing-useful-glove,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/ordinary-blushing-useful-glove.png,false,,,unknown,unknown,stress,stress_circl
+circl_ossified-adamant-thinkable-window,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/ossified-adamant-thinkable-window.png,false,,,unknown,unknown,stress,stress_circl
+circl_ossified-puffy-fortunate-specialist,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/ossified-puffy-fortunate-specialist.png,false,,,unknown,unknown,stress,stress_circl
+circl_outgoing-irate-uptight-rub,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/outgoing-irate-uptight-rub.png,false,,,unknown,unknown,stress,stress_circl
+circl_overjoyed-aberrant-cluttered-shine,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/overjoyed-aberrant-cluttered-shine.png,false,,,unknown,unknown,stress,stress_circl
+circl_overwrought-tense-ill-possession,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/overwrought-tense-ill-possession.png,false,,,unknown,unknown,stress,stress_circl
+circl_painstaking-picayune-tense-preference,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/painstaking-picayune-tense-preference.png,false,,,unknown,unknown,stress,stress_circl
+circl_pale-dead-sweltering-value,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/pale-dead-sweltering-value.png,false,,,unknown,unknown,stress,stress_circl
+circl_panicky-imperfect-breezy-suspect,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/panicky-imperfect-breezy-suspect.png,false,,,unknown,unknown,stress,stress_circl
+circl_parallel-pastoral-helpful-alcohol,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/parallel-pastoral-helpful-alcohol.png,false,,,unknown,unknown,stress,stress_circl
+circl_parallel-stale-rainy-equipment,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/parallel-stale-rainy-equipment.png,false,,,unknown,unknown,stress,stress_circl
+circl_parched-cruel-silly-collar,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/parched-cruel-silly-collar.png,false,,,unknown,unknown,stress,stress_circl
+circl_parsimonious-rabid-productive-building,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/parsimonious-rabid-productive-building.png,false,,,unknown,unknown,stress,stress_circl
+circl_past-noiseless-accurate-stranger,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/past-noiseless-accurate-stranger.png,false,,,unknown,unknown,stress,stress_circl
+circl_pathetic-worthless-penitent-war,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/pathetic-worthless-penitent-war.png,false,,,unknown,unknown,stress,stress_circl
+circl_perpetual-long-hissing-position,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/perpetual-long-hissing-position.png,false,,,unknown,unknown,stress,stress_circl
+circl_perpetual-magenta-naive-security,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/perpetual-magenta-naive-security.png,false,,,unknown,unknown,stress,stress_circl
+circl_perpetual-overjoyed-unruly-minute,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/perpetual-overjoyed-unruly-minute.png,false,,,unknown,unknown,stress,stress_circl
+circl_physical-ruthless-fat-anybody,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/physical-ruthless-fat-anybody.png,false,,,unknown,unknown,stress,stress_circl
+circl_piquant-subsequent-dusty-make,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/piquant-subsequent-dusty-make.png,false,,,unknown,unknown,stress,stress_circl
+circl_placid-abhorrent-excited-entertainment,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/placid-abhorrent-excited-entertainment.png,false,,,unknown,unknown,stress,stress_circl
+circl_pleasant-far-hurt-blind,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/pleasant-far-hurt-blind.png,false,,,unknown,unknown,stress,stress_circl
+circl_plucky-secret-dusty-window,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/plucky-secret-dusty-window.png,false,,,unknown,unknown,stress,stress_circl
+circl_pointless-eight-vulgar-increase,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/pointless-eight-vulgar-increase.png,false,,,unknown,unknown,stress,stress_circl
+circl_possessive-eager-great-priest,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/possessive-eager-great-priest.png,false,,,unknown,unknown,stress,stress_circl
+circl_precious-unsightly-adaptable-truth,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/precious-unsightly-adaptable-truth.png,false,,,unknown,unknown,stress,stress_circl
+circl_previous-dusty-shut-teach,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/previous-dusty-shut-teach.png,false,,,unknown,unknown,stress,stress_circl
+circl_pricey-spicy-important-cream,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/pricey-spicy-important-cream.png,false,,,unknown,unknown,stress,stress_circl
+circl_prickly-historical-tedious-perception,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/prickly-historical-tedious-perception.png,false,,,unknown,unknown,stress,stress_circl
+circl_probable-necessary-grandiose-purpose,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/probable-necessary-grandiose-purpose.png,false,,,unknown,unknown,stress,stress_circl
+circl_profuse-telling-xenophobic-interaction,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/profuse-telling-xenophobic-interaction.png,false,,,unknown,unknown,stress,stress_circl
+circl_protective-busy-rude-depression,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/protective-busy-rude-depression.png,false,,,unknown,unknown,stress,stress_circl
+circl_psychedelic-observant-unsightly-inspector,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/psychedelic-observant-unsightly-inspector.png,false,,,unknown,unknown,stress,stress_circl
+circl_psychotic-mixed-obsequious-arm,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/psychotic-mixed-obsequious-arm.png,false,,,unknown,unknown,stress,stress_circl
+circl_psychotic-odd-slimy-member,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/psychotic-odd-slimy-member.png,false,,,unknown,unknown,stress,stress_circl
+circl_psychotic-thoughtful-equable-brush,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/psychotic-thoughtful-equable-brush.png,false,,,unknown,unknown,stress,stress_circl
+circl_puny-sour-foolish-active,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/puny-sour-foolish-active.png,false,,,unknown,unknown,stress,stress_circl
+circl_quiet-insidious-nauseating-sense,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/quiet-insidious-nauseating-sense.png,false,,,unknown,unknown,stress,stress_circl
+circl_racial-tan-wanting-steak,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/racial-tan-wanting-steak.png,false,,,unknown,unknown,stress,stress_circl
+circl_receptive-humdrum-ratty-competition,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/receptive-humdrum-ratty-competition.png,false,,,unknown,unknown,stress,stress_circl
+circl_red-eight-chubby-mix,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/red-eight-chubby-mix.png,false,,,unknown,unknown,stress,stress_circl
+circl_red-free-overrated-sail,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/red-free-overrated-sail.png,false,,,unknown,unknown,stress,stress_circl
+circl_regular-whole-square-boy,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/regular-whole-square-boy.png,false,,,unknown,unknown,stress,stress_circl
+circl_rich-endurable-many-ask,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/rich-endurable-many-ask.png,false,,,unknown,unknown,stress,stress_circl
+circl_right-impartial-spicy-oil,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/right-impartial-spicy-oil.png,false,,,unknown,unknown,stress,stress_circl
+circl_righteous-super-proud-big,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/righteous-super-proud-big.png,false,,,unknown,unknown,stress,stress_circl
+circl_robust-drunk-rampant-trouble,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/robust-drunk-rampant-trouble.png,false,,,unknown,unknown,stress,stress_circl
+circl_rotten-feigned-oceanic-breast,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/rotten-feigned-oceanic-breast.png,false,,,unknown,unknown,stress,stress_circl
+circl_rotten-young-decorous-object,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/rotten-young-decorous-object.png,false,,,unknown,unknown,stress,stress_circl
+circl_ruddy-flagrant-tedious-trouble,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/ruddy-flagrant-tedious-trouble.png,false,,,unknown,unknown,stress,stress_circl
+circl_rustic-lovely-zesty-spare,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/rustic-lovely-zesty-spare.png,false,,,unknown,unknown,stress,stress_circl
+circl_ruthless-worried-earthy-conflict,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/ruthless-worried-earthy-conflict.png,false,,,unknown,unknown,stress,stress_circl
+circl_sable-entertaining-friendly-stupid,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/sable-entertaining-friendly-stupid.png,false,,,unknown,unknown,stress,stress_circl
+circl_savory-highfalutin-slimy-control,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/savory-highfalutin-slimy-control.png,false,,,unknown,unknown,stress,stress_circl
+circl_scarce-aloof-different-stage,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/scarce-aloof-different-stage.png,false,,,unknown,unknown,stress,stress_circl
+circl_scarce-nervous-acrid-awareness,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/scarce-nervous-acrid-awareness.png,false,,,unknown,unknown,stress,stress_circl
+circl_scary-homely-successful-matter,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/scary-homely-successful-matter.png,false,,,unknown,unknown,stress,stress_circl
+circl_sedate-adorable-general-milk,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/sedate-adorable-general-milk.png,false,,,unknown,unknown,stress,stress_circl
+circl_seemly-nine-pastoral-a,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/seemly-nine-pastoral-a.png,false,,,unknown,unknown,stress,stress_circl
+circl_sharp-futuristic-utopian-math,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/sharp-futuristic-utopian-math.png,false,,,unknown,unknown,stress,stress_circl
+circl_shrill-internal-hurried-chain,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/shrill-internal-hurried-chain.png,false,,,unknown,unknown,stress,stress_circl
+circl_simplistic-nondescript-naughty-campaign,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/simplistic-nondescript-naughty-campaign.png,false,,,unknown,unknown,stress,stress_circl
+circl_six-cluttered-holistic-guide,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/six-cluttered-holistic-guide.png,false,,,unknown,unknown,stress,stress_circl
+circl_skinny-mundane-rampant-record,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/skinny-mundane-rampant-record.png,false,,,unknown,unknown,stress,stress_circl
+circl_skinny-slow-available-post,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/skinny-slow-available-post.png,false,,,unknown,unknown,stress,stress_circl
+circl_sleepy-true-ten-supermarket,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/sleepy-true-ten-supermarket.png,false,,,unknown,unknown,stress,stress_circl
+circl_slippery-bloody-tasty-wear,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/slippery-bloody-tasty-wear.png,false,,,unknown,unknown,stress,stress_circl
+circl_small-sparkling-cloistered-library,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/small-sparkling-cloistered-library.png,false,,,unknown,unknown,stress,stress_circl
+circl_smiling-dusty-beneficial-shoulder,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/smiling-dusty-beneficial-shoulder.png,false,,,unknown,unknown,stress,stress_circl
+circl_sneaky-delicate-grumpy-character,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/sneaky-delicate-grumpy-character.png,false,,,unknown,unknown,stress,stress_circl
+circl_soft-gullible-famous-post,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/soft-gullible-famous-post.png,false,,,unknown,unknown,stress,stress_circl
+circl_solid-statuesque-like-recommendation,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/solid-statuesque-like-recommendation.png,false,,,unknown,unknown,stress,stress_circl
+circl_sore-nine-condemned-system,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/sore-nine-condemned-system.png,false,,,unknown,unknown,stress,stress_circl
+circl_sour-curved-vivacious-egg,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/sour-curved-vivacious-egg.png,false,,,unknown,unknown,stress,stress_circl
+circl_spectacular-elastic-rabid-grade,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/spectacular-elastic-rabid-grade.png,false,,,unknown,unknown,stress,stress_circl
+circl_spiffy-succinct-lean-pay,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/spiffy-succinct-lean-pay.png,false,,,unknown,unknown,stress,stress_circl
+circl_spiffy-versed-irritating-extreme,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/spiffy-versed-irritating-extreme.png,false,,,unknown,unknown,stress,stress_circl
+circl_spiteful-aback-ahead-alternative,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/spiteful-aback-ahead-alternative.png,false,,,unknown,unknown,stress,stress_circl
+circl_spotless-determined-excellent-talk,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/spotless-determined-excellent-talk.png,false,,,unknown,unknown,stress,stress_circl
+circl_spotless-ill-talented-farm,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/spotless-ill-talented-farm.png,false,,,unknown,unknown,stress,stress_circl
+circl_squealing-versed-stormy-senior,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/squealing-versed-stormy-senior.png,false,,,unknown,unknown,stress,stress_circl
+circl_squeamish-offbeat-new-goal,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/squeamish-offbeat-new-goal.png,false,,,unknown,unknown,stress,stress_circl
+circl_statuesque-furry-damaged-two,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/statuesque-furry-damaged-two.png,false,,,unknown,unknown,stress,stress_circl
+circl_statuesque-resonant-heartbreaking-weekend,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/statuesque-resonant-heartbreaking-weekend.png,false,,,unknown,unknown,stress,stress_circl
+circl_steadfast-gaping-screeching-chicken,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/steadfast-gaping-screeching-chicken.png,false,,,unknown,unknown,stress,stress_circl
+circl_steady-mushy-lumpy-pension,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/steady-mushy-lumpy-pension.png,false,,,unknown,unknown,stress,stress_circl
+circl_stimulating-gratis-pointless-snow,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/stimulating-gratis-pointless-snow.png,false,,,unknown,unknown,stress,stress_circl
+circl_stingy-deep-demonic-baseball,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/stingy-deep-demonic-baseball.png,false,,,unknown,unknown,stress,stress_circl
+circl_stingy-versed-kindly-client,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/stingy-versed-kindly-client.png,false,,,unknown,unknown,stress,stress_circl
+circl_striped-phobic-decisive-examination,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/striped-phobic-decisive-examination.png,false,,,unknown,unknown,stress,stress_circl
+circl_striped-ultra-repulsive-spare,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/striped-ultra-repulsive-spare.png,false,,,unknown,unknown,stress,stress_circl
+circl_stupendous-decorous-shiny-mirror,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/stupendous-decorous-shiny-mirror.png,false,,,unknown,unknown,stress,stress_circl
+circl_stupendous-picayune-coherent-quiet,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/stupendous-picayune-coherent-quiet.png,false,,,unknown,unknown,stress,stress_circl
+circl_stupid-abaft-white-quality,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/stupid-abaft-white-quality.png,false,,,unknown,unknown,stress,stress_circl
+circl_subdued-glorious-somber-policy,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/subdued-glorious-somber-policy.png,false,,,unknown,unknown,stress,stress_circl
+circl_subsequent-wooden-tasty-neat,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/subsequent-wooden-tasty-neat.png,false,,,unknown,unknown,stress,stress_circl
+circl_substantial-quack-lumpy-media,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/substantial-quack-lumpy-media.png,false,,,unknown,unknown,stress,stress_circl
+circl_substantial-responsible-needy-article,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/substantial-responsible-needy-article.png,false,,,unknown,unknown,stress,stress_circl
+circl_substantial-weary-materialistic-pollution,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/substantial-weary-materialistic-pollution.png,false,,,unknown,unknown,stress,stress_circl
+circl_successful-irate-honorable-mobile,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/successful-irate-honorable-mobile.png,false,,,unknown,unknown,stress,stress_circl
+circl_successful-unequal-inexpensive-bit,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/successful-unequal-inexpensive-bit.png,false,,,unknown,unknown,stress,stress_circl
+circl_succinct-impossible-tedious-target,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/succinct-impossible-tedious-target.png,false,,,unknown,unknown,stress,stress_circl
+circl_superb-willing-functional-flight,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/superb-willing-functional-flight.png,false,,,unknown,unknown,stress,stress_circl
+circl_supreme-direful-cautious-agent,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/supreme-direful-cautious-agent.png,false,,,unknown,unknown,stress,stress_circl
+circl_swanky-useless-eminent-charge,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/swanky-useless-eminent-charge.png,false,,,unknown,unknown,stress,stress_circl
+circl_tangible-thankful-adaptable-sea,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/tangible-thankful-adaptable-sea.png,false,,,unknown,unknown,stress,stress_circl
+circl_tangy-earsplitting-uneven-leave,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/tangy-earsplitting-uneven-leave.png,false,,,unknown,unknown,stress,stress_circl
+circl_tangy-previous-ill-drawing,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/tangy-previous-ill-drawing.png,false,,,unknown,unknown,stress,stress_circl
+circl_tasteful-creepy-coherent-language,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/tasteful-creepy-coherent-language.png,false,,,unknown,unknown,stress,stress_circl
+circl_tasty-superficial-lively-child,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/tasty-superficial-lively-child.png,false,,,unknown,unknown,stress,stress_circl
+circl_tawdry-aware-wiggly-definition,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/tawdry-aware-wiggly-definition.png,false,,,unknown,unknown,stress,stress_circl
+circl_tawdry-disgusting-furtive-performance,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/tawdry-disgusting-furtive-performance.png,false,,,unknown,unknown,stress,stress_circl
+circl_ten-diligent-fertile-past,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/ten-diligent-fertile-past.png,false,,,unknown,unknown,stress,stress_circl
+circl_tense-majestic-acceptable-goal,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/tense-majestic-acceptable-goal.png,false,,,unknown,unknown,stress,stress_circl
+circl_therapeutic-tender-fair-map,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/therapeutic-tender-fair-map.png,false,,,unknown,unknown,stress,stress_circl
+circl_thick-sweet-sparkling-estate,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/thick-sweet-sparkling-estate.png,false,,,unknown,unknown,stress,stress_circl
+circl_thin-famous-greasy-produce,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/thin-famous-greasy-produce.png,false,,,unknown,unknown,stress,stress_circl
+circl_thin-huge-scandalous-relation,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/thin-huge-scandalous-relation.png,false,,,unknown,unknown,stress,stress_circl
+circl_thinkable-nervous-private-recording,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/thinkable-nervous-private-recording.png,false,,,unknown,unknown,stress,stress_circl
+circl_thinkable-omniscient-necessary-status,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/thinkable-omniscient-necessary-status.png,false,,,unknown,unknown,stress,stress_circl
+circl_third-bewildered-smiling-north,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/third-bewildered-smiling-north.png,false,,,unknown,unknown,stress,stress_circl
+circl_third-jumpy-bent-space,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/third-jumpy-bent-space.png,false,,,unknown,unknown,stress,stress_circl
+circl_third-quixotic-useless-student,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/third-quixotic-useless-student.png,false,,,unknown,unknown,stress,stress_circl
+circl_thirsty-cheap-plant-award,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/thirsty-cheap-plant-award.png,false,,,unknown,unknown,stress,stress_circl
+circl_thoughtful-waggish-incandescent-sign,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/thoughtful-waggish-incandescent-sign.png,false,,,unknown,unknown,stress,stress_circl
+circl_thoughtless-adhesive-calm-setting,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/thoughtless-adhesive-calm-setting.png,false,,,unknown,unknown,stress,stress_circl
+circl_three-plucky-wandering-thought,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/three-plucky-wandering-thought.png,false,,,unknown,unknown,stress,stress_circl
+circl_tired-abject-ludicrous-machine,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/tired-abject-ludicrous-machine.png,false,,,unknown,unknown,stress,stress_circl
+circl_tiresome-green-smelly-question,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/tiresome-green-smelly-question.png,false,,,unknown,unknown,stress,stress_circl
+circl_toothsome-stingy-few-press,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/toothsome-stingy-few-press.png,false,,,unknown,unknown,stress,stress_circl
+circl_towering-meaty-nappy-entertainment,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/towering-meaty-nappy-entertainment.png,false,,,unknown,unknown,stress,stress_circl
+circl_tranquil-afraid-changeable-post,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/tranquil-afraid-changeable-post.png,false,,,unknown,unknown,stress,stress_circl
+circl_tranquil-mere-pushy-snow,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/tranquil-mere-pushy-snow.png,false,,,unknown,unknown,stress,stress_circl
+circl_tremendous-wonderful-odd-shift,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/tremendous-wonderful-odd-shift.png,false,,,unknown,unknown,stress,stress_circl
+circl_tricky-sturdy-impossible-sweet,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/tricky-sturdy-impossible-sweet.png,false,,,unknown,unknown,stress,stress_circl
+circl_trite-chief-noxious-ratio,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/trite-chief-noxious-ratio.png,false,,,unknown,unknown,stress,stress_circl
+circl_troubled-cooperative-whole-hunt,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/troubled-cooperative-whole-hunt.png,false,,,unknown,unknown,stress,stress_circl
+circl_truthful-lively-illustrious-local,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/truthful-lively-illustrious-local.png,false,,,unknown,unknown,stress,stress_circl
+circl_typical-one-crabby-moment,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/typical-one-crabby-moment.png,false,,,unknown,unknown,stress,stress_circl
+circl_ugliest-ugly-yummy-routine,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/ugliest-ugly-yummy-routine.png,false,,,unknown,unknown,stress,stress_circl
+circl_ugly-squeamish-illustrious-temperature,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/ugly-squeamish-illustrious-temperature.png,false,,,unknown,unknown,stress,stress_circl
+circl_unequal-tasteful-discreet-shift,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/unequal-tasteful-discreet-shift.png,false,,,unknown,unknown,stress,stress_circl
+circl_uninterested-ignorant-smelly-pin,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/uninterested-ignorant-smelly-pin.png,false,,,unknown,unknown,stress,stress_circl
+circl_unkempt-nutty-male-platform,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/unkempt-nutty-male-platform.png,false,,,unknown,unknown,stress,stress_circl
+circl_unruly-material-historical-context,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/unruly-material-historical-context.png,false,,,unknown,unknown,stress,stress_circl
+circl_unsightly-quaint-good-surround,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/unsightly-quaint-good-surround.png,false,,,unknown,unknown,stress,stress_circl
+circl_unsuitable-feigned-harmonious-read,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/unsuitable-feigned-harmonious-read.png,false,,,unknown,unknown,stress,stress_circl
+circl_untidy-elderly-strange-end,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/untidy-elderly-strange-end.png,false,,,unknown,unknown,stress,stress_circl
+circl_utter-harsh-safe-designer,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/utter-harsh-safe-designer.png,false,,,unknown,unknown,stress,stress_circl
+circl_vacuous-vigorous-cheap-movie,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/vacuous-vigorous-cheap-movie.png,false,,,unknown,unknown,stress,stress_circl
+circl_vague-outstanding-wrong-while,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/vague-outstanding-wrong-while.png,false,,,unknown,unknown,stress,stress_circl
+circl_various-abundant-moaning-cross,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/various-abundant-moaning-cross.png,false,,,unknown,unknown,stress,stress_circl
+circl_vengeful-hollow-male-writer,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/vengeful-hollow-male-writer.png,false,,,unknown,unknown,stress,stress_circl
+circl_vengeful-ludicrous-tired-march,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/vengeful-ludicrous-tired-march.png,false,,,unknown,unknown,stress,stress_circl
+circl_vengeful-rhetorical-outgoing-judge,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/vengeful-rhetorical-outgoing-judge.png,false,,,unknown,unknown,stress,stress_circl
+circl_venomous-agreeable-half-wonder,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/venomous-agreeable-half-wonder.png,false,,,unknown,unknown,stress,stress_circl
+circl_verdant-lumpy-lumpy-steal,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/verdant-lumpy-lumpy-steal.png,false,,,unknown,unknown,stress,stress_circl
+circl_voiceless-ambitious-sour-standard,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/voiceless-ambitious-sour-standard.png,false,,,unknown,unknown,stress,stress_circl
+circl_wacky-quixotic-thirsty-combine,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/wacky-quixotic-thirsty-combine.png,false,,,unknown,unknown,stress,stress_circl
+circl_wanting-functional-goofy-possible,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/wanting-functional-goofy-possible.png,false,,,unknown,unknown,stress,stress_circl
+circl_warlike-furtive-unbiased-pound,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/warlike-furtive-unbiased-pound.png,false,,,unknown,unknown,stress,stress_circl
+circl_wicked-simplistic-dreary-lock,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/wicked-simplistic-dreary-lock.png,false,,,unknown,unknown,stress,stress_circl
+circl_willing-grandiose-testy-zone,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/willing-grandiose-testy-zone.png,false,,,unknown,unknown,stress,stress_circl
+circl_windy-sad-nine-touch,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/windy-sad-nine-touch.png,false,,,unknown,unknown,stress,stress_circl
+circl_wiry-sudden-energetic-assignment,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/wiry-sudden-energetic-assignment.png,false,,,unknown,unknown,stress,stress_circl
+circl_wistful-few-hushed-horse,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/wistful-few-hushed-horse.png,false,,,unknown,unknown,stress,stress_circl
+circl_wistful-rustic-interesting-memory,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/wistful-rustic-interesting-memory.png,false,,,unknown,unknown,stress,stress_circl
+circl_womanly-fluttering-milky-row,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/womanly-fluttering-milky-row.png,false,,,unknown,unknown,stress,stress_circl
+circl_wooden-permissible-fertile-inside,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/wooden-permissible-fertile-inside.png,false,,,unknown,unknown,stress,stress_circl
+circl_woozy-waiting-aspiring-sex,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/woozy-waiting-aspiring-sex.png,false,,,unknown,unknown,stress,stress_circl
+circl_worthless-boundless-voracious-aspect,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/worthless-boundless-voracious-aspect.png,false,,,unknown,unknown,stress,stress_circl
+circl_wrathful-lyrical-alcoholic-county,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/wrathful-lyrical-alcoholic-county.png,false,,,unknown,unknown,stress,stress_circl
+circl_wrathful-plant-majestic-perception,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/wrathful-plant-majestic-perception.png,false,,,unknown,unknown,stress,stress_circl
+circl_youthful-smiling-abrasive-lab,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/youthful-smiling-abrasive-lab.png,false,,,unknown,unknown,stress,stress_circl
+circl_yummy-neat-frantic-sound,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/yummy-neat-frantic-sound.png,false,,,unknown,unknown,stress,stress_circl
+circl_zany-cloudy-true-part,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/zany-cloudy-true-part.png,false,,,unknown,unknown,stress,stress_circl
+circl_zealous-parsimonious-smiling-fun,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/zealous-parsimonious-smiling-fun.png,false,,,unknown,unknown,stress,stress_circl
+circl_zippy-piquant-fascinated-bag,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/zippy-piquant-fascinated-bag.png,false,,,unknown,unknown,stress,stress_circl
+circl_zonked-silent-snobbish-review,stress,circl,data/raw/stress/circl_phishing_dataset_01/Clean_phishing/zonked-silent-snobbish-review.png,false,,,unknown,unknown,stress,stress_circl

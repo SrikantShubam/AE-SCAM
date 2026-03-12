@@ -1,0 +1,173 @@
+benchmark:
+  name: safecheck_image_first_benchmark
+  version: 0.1
+  description: >
+    Image-first benchmark for scam-message detection. Optimized for screenshot
+    OCR evaluation, classification evaluation, and policy-layer review.
+  label_set:
+    result_state:
+      - scam
+      - not_scam
+      - unclear
+    category:
+      - impersonation
+      - credential_theft
+      - payment_extraction
+      - tech_support_device_compromise
+      - emotion_pressure_fraud
+      - none
+    market:
+      - india
+      - us
+    channel:
+      - sms
+      - whatsapp
+      - email
+      - other
+    input_type:
+      - screenshot
+      - text
+    image_quality:
+      - clean
+      - medium
+      - hard
+  required_fields:
+    - sample_id
+    - benchmark_version
+    - source_type
+    - source_name
+    - market
+    - channel
+    - input_type
+    - ground_truth_label
+    - category
+    - image_quality
+    - message_text_gold
+    - recommended_action
+  fields:
+    sample_id:
+      type: string
+      description: Immutable unique sample identifier.
+      example: img_india_sms_0001
+    benchmark_version:
+      type: string
+      description: Benchmark version used when this sample was added.
+      example: "0.1"
+    source_type:
+      type: string
+      allowed:
+        - public_text_seed
+        - synthetic_screenshot
+        - real_screenshot
+        - ocr_stress_image
+      description: Origin category for the sample.
+    source_name:
+      type: string
+      description: Human-readable source name.
+      example: uci_sms_spam_collection
+    source_ref:
+      type: string
+      description: URL, document ID, or internal collection reference.
+    market:
+      type: string
+      allowed:
+        - india
+        - us
+    channel:
+      type: string
+      allowed:
+        - sms
+        - whatsapp
+        - email
+        - other
+    input_type:
+      type: string
+      allowed:
+        - screenshot
+        - text
+    ground_truth_label:
+      type: string
+      allowed:
+        - scam
+        - not_scam
+        - unclear
+    category:
+      type: string
+      allowed:
+        - impersonation
+        - credential_theft
+        - payment_extraction
+        - tech_support_device_compromise
+        - emotion_pressure_fraud
+        - none
+    image_quality:
+      type: string
+      allowed:
+        - clean
+        - medium
+        - hard
+      description: Required for screenshot samples. Use none for text-only seeds if needed in intermediate workflows.
+    sender_format:
+      type: string
+      allowed:
+        - phone_number
+        - short_code
+        - alphanumeric_id
+        - email_address
+        - unknown
+    message_text_gold:
+      type: string
+      description: Human-corrected gold text in reading order.
+    visible_sender_text:
+      type: string
+      description: Visible sender line exactly as seen in screenshot, if applicable.
+    visible_subject_text:
+      type: string
+      description: Visible subject line for email screenshots, if applicable.
+    scam_spans:
+      type: list
+      item_schema:
+        span_type:
+          allowed:
+            - url
+            - phone_number
+            - payment_amount
+            - otp_code
+            - credential_request
+            - urgency_phrase
+            - sender_id
+        text:
+          type: string
+        start_char:
+          type: integer
+        end_char:
+          type: integer
+      description: Critical substrings whose extraction matters for OCR and classification.
+    ocr_output:
+      type: string
+      description: OCR output for screenshot samples. Blank until OCR evaluation runs.
+    ocr_engine:
+      type: string
+      description: OCR engine used for the recorded ocr_output.
+    ocr_edit_distance:
+      type: number
+      description: Normalized OCR edit-distance score or equivalent metric.
+    ocr_span_accuracy:
+      type: number
+      description: Fraction of critical spans extracted correctly.
+    explanation_reference:
+      type: string
+      description: Approved short explanation text or reference to it.
+    recommended_action:
+      type: string
+      description: Canonical next action for the sample's final policy output.
+    notes:
+      type: string
+      description: Annotation or review notes.
+    adjudication_flag:
+      type: boolean
+      description: Whether the sample required adjudication during gold annotation.
+    deprecated:
+      type: boolean
+      description: Whether the sample is retained for audit but excluded from current evaluation.
+

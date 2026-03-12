@@ -1,0 +1,22 @@
+general_settings:
+  master_key: os.environ/LITELLM_MASTER_KEY
+
+litellm_settings:
+  drop_params: true
+
+model_list:
+  - model_name: nim-minimax-m2.5
+    litellm_params:
+      model: os.environ/NVIDIA_MINIMAX25_MODEL
+      api_base: os.environ/NVIDIA_API_BASE_URL
+      api_key: os.environ/NVIDIA_API_KEY
+      rpm: 40
+      timeout: 600
+
+  - model_name: nim-glm4.7
+    litellm_params:
+      model: os.environ/NVIDIA_GLM47_MODEL
+      api_base: os.environ/NVIDIA_API_BASE_URL
+      api_key: os.environ/NVIDIA_API_KEY
+      rpm: 40
+      timeout: 600

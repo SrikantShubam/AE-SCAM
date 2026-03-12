@@ -1,0 +1,6 @@
+"source_id","source_name","source_type","target_folder","download_status","notes"
+"uci_sms_spam_collection","uci_sms_spam_collection","public_text_seed","data/raw/public/uci_sms_spam_collection","downloaded_and_extracted","normalized into interim csv"
+"mendeley_sms_phishing","mendeley_sms_phishing","public_text_seed","data/raw/public/mendeley_sms_phishing","downloaded_and_extracted","manually provided zip extracted; normalized into interim csv"
+"circl_phishing_dataset_01","circl_phishing_dataset_01","ocr_stress_image","data/raw/stress/circl_phishing_dataset_01","partially_downloaded_and_usable","metadata plus 265 png screenshots downloaded before interrupted run; usable as OCR stress source"
+"sting9","sting9","public_text_seed","data/raw/public/sting9","excluded","excluded from active dataset path due to data quality concerns and no practical self-serve access path"
+"phish_iris","phish_iris","ocr_stress_image","data/raw/stress/phish_iris","downloaded_and_pruned","752mb archive added manually; curated 128-image structured subset extracted for OCR stress use"

@@ -1,30 +1,25 @@
 # ai_elderly_scam
 
-Flutter app + local infra helpers.
+This repository has been reset.
 
-## Prereqs
+The previous app scaffold was not a usable product base, so the broken Flutter
+template and generated project files were removed. The only items kept are the
+parts worth reusing for a rebuild and the new planning docs for v1.
 
-- Flutter `3.38.4` (Dart SDK must satisfy `pubspec.yaml`'s `environment.sdk` constraint; currently `>=3.10.3`)
+## What is here now
 
-## Dev checks
+- `PLAN_V1.md`: the current A-Z plan for rebuilding the app
+- `salvageable/`: architecture, infra, CI, and script assets worth reusing
 
-- Windows (PowerShell): `./scripts/check.ps1`
-- macOS/Linux: `bash ./scripts/check.sh`
-- To bypass the Flutter/Dart version guardrails:
-  - PowerShell: `./scripts/check.ps1 -SkipVersionCheck`
-  - Bash: `SKIP_FLUTTER_VERSION_CHECK=1 bash ./scripts/check.sh`
+## Intent
 
-## Infra
+Use this repo as a clean planning and rebuild workspace:
 
-See `infra/README.md` for running the local LiteLLM proxy.
+1. Lock the v1 product shape.
+2. Recreate the app architecture from zero.
+3. Pull in only the preserved assets that still make sense.
 
-## Clean
+## Salvageable assets
 
-- Windows (PowerShell): `./scripts/clean.ps1`
-- macOS/Linux: `bash ./scripts/clean.sh`
-
-## Secrets
-
-- Keep runtime secrets in a local `.env` (gitignored); start from `.env.example`.
-- CI refuses to run if `.env` (or `infra/.venv`) is present in the repo checkout.
-- If an API key ever lands in version control, rotate it immediately.
+See `salvageable/README.md` for the index of preserved files and why they were
+kept.
