@@ -17,7 +17,9 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--eval-manifest", default=str(DEFAULT_EVAL_MANIFEST))
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT))
     parser.add_argument("--limit", type=int, default=None)
+    parser.add_argument("--offset", type=int, default=0)
     parser.add_argument("--source-group", default="synthetic", choices=["synthetic", "stress", "all"])
+    parser.add_argument("--append", action="store_true")
     return parser.parse_args()
 
 
@@ -42,6 +44,8 @@ def main() -> None:
 
     if args.source_group != "all":
         rows = [row for row in rows if row["source_group"] == args.source_group]
+    if args.offset:
+        rows = rows[args.offset :]
     if args.limit is not None:
         rows = rows[: args.limit]
 
@@ -62,9 +66,13 @@ def main() -> None:
             }
         )
 
-    with output.open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["engine_name", "sample_id", "image_path", "predicted_text", "latency_ms"])
-        writer.writeheader()
+    mode = "a" if args.append and output.exists() else "w"
+    with output.open(mode, encoding="utf-8", newline="") as handle:
+        writer = csv.DictWriter(
+            handle, fieldnames=["engine_name", "sample_id", "image_path", "predicted_text", "latency_ms"]
+        )
+        if mode == "w":
+            writer.writeheader()
         writer.writerows(output_rows)
     print(f"Wrote {len(output_rows)} predictions to {output}")
 

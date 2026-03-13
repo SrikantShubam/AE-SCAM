@@ -123,3 +123,41 @@ Keep entries short and dated.
   - `Add OCR benchmark harness and first RapidOCR baseline`
   - `Add reference transcript pipeline and disposable OCR runners`
   - `Run three-engine OCR consensus and Gemini reconciliation`
+
+### 2026-03-13
+
+- Completed:
+  - replaced the broken dashboard-control loop with a read-only dashboard plus a single baseline worker
+  - added durable NVIDIA batch processing, merge logic, and worker state/logging
+  - finished Phi-4 stress extraction to `546 / 546`
+  - ran Phi-4 on the full `80` synthetic benchmark images
+  - generated Phi-4 synthetic OCR detail/summary reports
+  - demoted Scout from the active path and repurposed the second NVIDIA key/lane to help Phi-4
+  - fixed the worker to use pending sample IDs instead of broken count-based offsets
+- Decisions:
+  - research extractors were only for baseline/reference creation, not for shipping OCR selection
+  - active baseline path is now:
+    - RapidOCR
+    - Tesseract
+    - Phi-4
+    - Gemini reconciliation
+    - manual review only for leftovers
+  - Scout is removed from the active path
+- Open questions:
+  - Gemini reconciliation is still failing/rate-limited and needs one more pass before freeze
+  - after Gemini, how many samples remain manual-review grade
+- Next:
+  1. finish one more Gemini reconciliation pass on the unresolved disagreement set
+  2. freeze the baseline/reference set
+  3. start mobile OCR evaluation
+  4. compare candidate performance by:
+     - latency
+     - body recall
+     - scam-span recall
+     - failure rate
+     - India vs US
+     - SMS vs WhatsApp vs email-like
+     - clean vs medium vs hard
+- Suggested commit(s):
+  - `Replace dashboard orchestration with read-only monitor and baseline worker`
+  - `Finish Phi-4 synthetic benchmark and repurpose second NVIDIA lane`

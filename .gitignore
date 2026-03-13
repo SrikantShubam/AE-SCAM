@@ -41,6 +41,15 @@ migrate_working_dir/
 # Local OCR research artifacts
 data/models/
 data/raw/
+data/benchmark/v0.1/reports/*__chunk_*.csv
+data/benchmark/v0.1/reports/*_smoke*.csv
+data/benchmark/v0.1/reports/llm_reconciliation_gemini_smoke*.jsonl
+
+# Local dashboard / worker runtime state
+dashboard/*.log
+dashboard/*.lock
+dashboard/*_pending_ids.txt
+dashboard/stop_baseline_worker.flag
 
 # Python virtualenvs (used by infra helpers)
 .venv/

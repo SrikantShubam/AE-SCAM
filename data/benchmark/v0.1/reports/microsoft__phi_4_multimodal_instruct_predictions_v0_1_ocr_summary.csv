@@ -1,0 +1,7 @@
+engine_name,evaluation_slice,sample_count,avg_cer,avg_wer,avg_body_token_recall,avg_scam_span_recall
+NVIDIAVision,india_sms_clean,30,0.395084,0.395084,0.981783,0.950000
+NVIDIAVision,india_sms_medium,5,0.306135,0.306135,0.993750,1.000000
+NVIDIAVision,india_whatsapp_medium,5,0.054839,0.054839,0.933333,1.000000
+NVIDIAVision,us_email_hard,10,0.726621,0.726621,0.975450,0.900000
+NVIDIAVision,us_whatsapp_hard,10,0.036718,0.036718,0.981169,0.900000
+NVIDIAVision,us_whatsapp_medium,20,0.129037,0.129037,0.975402,0.983333

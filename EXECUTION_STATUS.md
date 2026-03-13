@@ -32,6 +32,10 @@ downstream of them.
 - OCR
   - ~~local OCR direction chosen: ML Kit first~~
   - benchmark ML Kit vs alternatives
+  - add newer research OCR engines for benchmark generation:
+    - NVIDIA OCR
+    - Mistral OCR
+    - Google/Azure hosted OCR references
   - define OCR quality gate numerically
   - define OCR failure handling in product spec
   - decide whether cloud OCR is premium-only later
@@ -94,6 +98,20 @@ downstream of them.
 3. classification evaluation
 4. only then continue with broader implementation work
 
+## Next Day Work
+
+1. finish one more Gemini reconciliation pass on the unresolved disagreement set
+2. freeze the baseline/reference set
+3. start mobile OCR evaluation
+4. compare candidate performance by:
+   - latency
+   - body recall
+   - scam-span recall
+   - failure rate
+   - India vs US
+   - SMS vs WhatsApp vs email-like
+   - clean vs medium vs hard
+
 ## Current checkpoint
 
 - dataset phase has started
@@ -128,3 +146,12 @@ downstream of them.
   real images so the same consensus pipeline can start resolving them too
 - India-specific benchmark planning has been added and must be reflected in the
   first benchmark iterations
+- newer research OCR extractors must be added to the benchmark-generation task
+  list, with NVIDIA OCR explicitly included
+- research baseline generation has now converged to:
+  - RapidOCR
+  - Tesseract
+  - Phi-4
+  - Gemini reconciliation
+- Scout has been removed from the active baseline path and should not be treated
+  as a current benchmark priority

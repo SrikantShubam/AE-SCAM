@@ -1,0 +1,157 @@
+{
+  "last_updated_utc": "2026-03-13T17:48:51.631718+00:00",
+  "overview": {
+    "fully_ocr_processed": 626,
+    "ocr_remaining": 0,
+    "llm_total": 163,
+    "llm_done": 17,
+    "llm_remaining": 146,
+    "automatic_remaining": 146
+  },
+  "coverage": {
+    "ocr_eval_total": 626,
+    "synthetic_total": 80,
+    "stress_total": 546,
+    "synthetic_batch_total": 100,
+    "synthetic_rendered": 80,
+    "synthetic_manual_placeholders": 20
+  },
+  "reference_status": {
+    "auto_accept": 140,
+    "llm_reconcile": 163,
+    "manual_review": 323
+  },
+  "resolved_reference_status": {
+    "auto_accept": 140,
+    "llm_resolved": 10,
+    "manual_review": 325,
+    "llm_reconcile": 151
+  },
+  "engines": [
+    {
+      "engine_name": "RapidOCR",
+      "available": true,
+      "sample_count": 80,
+      "avg_cer": 0.468186,
+      "avg_body_token_recall": 0.93954,
+      "avg_scam_span_recall": 0.889583,
+      "avg_latency_ms": 5104.19,
+      "status": "demote"
+    },
+    {
+      "engine_name": "Tesseract",
+      "available": true,
+      "sample_count": 80,
+      "avg_cer": 0.459469,
+      "avg_body_token_recall": 0.975115,
+      "avg_scam_span_recall": 0.979167,
+      "avg_latency_ms": 307.08,
+      "status": "promote"
+    },
+    {
+      "engine_name": "NVIDIA Phi-4 Multimodal",
+      "available": true,
+      "sample_count": 80,
+      "avg_cer": 0.298394,
+      "avg_body_token_recall": 0.977039,
+      "avg_scam_span_recall": 0.952083,
+      "avg_latency_ms": 5282.83,
+      "status": "keep-testing"
+    },
+    {
+      "engine_name": "EasyOCR",
+      "available": true,
+      "sample_count": 80,
+      "avg_cer": 0.492233,
+      "avg_body_token_recall": 0.933985,
+      "avg_scam_span_recall": 0.933333,
+      "avg_latency_ms": 10549.2,
+      "status": "legacy"
+    }
+  ],
+  "engine_progress": {
+    "RapidOCR": {
+      "synthetic": {
+        "done": 80,
+        "total": 80,
+        "pct": 100.0
+      },
+      "stress": {
+        "done": 546,
+        "total": 546,
+        "pct": 100.0
+      }
+    },
+    "Tesseract": {
+      "synthetic": {
+        "done": 80,
+        "total": 80,
+        "pct": 100.0
+      },
+      "stress": {
+        "done": 546,
+        "total": 546,
+        "pct": 100.0
+      }
+    }
+  },
+  "method_progress": {
+    "RapidOCR": {
+      "done": 626,
+      "total": 626,
+      "pct": 100.0
+    },
+    "Tesseract": {
+      "done": 626,
+      "total": 626,
+      "pct": 100.0
+    },
+    "NVIDIA Phi-4 Multimodal": {
+      "done": 546,
+      "total": 546,
+      "pct": 100.0
+    },
+    "Gemini Reconciliation": {
+      "done": 17,
+      "total": 163,
+      "pct": 10.43
+    }
+  },
+  "stress_outputs": {
+    "rapidocr_stress_predictions": 546,
+    "tesseract_stress_predictions": 546
+  },
+  "llm": {
+    "gemini_reconciled": 17
+  },
+  "worker": {
+    "running": true,
+    "current_step": "gemini_reconciliation",
+    "last_error": "Command '['C:\\\\Program Files\\\\Python310\\\\python.exe', 'C:\\\\experiments\\\\ai-elderly-scam\\\\scripts\\\\run_llm_reconciliation.py', '--provider', 'gemini', '--model', 'gemini-2.5-flash', '--batch', 'C:\\\\experiments\\\\ai-elderly-scam\\\\data\\\\benchmark\\\\v0.1\\\\metadata\\\\llm_reconciliation_batch.jsonl', '--sample-ids-file', 'C:\\\\experiments\\\\ai-elderly-scam\\\\dashboard\\\\gemini_pending_ids.txt', '--output', 'C:\\\\experiments\\\\ai-elderly-scam\\\\data\\\\benchmark\\\\v0.1\\\\reports\\\\llm_reconciliation_gemini.jsonl', '--append', '--max-retries', '6']' returned non-zero exit status 1.",
+    "note": "Read-only dashboard; worker is the only controller.",
+    "health": "running",
+    "started_at_utc": "2026-03-13T17:16:46.813294+00:00",
+    "last_heartbeat_at_utc": "2026-03-13T17:48:15.855526+00:00",
+    "last_progress_at_utc": "2026-03-13T17:16:46.813294+00:00",
+    "stagnant_loops": 0,
+    "consecutive_errors": 34,
+    "log_path": "dashboard\\baseline_worker.log",
+    "updated_at_utc": "2026-03-13T17:48:17.235825+00:00",
+    "loop_count": 35,
+    "rapidocr_stress_done": 546,
+    "tesseract_stress_done": 546,
+    "phi4_done": 546,
+    "phi4_total": 546,
+    "scout_done": 65,
+    "scout_total": 546,
+    "llm_done": 17,
+    "llm_total": 163,
+    "pending_sample_ids": [
+      "phish_iris_adobe_test (25)",
+      "phish_iris_alibaba_test (10)",
+      "phish_iris_amazon_test (1)",
+      "phish_iris_amazon_test (2)",
+      "phish_iris_amazon_test (8)"
+    ]
+  }
+}

@@ -10,6 +10,20 @@ Compare the OCR engines we may ship using the first image-first benchmark.
 2. PaddleOCR mobile-friendly variant
 3. Tesseract baseline
 
+## Research-grade extraction engines for benchmark generation
+
+These are not assumed shipping candidates for the app. They are included to
+help create a stronger evaluation benchmark and to stress the local OCR
+engines against stronger extraction systems.
+
+1. NVIDIA `microsoft/phi-4-multimodal-instruct`
+2. NVIDIA `meta/llama-4-scout-17b-16e-instruct`
+3. NVIDIA Image OCR / OCR NIM
+4. Mistral OCR
+5. Google Cloud Vision OCR
+6. Azure AI Vision Read OCR
+7. Gemini document-image extraction path
+
 ## Decision goal
 
 Choose the OCR path for v1 based on benchmark performance, not intuition.
@@ -75,3 +89,5 @@ Each OCR engine should produce:
 3. ~~define how latency will be measured~~
 4. run additional OCR engines against the same manifest
 5. define pass/fail thresholds before comparing shipping candidates
+6. add NVIDIA OCR into the benchmark-generation task list
+7. add at least two newer hosted OCR extractors for research-only comparison

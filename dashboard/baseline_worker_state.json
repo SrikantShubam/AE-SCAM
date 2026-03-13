@@ -1,0 +1,30 @@
+{
+  "running": true,
+  "current_step": "retrying_after_error",
+  "last_error": "Command '['C:\\\\Program Files\\\\Python310\\\\python.exe', 'C:\\\\experiments\\\\ai-elderly-scam\\\\scripts\\\\run_llm_reconciliation.py', '--provider', 'gemini', '--model', 'gemini-2.5-flash', '--batch', 'C:\\\\experiments\\\\ai-elderly-scam\\\\data\\\\benchmark\\\\v0.1\\\\metadata\\\\llm_reconciliation_batch.jsonl', '--sample-ids-file', 'C:\\\\experiments\\\\ai-elderly-scam\\\\dashboard\\\\gemini_pending_ids.txt', '--output', 'C:\\\\experiments\\\\ai-elderly-scam\\\\data\\\\benchmark\\\\v0.1\\\\reports\\\\llm_reconciliation_gemini.jsonl', '--append', '--max-retries', '6']' returned non-zero exit status 1.",
+  "note": "Read-only dashboard; worker is the only controller.",
+  "health": "error_retrying",
+  "started_at_utc": "2026-03-13T17:16:46.813294+00:00",
+  "last_heartbeat_at_utc": "2026-03-13T17:48:51.670988+00:00",
+  "last_progress_at_utc": "2026-03-13T17:16:46.813294+00:00",
+  "stagnant_loops": 0,
+  "consecutive_errors": 35,
+  "log_path": "dashboard\\baseline_worker.log",
+  "updated_at_utc": "2026-03-13T17:48:51.726047+00:00",
+  "loop_count": 35,
+  "rapidocr_stress_done": 546,
+  "tesseract_stress_done": 546,
+  "phi4_done": 546,
+  "phi4_total": 546,
+  "scout_done": 65,
+  "scout_total": 546,
+  "llm_done": 17,
+  "llm_total": 163,
+  "pending_sample_ids": [
+    "phish_iris_adobe_test (25)",
+    "phish_iris_alibaba_test (10)",
+    "phish_iris_amazon_test (1)",
+    "phish_iris_amazon_test (2)",
+    "phish_iris_amazon_test (8)"
+  ]
+}

@@ -1,5 +1,4 @@
 reference_status,sample_count
-auto_accept,65
-llm_reconcile,14
-manual_review,1
-needs_more_ocr,546
+auto_accept,140
+llm_reconcile,163
+manual_review,323

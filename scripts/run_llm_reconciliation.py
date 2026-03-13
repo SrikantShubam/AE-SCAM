@@ -2,6 +2,7 @@ import argparse
 import base64
 import json
 import os
+import time
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -9,6 +10,7 @@ import requests
 
 
 ROOT = Path(__file__).resolve().parents[1]
+ENV_PATH = ROOT / ".env"
 DEFAULT_BATCH = ROOT / "data" / "benchmark" / "v0.1" / "metadata" / "llm_reconciliation_batch.jsonl"
 DEFAULT_OUTPUT = ROOT / "data" / "benchmark" / "v0.1" / "reports" / "llm_reconciliation_results.jsonl"
 
@@ -32,6 +34,20 @@ Rules:
 """
 
 
+def load_env_file(path: Path) -> None:
+    if not path.exists():
+        return
+    for raw_line in path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key and value and key not in os.environ:
+            os.environ[key] = value
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run LLM transcript reconciliation on OCR disagreement cases.")
     parser.add_argument("--provider", choices=["gemini", "openai_compat"], required=True)
@@ -39,8 +55,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--batch", default=str(DEFAULT_BATCH))
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT))
     parser.add_argument("--limit", type=int, default=None)
+    parser.add_argument("--offset", type=int, default=0)
+    parser.add_argument("--append", action="store_true")
     parser.add_argument("--include-image", action="store_true")
     parser.add_argument("--base-url", default=None)
+    parser.add_argument("--max-retries", type=int, default=4)
+    parser.add_argument("--sample-ids-file", default=None)
     return parser.parse_args()
 
 
@@ -89,7 +109,7 @@ def build_user_prompt(row: Dict[str, Any]) -> str:
     )
 
 
-def call_gemini(model: str, row: Dict[str, Any], include_image: bool) -> Dict[str, Any]:
+def call_gemini(model: str, row: Dict[str, Any], include_image: bool, max_retries: int) -> Dict[str, Any]:
     api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
     if not api_key:
         raise RuntimeError("Set GOOGLE_API_KEY or GEMINI_API_KEY before using provider=gemini.")
@@ -101,11 +121,17 @@ def call_gemini(model: str, row: Dict[str, Any], include_image: bool) -> Dict[st
         "generationConfig": {"responseMimeType": "application/json", "temperature": 0.1},
         "contents": [{"role": "user", "parts": parts}],
     }
-    response = requests.post(url, json=payload, timeout=180)
-    response.raise_for_status()
-    data = response.json()
-    text = data["candidates"][0]["content"]["parts"][0]["text"]
-    return json.loads(text)
+    for attempt in range(max_retries):
+        response = requests.post(url, json=payload, timeout=180)
+        if response.status_code not in (429,) and response.status_code < 500:
+            response.raise_for_status()
+            data = response.json()
+            text = data["candidates"][0]["content"]["parts"][0]["text"]
+            return json.loads(text)
+        if attempt == max_retries - 1:
+            response.raise_for_status()
+        time.sleep(2 ** attempt)
+    raise RuntimeError("Gemini call failed after retries.")
 
 
 def call_openai_compat(model: str, row: Dict[str, Any], base_url: str) -> Dict[str, Any]:
@@ -143,17 +169,28 @@ def call_openai_compat(model: str, row: Dict[str, Any], base_url: str) -> Dict[s
 
 
 def main() -> None:
+    load_env_file(ENV_PATH)
     args = parse_args()
     rows = read_jsonl(Path(args.batch))
+    if args.sample_ids_file:
+        wanted = {
+            line.strip()
+            for line in Path(args.sample_ids_file).read_text(encoding="utf-8").splitlines()
+            if line.strip()
+        }
+        rows = [row for row in rows if row["sample_id"] in wanted]
+    if args.offset:
+        rows = rows[args.offset :]
     if args.limit is not None:
         rows = rows[: args.limit]
     output_path = Path(args.output)
     ensure_dir(output_path.parent)
 
-    with output_path.open("w", encoding="utf-8") as handle:
+    mode = "a" if args.append and output_path.exists() else "w"
+    with output_path.open(mode, encoding="utf-8") as handle:
         for row in rows:
             if args.provider == "gemini":
-                result = call_gemini(args.model, row, args.include_image)
+                result = call_gemini(args.model, row, args.include_image, args.max_retries)
             else:
                 result = call_openai_compat(args.model, row, args.base_url)
             record = {

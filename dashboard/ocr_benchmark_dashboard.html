@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OCR Benchmark Dashboard</title>
+  <meta http-equiv="refresh" content="5">
+  <style>
+    :root {
+      --bg: #0b1020; --surface: #141b2d; --surface-2: #1a243b; --ink: #e6edf7;
+      --muted: #9aa7bd; --line: #29344d; --good: #86efac; --warn: #fdba74; --bad: #fca5a5;
+    }
+    body { margin: 0; font-family: Georgia, 'Times New Roman', serif; background: radial-gradient(circle at top, #18233a 0%, #0b1020 60%); color: var(--ink); }
+    .wrap { max-width: 1180px; margin: 0 auto; padding: 32px 20px 56px; }
+    h1, h2 { margin: 0 0 12px; } p { color: var(--muted); }
+    .hero, .section { background: linear-gradient(180deg, var(--surface), var(--surface-2)); border: 1px solid var(--line); border-radius: 24px; padding: 24px; box-shadow: 0 18px 40px rgba(0,0,0,.24); }
+    .section { margin-top: 22px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-top: 18px; }
+    .card { background: linear-gradient(180deg, #18223a, #121a2b); border: 1px solid var(--line); border-radius: 18px; padding: 18px; }
+    .label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+    .value { font-size: 34px; margin-top: 6px; }
+    table { width: 100%; border-collapse: collapse; font-family: 'Segoe UI', sans-serif; font-size: 14px; }
+    th, td { padding: 10px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+    .stamp { margin-top: 10px; font-size: 12px; color: var(--muted); font-family: 'Segoe UI', sans-serif; }
+    .pill { display: inline-block; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-family: 'Segoe UI', sans-serif; }
+    .promote { background: #dcfce7; color: #166534; } .legacy { background: #fef3c7; color: #92400e; }
+    .demote { background: #fee2e2; color: #991b1b; } .keep-testing { background: #e0f2fe; color: #075985; } .pending { background: #e5e7eb; color: #374151; }
+    code { font-family: Consolas, monospace; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>OCR Benchmark Dashboard</h1>
+      <p>Read-only monitor for OCR benchmark progress and baseline reference generation.</p>
+      <div class="stamp">Updated: <span id="updated-at">loading</span></div>
+      <div class="stamp">Worker running: <strong id="worker-running">unknown</strong></div>
+      <div class="stamp">Worker health: <strong id="worker-health">unknown</strong></div>
+      <div class="stamp">Worker step: <strong id="worker-step">unknown</strong></div>
+      <div class="stamp">Last heartbeat: <strong id="worker-heartbeat">unknown</strong></div>
+      <div class="stamp">Last progress: <strong id="worker-progress">unknown</strong></div>
+      <div class="stamp">Last error: <strong id="worker-error">none</strong></div>
+      <div class="stamp">Read-only dashboard. Start the worker separately. This page only reflects disk state.</div>
+      <div class="grid" id="overview-grid"></div>
+      <div class="grid" id="coverage-grid"></div>
+    </div>
+    <div class="section">
+      <h2>Worker Status</h2>
+      <table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody id="worker-rows"></tbody></table>
+    </div>
+    <div class="section">
+      <h2>Live OCR Processing Progress</h2>
+      <table><thead><tr><th>Engine</th><th>Synthetic</th><th>Stress</th></tr></thead><tbody id="progress-rows"></tbody></table>
+    </div>
+    <div class="section">
+      <h2>Processed vs Remaining by Method</h2>
+      <table><thead><tr><th>Method</th><th>Processed</th><th>Remaining</th><th>Total</th><th>Progress</th></tr></thead><tbody id="method-progress-rows"></tbody></table>
+    </div>
+    <div class="section">
+      <h2>Reference Resolution Status</h2>
+      <div class="grid" id="reference-status-grid"></div>
+    </div>
+    <div class="section">
+      <h2>Synthetic Resolved Snapshot</h2>
+      <div class="grid" id="resolved-status-grid"></div>
+    </div>
+    <div class="section">
+      <h2>Synthetic OCR Comparison</h2>
+      <table><thead><tr><th>Engine</th><th>Samples</th><th>Avg CER</th><th>Body Recall</th><th>Span Recall</th><th>Avg Latency ms</th><th>Rank</th></tr></thead><tbody id="engine-rows"></tbody></table>
+    </div>
+  </div>
+  <script>
+    const API_STATUS = "/api/status";
+    const JSON_PATH = "./ocr_benchmark_dashboard.json";
+    const INITIAL_DATA = {"last_updated_utc": "2026-03-13T17:48:51.631718+00:00", "overview": {"fully_ocr_processed": 626, "ocr_remaining": 0, "llm_total": 163, "llm_done": 17, "llm_remaining": 146, "automatic_remaining": 146}, "coverage": {"ocr_eval_total": 626, "synthetic_total": 80, "stress_total": 546, "synthetic_batch_total": 100, "synthetic_rendered": 80, "synthetic_manual_placeholders": 20}, "reference_status": {"auto_accept": 140, "llm_reconcile": 163, "manual_review": 323}, "resolved_reference_status": {"auto_accept": 140, "llm_resolved": 10, "manual_review": 325, "llm_reconcile": 151}, "engines": [{"engine_name": "RapidOCR", "available": true, "sample_count": 80, "avg_cer": 0.468186, "avg_body_token_recall": 0.93954, "avg_scam_span_recall": 0.889583, "avg_latency_ms": 5104.19, "status": "demote"}, {"engine_name": "Tesseract", "available": true, "sample_count": 80, "avg_cer": 0.459469, "avg_body_token_recall": 0.975115, "avg_scam_span_recall": 0.979167, "avg_latency_ms": 307.08, "status": "promote"}, {"engine_name": "NVIDIA Phi-4 Multimodal", "available": true, "sample_count": 80, "avg_cer": 0.298394, "avg_body_token_recall": 0.977039, "avg_scam_span_recall": 0.952083, "avg_latency_ms": 5282.83, "status": "keep-testing"}, {"engine_name": "EasyOCR", "available": true, "sample_count": 80, "avg_cer": 0.492233, "avg_body_token_recall": 0.933985, "avg_scam_span_recall": 0.933333, "avg_latency_ms": 10549.2, "status": "legacy"}], "engine_progress": {"RapidOCR": {"synthetic": {"done": 80, "total": 80, "pct": 100.0}, "stress": {"done": 546, "total": 546, "pct": 100.0}}, "Tesseract": {"synthetic": {"done": 80, "total": 80, "pct": 100.0}, "stress": {"done": 546, "total": 546, "pct": 100.0}}}, "method_progress": {"RapidOCR": {"done": 626, "total": 626, "pct": 100.0}, "Tesseract": {"done": 626, "total": 626, "pct": 100.0}, "NVIDIA Phi-4 Multimodal": {"done": 546, "total": 546, "pct": 100.0}, "Gemini Reconciliation": {"done": 17, "total": 163, "pct": 10.43}}, "stress_outputs": {"rapidocr_stress_predictions": 546, "tesseract_stress_predictions": 546}, "llm": {"gemini_reconciled": 17}, "worker": {"running": true, "current_step": "gemini_reconciliation", "last_error": "Command '['C:\\\\Program Files\\\\Python310\\\\python.exe', 'C:\\\\experiments\\\\ai-elderly-scam\\\\scripts\\\\run_llm_reconciliation.py', '--provider', 'gemini', '--model', 'gemini-2.5-flash', '--batch', 'C:\\\\experiments\\\\ai-elderly-scam\\\\data\\\\benchmark\\\\v0.1\\\\metadata\\\\llm_reconciliation_batch.jsonl', '--sample-ids-file', 'C:\\\\experiments\\\\ai-elderly-scam\\\\dashboard\\\\gemini_pending_ids.txt', '--output', 'C:\\\\experiments\\\\ai-elderly-scam\\\\data\\\\benchmark\\\\v0.1\\\\reports\\\\llm_reconciliation_gemini.jsonl', '--append', '--max-retries', '6']' returned non-zero exit status 1.", "note": "Read-only dashboard; worker is the only controller.", "health": "running", "started_at_utc": "2026-03-13T17:16:46.813294+00:00", "last_heartbeat_at_utc": "2026-03-13T17:48:15.855526+00:00", "last_progress_at_utc": "2026-03-13T17:16:46.813294+00:00", "stagnant_loops": 0, "consecutive_errors": 34, "log_path": "dashboard\\baseline_worker.log", "updated_at_utc": "2026-03-13T17:48:17.235825+00:00", "loop_count": 35, "rapidocr_stress_done": 546, "tesseract_stress_done": 546, "phi4_done": 546, "phi4_total": 546, "scout_done": 65, "scout_total": 546, "llm_done": 17, "llm_total": 163, "pending_sample_ids": ["phish_iris_adobe_test (25)", "phish_iris_alibaba_test (10)", "phish_iris_amazon_test (1)", "phish_iris_amazon_test (2)", "phish_iris_amazon_test (8)"]}};
+
+    function card(label, value) { return `<div class="card"><div class="label">${label}</div><div class="value">${value}</div></div>`; }
+    function renderCards(counts, order) { return order.map((key) => card(key, counts[key] || 0)).join(""); }
+    function coverageCards(coverage) { return [["Total Eval Images", coverage.ocr_eval_total], ["Synthetic", coverage.synthetic_total], ["Stress / Real", coverage.stress_total], ["Rendered Synthetic", coverage.synthetic_rendered], ["Manual Placeholder Rows", coverage.synthetic_manual_placeholders]].map(([l,v]) => card(l, v)).join(""); }
+    function overviewCards(overview) { return [["OCR Processed", overview.fully_ocr_processed], ["OCR Remaining", overview.ocr_remaining], ["Gemini Done", `${overview.llm_done} / ${overview.llm_total}`], ["Auto Work Left", overview.automatic_remaining]].map(([l,v]) => card(l, v)).join(""); }
+    function renderProgressRows(progress) { return Object.entries(progress).map(([name, data]) => `<tr><td>${name}</td><td>${data.synthetic.done} / ${data.synthetic.total} (${data.synthetic.pct}%)</td><td>${data.stress.done} / ${data.stress.total} (${data.stress.pct}%)</td></tr>`).join(""); }
+    function renderMethodRows(progress) { return Object.entries(progress).map(([name, data]) => `<tr><td>${name}</td><td>${data.done}</td><td>${Math.max(data.total-data.done,0)}</td><td>${data.total}</td><td>${data.pct}%</td></tr>`).join(""); }
+    function enginePill(status) { const css = ["promote","legacy","demote","keep-testing","pending"].includes(status) ? status : "pending"; return `<span class="pill ${css}">${status}</span>`; }
+    function renderEngineRows(engines) { return engines.map((engine) => engine.available ? `<tr><td>${engine.engine_name}</td><td>${engine.sample_count}</td><td>${engine.avg_cer}</td><td>${engine.avg_body_token_recall}</td><td>${engine.avg_scam_span_recall}</td><td>${engine.avg_latency_ms}</td><td>${enginePill(engine.status)}</td></tr>` : `<tr><td>${engine.engine_name}</td><td colspan="6">pending</td></tr>`).join(""); }
+    function renderWorkerRows(worker) {
+      const rows = [["Running", worker.running ? "yes" : "no"], ["Health", worker.health || "unknown"], ["Current step", worker.current_step || "unknown"], ["Loop count", worker.loop_count ?? "-"], ["Stagnant loops", worker.stagnant_loops ?? "-"], ["Consecutive errors", worker.consecutive_errors ?? "-"], ["Started at", worker.started_at_utc || "-"], ["Last heartbeat", worker.last_heartbeat_at_utc || "-"], ["Last progress", worker.last_progress_at_utc || "-"], ["Last error", worker.last_error || "-"], ["Log path", worker.log_path || "-"], ["RapidOCR stress", `${worker.rapidocr_stress_done ?? 0} / 546`], ["Tesseract stress", `${worker.tesseract_stress_done ?? 0} / 546`], ["Phi-4 stress", `${worker.phi4_done ?? 0} / ${worker.phi4_total ?? 546}`], ["Gemini", `${worker.llm_done ?? 0} / ${worker.llm_total ?? 0}`]];
+      return rows.map(([l,v]) => `<tr><td>${l}</td><td>${v}</td></tr>`).join("");
+    }
+    function applyDashboardData(data) {
+      document.getElementById("updated-at").textContent = data.last_updated_utc || "unknown";
+      document.getElementById("overview-grid").innerHTML = overviewCards(data.overview);
+      document.getElementById("coverage-grid").innerHTML = coverageCards(data.coverage);
+      document.getElementById("progress-rows").innerHTML = renderProgressRows(data.engine_progress);
+      document.getElementById("method-progress-rows").innerHTML = renderMethodRows(data.method_progress);
+      document.getElementById("reference-status-grid").innerHTML = renderCards(data.reference_status, ["auto_accept","llm_reconcile","manual_review","needs_more_ocr"]);
+      document.getElementById("resolved-status-grid").innerHTML = renderCards(data.resolved_reference_status, ["auto_accept","llm_resolved","manual_review","llm_reconcile"]);
+      document.getElementById("engine-rows").innerHTML = renderEngineRows(data.engines);
+    }
+    function applyWorkerState(worker) {
+      document.getElementById("worker-running").textContent = worker && worker.running ? "yes" : "no";
+      document.getElementById("worker-health").textContent = worker && worker.health ? worker.health : "unknown";
+      document.getElementById("worker-step").textContent = worker && worker.current_step ? worker.current_step : "unknown";
+      document.getElementById("worker-heartbeat").textContent = worker && worker.last_heartbeat_at_utc ? worker.last_heartbeat_at_utc : "unknown";
+      document.getElementById("worker-progress").textContent = worker && worker.last_progress_at_utc ? worker.last_progress_at_utc : "unknown";
+      document.getElementById("worker-error").textContent = worker && worker.last_error ? worker.last_error : "none";
+      document.getElementById("worker-rows").innerHTML = renderWorkerRows(worker || {});
+    }
+    async function refreshDashboard() {
+      try {
+        const response = await fetch(`${API_STATUS}?ts=${Date.now()}`, { cache: "no-store" });
+        if (!response.ok) throw new Error("status api unavailable");
+        const payload = await response.json();
+        applyDashboardData(payload.dashboard);
+        applyWorkerState(payload.worker || {});
+      } catch (error) {
+        try {
+          const response = await fetch(`${JSON_PATH}?ts=${Date.now()}`, { cache: "no-store" });
+          applyDashboardData(await response.json());
+        } catch (innerError) {
+          applyDashboardData(INITIAL_DATA);
+        }
+        applyWorkerState({ running: false, current_step: "server-offline", last_error: "server offline" });
+      }
+    }
+    applyDashboardData(INITIAL_DATA);
+    applyWorkerState(INITIAL_DATA.worker || {});
+    refreshDashboard();
+    setInterval(refreshDashboard, 5000);
+  </script>
+</body>
+</html>
