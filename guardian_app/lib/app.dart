@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'core/services/local_db.dart';
+import 'features/scam/models/scam_match_result.dart';
 import 'features/scam/screens/scam_verdict_screen.dart';
 import 'features/scam/services/scam_candidate_repository.dart';
+import 'features/scam/services/scam_confirmed_threat_handler.dart';
 import 'features/scam/services/scam_notification_intent_processor.dart';
 import 'features/scam/services/scam_notification_listener_bridge.dart';
+import 'features/scam/services/scam_parent_warning_local_notifier.dart';
 import 'features/scam/services/scam_share_intent_bridge.dart';
 import 'features/scam/services/scam_share_intent_processor.dart';
 import 'features/scam/services/scam_template_repository.dart';
@@ -27,6 +30,8 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
   );
   final ScamCandidateRepository _scamCandidateRepository =
       ScamCandidateRepository(localDb: LocalDb.instance);
+  late final ScamConfirmedThreatHandler _confirmedThreatHandler =
+      ScamConfirmedThreatHandler(notifier: LocalScamParentWarningNotifier());
 
   bool _isHandlingShareIntent = false;
 
@@ -76,11 +81,28 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
         if (notificationVerdict == null || notificationVerdict.result.matched) {
           return;
         }
-        await _scamCandidateRepository.evaluateAndQueueIfSuspicious(
+        final queueResult = await _scamCandidateRepository
+            .evaluateAndQueueIfSuspicious(
           text: notificationVerdict.input.messageBody,
           sender: notificationVerdict.input.sender,
           source: 'notification_listener',
         );
+        final handled = await _confirmedThreatHandler.handle(
+          confirmedThreat: queueResult.confirmedThreat,
+          messageBody: notificationVerdict.input.messageBody,
+        );
+        if (handled) {
+          if (!mounted) {
+            return;
+          }
+          appRouter.push(
+            '/scam/verdict',
+            extra: ScamVerdictRouteData(
+              sharedText: notificationVerdict.input.messageBody,
+              result: ScamMatchResult.confirmedUrlThreat(),
+            ),
+          );
+        }
         return;
       }
 
@@ -96,11 +118,29 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
         return;
       }
       if (!verdict.result.matched) {
-        await _scamCandidateRepository.evaluateAndQueueIfSuspicious(
+        final queueResult = await _scamCandidateRepository
+            .evaluateAndQueueIfSuspicious(
           text: verdict.sharedText,
           sender: null,
           source: 'share_intent',
         );
+        final handled = await _confirmedThreatHandler.handle(
+          confirmedThreat: queueResult.confirmedThreat,
+          messageBody: verdict.sharedText,
+        );
+        if (handled) {
+          if (!mounted) {
+            return;
+          }
+          appRouter.push(
+            '/scam/verdict',
+            extra: ScamVerdictRouteData(
+              sharedText: verdict.sharedText,
+              result: ScamMatchResult.confirmedUrlThreat(),
+            ),
+          );
+          return;
+        }
         if (!mounted) {
           return;
         }

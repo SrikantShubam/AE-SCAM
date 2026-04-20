@@ -26,7 +26,7 @@ class ScamCandidate {
       'source': source,
       'signals_matched': signalsMatched,
       'url_verdicts': urlVerdicts,
-      'message_hash': textHash,
+      'text_hash': textHash,
       'text': includeSensitiveText ? text : null,
       'sender': includeSensitiveText ? sender : null,
       'message_preview': includeSensitiveText ? _preview(text) : null,

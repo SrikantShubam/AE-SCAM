@@ -76,5 +76,45 @@ void main() {
       expect(result.matchedSignals, isEmpty);
       expect(result.triggered, isFalse);
     });
+
+    test('does not trigger when only has_phone is present', () {
+      final result = ScamSuspicionHeuristic.evaluate(
+        text: 'Please call me at +91 9123456789.',
+        senderInContacts: true,
+      );
+
+      expect(result.matchedSignals, contains('has_phone'));
+      expect(result.triggered, isFalse);
+    });
+
+    test('does not trigger when only has_money is present', () {
+      final result = ScamSuspicionHeuristic.evaluate(
+        text: 'I paid Rs 5,000 for groceries yesterday.',
+        senderInContacts: true,
+      );
+
+      expect(result.matchedSignals, contains('has_money'));
+      expect(result.triggered, isFalse);
+    });
+
+    test('does not trigger when only has_urgency is present', () {
+      final result = ScamSuspicionHeuristic.evaluate(
+        text: 'Please respond immediately.',
+        senderInContacts: true,
+      );
+
+      expect(result.matchedSignals, contains('has_urgency'));
+      expect(result.triggered, isFalse);
+    });
+
+    test('does not trigger when only has_auth_words is present', () {
+      final result = ScamSuspicionHeuristic.evaluate(
+        text: 'Customer care can verify your account details.',
+        senderInContacts: true,
+      );
+
+      expect(result.matchedSignals, contains('has_auth_words'));
+      expect(result.triggered, isFalse);
+    });
   });
 }
