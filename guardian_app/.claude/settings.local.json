@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__magic__21st_magic_component_builder",
+      "mcp__stitch__create_design_system",
+      "mcp__stitch__generate_screen_from_text",
+      "mcp__stitch__list_screens",
+      "mcp__stitch__edit_screens",
+      "mcp__stitch__get_screen",
+      "Bash(python3:*)",
+      "WebFetch(domain:contribution.usercontent.google.com)"
+    ]
+  }
+}

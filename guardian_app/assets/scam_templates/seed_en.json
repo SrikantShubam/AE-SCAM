@@ -1,0 +1,122 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-04-18T18:34:03Z",
+  "source_corpus": "seed_pool_v0_1.csv",
+  "corpus_scam_row_count": 1874,
+  "templates": [
+    {
+      "id": "en-bank_impersonation-account-statement-1",
+      "category": "bank_impersonation",
+      "pattern": "\\baccount\\s+statement\\b",
+      "keyword_all": [
+        "account",
+        "statement"
+      ],
+      "keyword_any_of": [],
+      "precision": 1.0,
+      "recall": 0.7273,
+      "example_matches": [
+        "PRIVATE! Your 2004 Account Statement for 07742676969 shows 786 unredeemed Bonus Points. To claim call 08719180248 Identifier Code: 45239 Expires",
+        "PRIVATE! Your 2003 Account Statement for 078",
+        "PRIVATE! Your 2003 Account Statement for <fone no> shows 800 un-redeemed S. I. M. points. Call 08715203656 Identifier Code: 42049 Expires 26/10/04"
+      ],
+      "notes": "Seed heuristic for bank_impersonation"
+    },
+    {
+      "id": "en-courier-delivery-action-1",
+      "category": "courier",
+      "pattern": "(?=.*\\bdelivery\\b)(?=.*\\b(?:address|reschedule|arrange|track|tomorrow|unable)\\b).+",
+      "keyword_all": [
+        "delivery",
+        "address"
+      ],
+      "keyword_any_of": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "example_matches": [
+        "07732584351 - Rodger Burns - MSG = We tried to call you re your reply to our sms for a free nokia mobile + free camcorder. Please call now 08000930705 for delivery tomorrow",
+        "Customer service annoncement. You have a New Years delivery waiting for you. Please call 07046744435 now to arrange delivery",
+        "We tried to contact you re your reply to our offer of 750 mins 150 textand a new video phone call 08002988890 now or reply for free delivery tomorrow"
+      ],
+      "notes": "Seed heuristic for courier. Category overlap risk: UK-era phone-offer scams whose CTA includes 'delivery' also match here; acceptable since both are scams but tag may shift to reward_cashback once corpus grows."
+    },
+    {
+      "id": "en-kyc_update-kyc-word-merged-payt-1",
+      "category": "kyc_update",
+      "pattern": "(?:\\bkyc\\b)|(?:\\bpaytm\\s+kyc\\b)",
+      "keyword_all": [
+        "kyc"
+      ],
+      "keyword_any_of": [],
+      "precision": 1.0,
+      "recall": 1.0,
+      "example_matches": [
+        "Dear PAYTM customer your Paytm KYC has expired. Contact customer care No-6200992462 immediately. your account will Block within 24 hr. Thank you PAYTM TEAM.",
+        "Dear (paytm)customer your paytm KYC has been suspended PAY-TM office PH 6200992462 Your Paytm A/C will block within 24hr Thank you.",
+        "WE WILL HOLD YOUR PAYTM AMOUNT AFTER SOMETIME COMPLETE YOUR PAYTM KYC PAYTM OFFICE PH 6200992462"
+      ],
+      "notes": "Merged overlap templates: kyc-word + paytm-kyc"
+    },
+    {
+      "id": "en-reward_cashback-draw-quiz-parent-1",
+      "category": "reward_cashback",
+      "pattern": "(?:(?=.*\\b(?:draw|entry|quiz|chance)\\b)(?=.*\\b(?:win|cash|prize|award)\\b).+)",
+      "keyword_all": [
+        "draw",
+        "win"
+      ],
+      "keyword_any_of": [
+        "quiz",
+        "cash"
+      ],
+      "precision": 1.0,
+      "recall": 0.0758,
+      "example_matches": [
+        "Free entry in 2 a wkly comp to win FA Cup final tkts 21st May 2005. Text FA to 87121 to receive entry question(std txt rate)T&C's apply 08452810075over18's",
+        "GENT! We are trying to contact you. Last weekends draw shows that you won a £1000 prize GUARANTEED. Call 09064012160. Claim Code K52. Valid 12hrs only. 150ppm",
+        "Sunshine Quiz Wkly Q! Win a top Sony DVD player if u know which country the Algarve is in? Txt ansr to 82277. £1.50 SP:Tyrone"
+      ],
+      "notes": "Seed heuristic for reward_cashback"
+    },
+    {
+      "id": "en-reward_cashback-content-subscription-2",
+      "category": "reward_cashback",
+      "pattern": "(?:(?=.*\\bringtone\\b)(?=.*\\b(?:service|free|club|weekly)\\b).+)|(?:(?=.*\\btones?\\b)(?=.*\\b(?:txt|text|stop|weekly|club)\\b).+)|(?:(?=.*\\bwap\\b)(?=.*\\bmobile\\b).+)|(?:(?=.*\\bcontent\\b)(?=.*\\bmobile\\b).+)|(?:(?=.*\\bgames\\b)(?=.*\\btones\\b).+)",
+      "keyword_all": [
+        "ringtone",
+        "service"
+      ],
+      "keyword_any_of": [
+        "tones",
+        "mobile"
+      ],
+      "precision": 1.0,
+      "recall": 0.0701,
+      "example_matches": [
+        "Your free ringtone is waiting to be collected. Simply text the password \"MIX\" to 85069 to verify. Get Usher and Britney. FML, PO Box 5249, MK17 92H. 450Ppw 16",
+        "BangBabes Ur order is on the way. U SHOULD receive a Service Msg 2 download UR content. If U do not, GoTo wap. bangb. tv on UR mobile internet/service menu",
+        "Ur ringtone service has changed! 25 Free credits! Go to club4mobiles.com to choose content now! Stop? txt CLUB STOP to 87070. 150p/wk Club4 PO Box1146 MK45 2WT"
+      ],
+      "notes": "Seed heuristic for reward_cashback"
+    },
+    {
+      "id": "en-reward_cashback-winner-prize-merged-3",
+      "category": "reward_cashback",
+      "pattern": "(?:(?=.*\\b(?:winner|won|selected)\\b)(?=.*\\b(?:prize|award|lottery|jackpot)\\b).+)|(?:\\b(?:prize|award)\\b)",
+      "keyword_all": [
+        "award",
+        "prize",
+        "winner"
+      ],
+      "keyword_any_of": [],
+      "precision": 0.9926,
+      "recall": 0.151,
+      "example_matches": [
+        "WINNER!! As a valued network customer you have been selected to receivea £900 prize reward! To claim call 09061701461. Claim code KL341. Valid 12 hours only.",
+        "URGENT! You have won a 1 week FREE membership in our £100,000 Prize Jackpot! Txt the word: CLAIM to No: 81010 T&C www.dbuk.net LCCLTD POBOX 4403LDNW1A7RW18",
+        "As a valued customer, I am pleased to advise you that following recent review of your Mob No. you are awarded with a £1500 Bonus Prize, call 09066364589"
+      ],
+      "notes": "Merged overlap templates: winner-prize + prize-award"
+    }
+  ]
+}

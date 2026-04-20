@@ -1,0 +1,98 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function pairDoc(pairId) {
+      return get(/databases/$(database)/documents/pairs/$(pairId));
+    }
+
+    function isCaregiver(pairId) {
+      return signedIn() && pairDoc(pairId).data.caregiver_uid == request.auth.uid;
+    }
+
+    function isParent(pairId) {
+      return signedIn() && pairDoc(pairId).data.parent_uid == request.auth.uid;
+    }
+
+    function isPairMember(pairId) {
+      return isCaregiver(pairId) || isParent(pairId);
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow create: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.role in ["caregiver", "parent"];
+      allow update: if signedIn() && request.auth.uid == uid;
+      allow delete: if false;
+    }
+
+    match /pairs/{pairId} {
+      allow read: if isPairMember(pairId);
+      allow create: if signedIn() && request.resource.data.caregiver_uid == request.auth.uid;
+      allow update: if isPairMember(pairId);
+      allow delete: if false;
+
+      match /settings/{settingId} {
+        allow read: if isPairMember(pairId);
+        allow write: if isCaregiver(pairId);
+      }
+
+      match /health/{healthId} {
+        allow read: if isPairMember(pairId);
+        allow write: if isParent(pairId);
+      }
+
+      match /medication_schedules/{scheduleId} {
+        allow read: if isPairMember(pairId);
+        allow write: if isCaregiver(pairId);
+      }
+
+      match /medication_events/{eventId} {
+        allow read: if isPairMember(pairId);
+        allow write: if isPairMember(pairId);
+      }
+
+      match /payment_events/{eventId} {
+        allow read: if isPairMember(pairId);
+        allow create: if isParent(pairId);
+        allow update: if isPairMember(pairId);
+        allow delete: if false;
+      }
+
+      match /scam_events/{eventId} {
+        allow read: if isPairMember(pairId);
+        allow create: if isParent(pairId);
+        allow update: if isPairMember(pairId);
+        allow delete: if false;
+      }
+
+      match /scam_candidates/{candidateId} {
+        allow read: if isPairMember(pairId);
+        allow create: if isParent(pairId);
+        allow update: if isPairMember(pairId);
+        allow delete: if false;
+      }
+
+      match /approved_recipients/{recipientKey} {
+        allow read: if isPairMember(pairId);
+        allow write: if isPairMember(pairId);
+      }
+    }
+
+    match /pairing/{code} {
+      allow read: if signedIn();
+      allow create: if signedIn() && request.resource.data.caregiver_uid == request.auth.uid;
+      allow update: if signedIn();
+      allow delete: if signedIn();
+    }
+
+    match /templates/{templateId} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+  }
+}

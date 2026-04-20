@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Guardian</string>
+    <string name="accessibility_service_label">Guardian payment protection</string>
+    <string name="accessibility_service_description">Guardian reads visible payment details (amount, recipient, UPI ID) in supported UPI apps to show a warning before money is sent. It does not read messages, contacts, or any other app.</string>
+    <string name="medication_channel_name">Guardian medicine reminders</string>
+    <string name="medication_channel_description">Timed medicine reminders and overdue alarms for Guardian</string>
+    <string name="medication_reminder_title">Medicine reminder</string>
+    <string name="medication_alarm_title">Medicine alarm</string>
+</resources>
