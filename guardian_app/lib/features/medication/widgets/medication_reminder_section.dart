@@ -289,11 +289,11 @@ class _ExactAlarmCard extends StatelessWidget {
             ? const Color(0xFFDDF4EA)
             : const Color(0xFFFFF0DE);
         final title = granted
-            ? 'Medicine alarms can ring on time'
-            : 'Medicine alarms need one more Android setting';
+            ? 'Medicine reminders are battery-friendly'
+            : 'Medicine reminders are setting up';
         final body = granted
-            ? 'Guardian can use exact alarms for medicine reminders and overdue alarm escalation on this phone.'
-            : 'Turn on exact alarms so medicine reminders and the stronger overdue alarm can ring on time, even when the phone is sleeping.';
+            ? 'Reminders may be up to 15 minutes late on some phones to save battery.'
+            : 'Guardian is still checking reminder timing on this phone.';
 
         return Container(
           width: double.infinity,
@@ -333,8 +333,8 @@ class _ExactAlarmCard extends StatelessWidget {
                           },
                     child: Text(
                       granted
-                          ? 'Exact alarms are on'
-                          : 'Open exact alarm settings',
+                          ? 'Reminder timing ready'
+                          : 'Open reminder settings',
                     ),
                   ),
                   OutlinedButton(
@@ -355,7 +355,7 @@ class _ExactAlarmCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(24),
         ),
         child: const Text(
-          'Guardian is checking whether exact alarms are allowed on this phone.',
+          'Guardian is checking reminder timing support on this phone.',
         ),
       ),
       error: (_, __) => Container(
@@ -368,7 +368,7 @@ class _ExactAlarmCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Guardian could not verify exact alarm access yet.'),
+            const Text('Guardian could not verify reminder timing support yet.'),
             const SizedBox(height: 12),
             OutlinedButton(
               onPressed: onRefresh,

@@ -5,7 +5,6 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
@@ -107,15 +106,6 @@ class MainActivity : FlutterActivity() {
                         return@setMethodCallHandler
                     }
 
-                    if (!isExactAlarmPermissionGranted()) {
-                        result.error(
-                            "exact_alarm_not_allowed",
-                            "Exact alarm permission is not granted.",
-                            null,
-                        )
-                        return@setMethodCallHandler
-                    }
-
                     scheduleMedicationTrigger(
                         occurrenceId = occurrenceId,
                         triggerId = triggerId,
@@ -175,26 +165,13 @@ class MainActivity : FlutterActivity() {
     }
 
     private fun isExactAlarmPermissionGranted(): Boolean {
-        val alarmManager = getSystemService<AlarmManager>() ?: return false
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            alarmManager.canScheduleExactAlarms()
-        } else {
-            true
-        }
+        // WO-MED-02 migrated scheduling to inexact alarms; no exact-alarm permission gate.
+        return true
     }
 
     private fun openExactAlarmSettings() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            startActivity(
-                Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM).apply {
-                    data = Uri.parse("package:$packageName")
-                },
-            )
-            return
-        }
-        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-            data = Uri.parse("package:$packageName")
-        })
+        // WO-MED-02: no exact alarm permission prompt is required.
+        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS))
     }
 
     private fun scheduleMedicationTrigger(
@@ -224,11 +201,33 @@ class MainActivity : FlutterActivity() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
 
-        alarmManager.setExactAndAllowWhileIdle(
-            AlarmManager.RTC_WAKEUP,
-            triggerAtMs,
-            pendingIntent,
+        val useWindowFallback = MedicationAlarmSchedulingStrategy.shouldUseWindowFallback(
+            Build.MANUFACTURER,
         )
+        if (useWindowFallback) {
+            alarmManager.setWindow(
+                AlarmManager.RTC_WAKEUP,
+                triggerAtMs,
+                MedicationAlarmSchedulingStrategy.fallbackWindowLengthMs,
+                pendingIntent,
+            )
+            return
+        }
+
+        try {
+            alarmManager.setAndAllowWhileIdle(
+                AlarmManager.RTC_WAKEUP,
+                triggerAtMs,
+                pendingIntent,
+            )
+        } catch (_: SecurityException) {
+            alarmManager.setWindow(
+                AlarmManager.RTC_WAKEUP,
+                triggerAtMs,
+                MedicationAlarmSchedulingStrategy.fallbackWindowLengthMs,
+                pendingIntent,
+            )
+        }
     }
 
     private fun cancelMedicationOccurrence(occurrenceId: String) {

@@ -68,20 +68,15 @@ class _ParentHomeScreenState extends State<ParentHomeScreen>
 
   Future<void> _primeMedicationReminders() async {
     final now = DateTime.now();
-    try {
-      await _medicationDeliveryService.scheduleWindow(
-        from: now.subtract(const Duration(minutes: 1)),
-        until: now.add(const Duration(days: 2)),
-      );
-    } catch (_) {
-      // Best effort until the exact-alarm permission flow is fully verified.
-    }
+    await _medicationDeliveryService.scheduleWindow(
+      from: now.subtract(const Duration(minutes: 1)),
+      until: now.add(const Duration(days: 2)),
+    );
   }
 
   Future<void> _openAccessibilitySettings() async {
-    try {
-      await PaymentProtectionBridge.openAccessibilitySettings();
-    } catch (_) {
+    final opened = await PaymentProtectionBridge.openAccessibilitySettings();
+    if (!opened) {
       if (!mounted) {
         return;
       }

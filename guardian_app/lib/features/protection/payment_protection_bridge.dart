@@ -7,8 +7,15 @@ class PaymentProtectionBridge {
 
   static const MethodChannel _channel = MethodChannel('com.guardian/settings');
 
-  static Future<void> openAccessibilitySettings() {
-    return _channel.invokeMethod<void>('openAccessibilitySettings');
+  static Future<bool> openAccessibilitySettings() async {
+    try {
+      await _channel.invokeMethod<void>('openAccessibilitySettings');
+      return true;
+    } on MissingPluginException {
+      return false;
+    } on PlatformException {
+      return false;
+    }
   }
 
   static Future<bool> isAccessibilityServiceEnabled() async {

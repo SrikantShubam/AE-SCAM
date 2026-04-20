@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../medication/services/medication_alarm_platform_bridge.dart';
-
 class FirstPaymentCheckScreen extends StatelessWidget {
   const FirstPaymentCheckScreen({super.key});
 
@@ -23,7 +21,6 @@ class FirstPaymentCheckScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final alarmBridge = MedicationAlarmPlatformBridge();
 
     return Scaffold(
       backgroundColor: const Color(0xFFF3F5F7),
@@ -99,18 +96,11 @@ class FirstPaymentCheckScreen extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'For medicine reminders to ring on time and escalate into the stronger overdue alarm, Android exact alarms should be allowed on the parent phone.',
+                      'Reminders may be up to 15 minutes late on some phones to save battery.',
                       style: theme.textTheme.bodyLarge?.copyWith(
                         color: const Color(0xFF5F6F76),
                         height: 1.45,
                       ),
-                    ),
-                    const SizedBox(height: 14),
-                    OutlinedButton(
-                      onPressed: () async {
-                        await alarmBridge.openExactAlarmSettings();
-                      },
-                      child: const Text('Open exact alarm settings'),
                     ),
                   ],
                 ),

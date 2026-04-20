@@ -21,10 +21,10 @@ class LocalScamParentWarningNotifier implements ScamParentWarningNotifier {
     try {
       await _ensureInitialized();
       await _plugin.show(
-        DateTime.now().millisecondsSinceEpoch ~/ 1000,
-        _title,
-        _buildBody(messageBody),
-        const NotificationDetails(
+        id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+        title: _title,
+        body: _buildBody(messageBody),
+        notificationDetails: const NotificationDetails(
           android: AndroidNotificationDetails(
             _channelId,
             _channelName,
@@ -46,7 +46,7 @@ class LocalScamParentWarningNotifier implements ScamParentWarningNotifier {
     }
 
     await _plugin.initialize(
-      const InitializationSettings(
+      settings: const InitializationSettings(
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
       ),
     );
