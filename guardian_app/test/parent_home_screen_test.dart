@@ -11,21 +11,17 @@ import 'package:guardian/features/medication/providers/medication_provider.dart'
 import 'package:guardian/features/medication/services/medication_repository.dart';
 import 'package:guardian/features/protection/screens/parent_home_screen.dart';
 import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  final skipForCurrentPlatform = Platform.isWindows;
 
   const channel = MethodChannel('com.guardian/settings');
   late String dbPath;
   late LocalDb localDb;
   late MedicationRepository repository;
-
-  setUpAll(() {
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
-  });
 
   setUp(() async {
     dbPath = p.join(
@@ -124,5 +120,86 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Privacy and permissions'), findsOneWidget);
     },
+    skip: skipForCurrentPlatform,
+  );
+
+  testWidgets(
+    'opening battery settings from skipped-step banner does not mark completion',
+    (tester) async {
+      var openBatterySettingsCalls = 0;
+      SharedPreferences.setMockInitialValues(<String, Object>{
+        'battery_optimization_step_completed': false,
+        'battery_optimization_step_skipped': true,
+      });
+
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(channel, (call) async {
+            if (call.method == 'getPaymentProtectionSnapshot') {
+              return <String, dynamic>{
+                'serviceEnabled': false,
+                'state': 'inactive',
+                'reasons': <String>['Live payment protection is off.'],
+              };
+            }
+            if (call.method == 'openBatteryOptimizationSettings') {
+              openBatterySettingsCalls += 1;
+              return true;
+            }
+            return null;
+          });
+
+      await tester.pumpWidget(
+        ProviderScope(
+          overrides: [
+            medicationRepositoryProvider.overrideWithValue(repository),
+          ],
+          child: const MaterialApp(home: ParentHomeScreen()),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('Finish battery setup for medicine reminders'),
+        findsOneWidget,
+      );
+
+      await tester.tap(find.text('Open battery optimization settings'));
+      await tester.pumpAndSettle();
+
+      expect(openBatterySettingsCalls, 1);
+      expect(
+        find.text('Finish battery setup for medicine reminders'),
+        findsOneWidget,
+      );
+
+      final prefsAfterOpen = await SharedPreferences.getInstance();
+      expect(
+        prefsAfterOpen.getBool('battery_optimization_step_completed'),
+        isFalse,
+      );
+      expect(
+        prefsAfterOpen.getBool('battery_optimization_step_skipped'),
+        isTrue,
+      );
+
+      await tester.tap(find.text('I completed this'));
+      await tester.pumpAndSettle();
+
+      expect(
+        find.text('Finish battery setup for medicine reminders'),
+        findsNothing,
+      );
+
+      final prefsAfterComplete = await SharedPreferences.getInstance();
+      expect(
+        prefsAfterComplete.getBool('battery_optimization_step_completed'),
+        isTrue,
+      );
+      expect(
+        prefsAfterComplete.getBool('battery_optimization_step_skipped'),
+        isFalse,
+      );
+    },
+    skip: skipForCurrentPlatform,
   );
 }

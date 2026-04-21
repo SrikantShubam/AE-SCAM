@@ -17,7 +17,7 @@ Widget _wrap(Widget child, MedicationReminderSummary summary) {
 
 void main() {
   testWidgets('shows a due-now reminder with action buttons', (tester) async {
-    const summary = MedicationReminderSummary(
+    final summary = MedicationReminderSummary(
       title: 'Morning blood pressure tablet',
       dosage: '1 tablet',
       nextDoseLabel: 'Due now',
@@ -35,14 +35,14 @@ void main() {
     expect(find.text('Medicine reminders'), findsOneWidget);
     expect(find.text('Morning blood pressure tablet'), findsOneWidget);
     expect(find.text('Due now'), findsOneWidget);
-    expect(find.text('Level 1 reminder'), findsOneWidget);
+    expect(find.text('Level 1 reminder'), findsNWidgets(2));
     expect(find.text('Taken'), findsOneWidget);
     expect(find.text('Skip'), findsOneWidget);
     expect(find.text('Remind me later'), findsOneWidget);
   });
 
   testWidgets('shows overdue alarm urgency state', (tester) async {
-    const summary = MedicationReminderSummary(
+    final summary = MedicationReminderSummary(
       title: 'Evening diabetes medicine',
       dosage: '2 tablets',
       nextDoseLabel: 'Overdue by 20 min',
@@ -58,7 +58,7 @@ void main() {
       _wrap(const MedicationReminderSection(), summary),
     );
 
-    expect(find.text('Level 3 alarm'), findsOneWidget);
+    expect(find.text('Level 3 alarm'), findsNWidgets(2));
     expect(find.text('Overdue by 20 min'), findsOneWidget);
     expect(find.text('Alarm on this phone'), findsOneWidget);
   });
@@ -66,7 +66,7 @@ void main() {
   testWidgets('remind me later stays enabled for actionable reminders', (
     tester,
   ) async {
-    const summary = MedicationReminderSummary(
+    final summary = MedicationReminderSummary(
       title: 'Morning blood pressure tablet',
       dosage: '1 tablet',
       nextDoseLabel: 'Due now',

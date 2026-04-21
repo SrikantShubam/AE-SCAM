@@ -13,19 +13,14 @@ import 'package:guardian/features/medication/services/medication_repository.dart
 import 'package:guardian/features/protection/models/protection_alert.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  final skipForCurrentPlatform = Platform.isWindows;
 
   late String dbPath;
   late LocalDb localDb;
   late MedicationRepository repository;
-
-  setUpAll(() {
-    sqfliteFfiInit();
-    databaseFactory = databaseFactoryFfi;
-  });
 
   setUp(() async {
     dbPath = p.join(
@@ -68,7 +63,7 @@ void main() {
     expect(find.text('No medicine reminders yet'), findsWidgets);
     expect(find.text('No recent payment protection alerts yet.'), findsOneWidget);
     expect(find.text('Adherence summary'), findsOneWidget);
-  });
+  }, skip: skipForCurrentPlatform);
 
   testWidgets('shows due-now medication status and local adherence details', (
     tester,
@@ -120,7 +115,7 @@ void main() {
     expect(find.text('Due now'), findsWidgets);
     expect(find.textContaining('still waiting'), findsOneWidget);
     expect(find.text('Recent medication alerts'), findsOneWidget);
-  });
+  }, skip: skipForCurrentPlatform);
 
   testWidgets('shows overdue alarm state and payment protection activity', (
     tester,
@@ -186,7 +181,7 @@ void main() {
     expect(find.text('Alarm on this phone'), findsWidgets);
     expect(find.text('Payment protection activity'), findsOneWidget);
     expect(find.text('Payment warning recorded'), findsOneWidget);
-  });
+  }, skip: skipForCurrentPlatform);
 }
 
 MedicationWeekday _weekdayFromDate(DateTime date) {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/services/local_db.dart';
 import '../../medication/services/medication_alarm_platform_bridge.dart';
@@ -9,6 +10,7 @@ import '../../medication/services/medication_reminder_orchestrator.dart';
 import '../../medication/services/medication_reminder_service.dart';
 import '../../medication/services/medication_repository.dart';
 import '../../medication/widgets/medication_reminder_section.dart';
+import '../../onboarding/services/battery_optimization_bridge.dart';
 import '../models/payment_protection_snapshot.dart';
 import '../payment_protection_bridge.dart';
 
@@ -21,8 +23,13 @@ class ParentHomeScreen extends StatefulWidget {
 
 class _ParentHomeScreenState extends State<ParentHomeScreen>
     with WidgetsBindingObserver {
+  static const _batteryOptimizationCompletedKey =
+      'battery_optimization_step_completed';
+  static const _batteryOptimizationSkippedKey =
+      'battery_optimization_step_skipped';
   late Future<PaymentProtectionSnapshot> _snapshotFuture;
   late final MedicationReminderDeliveryService _medicationDeliveryService;
+  bool _showBatteryBanner = false;
 
   @override
   void initState() {
@@ -39,6 +46,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen>
     );
     _snapshotFuture = _loadSnapshot();
     _primeMedicationReminders();
+    _loadBatteryBannerState();
   }
 
   @override
@@ -64,6 +72,19 @@ class _ParentHomeScreenState extends State<ParentHomeScreen>
     });
     await _snapshotFuture;
     await _primeMedicationReminders();
+    await _loadBatteryBannerState();
+  }
+
+  Future<void> _loadBatteryBannerState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final completed = prefs.getBool(_batteryOptimizationCompletedKey) ?? false;
+    final skipped = prefs.getBool(_batteryOptimizationSkippedKey) ?? false;
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _showBatteryBanner = skipped && !completed;
+    });
   }
 
   Future<void> _primeMedicationReminders() async {
@@ -88,6 +109,35 @@ class _ParentHomeScreenState extends State<ParentHomeScreen>
       return;
     }
     await _refresh();
+  }
+
+  Future<void> _openBatteryOptimizationSettingsFromBanner() async {
+    final opened =
+        await BatteryOptimizationBridge.openBatteryOptimizationSettings();
+    if (!opened) {
+      if (!mounted) {
+        return;
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Guardian could not open battery settings yet.'),
+        ),
+      );
+      return;
+    }
+    await _loadBatteryBannerState();
+  }
+
+  Future<void> _markBatteryOptimizationCompletedFromBanner() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_batteryOptimizationCompletedKey, true);
+    await prefs.setBool(_batteryOptimizationSkippedKey, false);
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _showBatteryBanner = false;
+    });
   }
 
   void _handleBack() {
@@ -129,6 +179,15 @@ class _ParentHomeScreenState extends State<ParentHomeScreen>
                   const SizedBox(height: 20),
                   if (data.lastEscalationEventId != null) ...[
                     _FamilyFollowUpCard(data: data),
+                    const SizedBox(height: 20),
+                  ],
+                  if (_showBatteryBanner) ...[
+                    _BatteryOptimizationBanner(
+                      onOpenSettings:
+                          _openBatteryOptimizationSettingsFromBanner,
+                      onMarkCompleted:
+                          _markBatteryOptimizationCompletedFromBanner,
+                    ),
                     const SizedBox(height: 20),
                   ],
                   _ActionPanel(
@@ -610,6 +669,65 @@ class _PermissionsAndPrivacyCard extends StatelessWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _BatteryOptimizationBanner extends StatelessWidget {
+  const _BatteryOptimizationBanner({
+    required this.onOpenSettings,
+    required this.onMarkCompleted,
+  });
+
+  final VoidCallback onOpenSettings;
+  final VoidCallback onMarkCompleted;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: const Color(0xFFFFF3E0),
+        borderRadius: BorderRadius.circular(28),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Finish battery setup for medicine reminders',
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              color: const Color(0xFF0A323C),
+              fontWeight: FontWeight.w800,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'You skipped battery optimization during onboarding. Some phones stop reminders to save battery. Complete this once so Guardian can remind your parent on time.',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: const Color(0xFF455B63),
+              height: 1.4,
+            ),
+          ),
+          const SizedBox(height: 12),
+          FilledButton(
+            onPressed: onOpenSettings,
+            style: FilledButton.styleFrom(
+              backgroundColor: const Color(0xFF0E5E6D),
+              foregroundColor: Colors.white,
+            ),
+            child: const Text('Open battery optimization settings'),
+          ),
+          const SizedBox(height: 10),
+          OutlinedButton(
+            onPressed: onMarkCompleted,
+            style: OutlinedButton.styleFrom(
+              foregroundColor: const Color(0xFF0E5E6D),
+              side: const BorderSide(color: Color(0xFFB8CDD2)),
+            ),
+            child: const Text('I completed this'),
+          ),
+        ],
       ),
     );
   }

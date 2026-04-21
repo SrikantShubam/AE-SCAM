@@ -124,7 +124,7 @@ class _DisclosureScreenState extends State<DisclosureScreen>
         ),
       );
     }
-    context.go('/onboarding/first-check');
+    context.go('/onboarding/battery-optimization');
   }
 
   Future<void> _skipStep() async {
@@ -151,7 +151,7 @@ class _DisclosureScreenState extends State<DisclosureScreen>
       },
     );
     if (confirmed == true && mounted) {
-      context.go('/onboarding/first-check');
+      context.go('/onboarding/battery-optimization');
     }
   }
 
@@ -169,7 +169,7 @@ class _DisclosureScreenState extends State<DisclosureScreen>
           padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
           children: [
             Text(
-              'Step 3 of 4',
+              'Step 3 of 5',
               style: theme.textTheme.labelLarge?.copyWith(
                 color: const Color(0xFF0E5E6D),
                 fontWeight: FontWeight.w700,

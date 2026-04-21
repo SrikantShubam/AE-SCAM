@@ -19,7 +19,7 @@ void main() {
             DateTime.thursday,
             DateTime.friday,
           },
-          timesOfDay: const <ReminderClockTime>[
+          timesOfDay: <ReminderClockTime>[
             ReminderClockTime(hour: 8, minute: 0),
             ReminderClockTime(hour: 20, minute: 0),
           ],
@@ -47,7 +47,7 @@ void main() {
           medicationName: 'Metformin',
           dosage: '500 mg',
           activeWeekdays: <int>{DateTime.monday, DateTime.tuesday},
-          timesOfDay: const <ReminderClockTime>[
+          timesOfDay: <ReminderClockTime>[
             ReminderClockTime(hour: 8, minute: 0),
             ReminderClockTime(hour: 20, minute: 0),
           ],

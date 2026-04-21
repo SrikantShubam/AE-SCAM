@@ -14,6 +14,7 @@ import '../features/onboarding/screens/accessibility_disclosure_screen.dart';
 import '../features/onboarding/screens/caregiver_pairing_screen.dart';
 import '../features/onboarding/screens/consent_screen.dart';
 import '../features/onboarding/screens/disclosure_screen.dart';
+import '../features/onboarding/screens/battery_optimization_screen.dart';
 import '../features/onboarding/screens/first_payment_check_screen.dart';
 import '../features/onboarding/screens/parent_disclosure_screen.dart';
 import '../features/onboarding/screens/parent_pairing_screen.dart';
@@ -125,6 +126,12 @@ final GoRouter appRouter = GoRouter(
         return const FirstPaymentCheckScreen();
       },
     ),
+    GoRoute(
+      path: '/onboarding/battery-optimization',
+      builder: (BuildContext context, GoRouterState state) {
+        return const BatteryOptimizationScreen();
+      },
+    ),
   ],
 );
 
@@ -176,6 +183,7 @@ FutureOr<String?> _onboardingRedirect(
         '/onboarding/role-select',
         '/onboarding/disclosure',
         '/onboarding/parent-disclosure',
+        '/onboarding/battery-optimization',
         '/onboarding/first-check',
       };
       if (!protectedSetupRoutes.contains(location)) {

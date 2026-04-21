@@ -30,13 +30,13 @@ class FirstPaymentCheckScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Step dots — step 4 active
+              // Step dots — step 5 active
               Row(
-                children: List.generate(4, (i) {
+                children: List.generate(5, (i) {
                   return AnimatedContainer(
                     duration: const Duration(milliseconds: 240),
                     margin: const EdgeInsets.only(right: 6),
-                    width: i == 3 ? 24 : 8,
+                    width: i == 4 ? 24 : 8,
                     height: 8,
                     decoration: BoxDecoration(
                       color: const Color(0xFF0E5E6D),
@@ -119,10 +119,7 @@ class FirstPaymentCheckScreen extends StatelessWidget {
                   ),
                   child: const Text(
                     'Go to Guardian',
-                    style: TextStyle(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
                   ),
                 ),
               ),

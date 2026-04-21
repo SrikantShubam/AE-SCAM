@@ -1,11 +1,8 @@
 package com.guardian.guardian
 
 import android.accessibilityservice.AccessibilityServiceInfo
-import android.app.AlarmManager
-import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
@@ -31,6 +28,7 @@ class MainActivity : FlutterActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MedicationPrimeWorkScheduler.ensurePeriodic(this)
         captureShareTextFromIntent(intent)
     }
 
@@ -55,6 +53,12 @@ class MainActivity : FlutterActivity() {
 
                 "isAccessibilityServiceEnabled" -> {
                     result.success(isAccessibilityServiceEnabled())
+                }
+
+                "openBatteryOptimizationSettings" -> {
+                    result.success(
+                        BatteryOptimizationSettingsNavigator.open(this),
+                    )
                 }
 
                 "getPaymentProtectionSnapshot" -> {
@@ -182,76 +186,19 @@ class MainActivity : FlutterActivity() {
         medicationName: String,
         dosage: String,
     ) {
-        val alarmManager = getSystemService<AlarmManager>() ?: return
-        val requestCode = triggerId.hashCode()
-        val intent = Intent(this, MedicationAlarmReceiver::class.java).apply {
-            action = MedicationAlarmReceiver.ACTION_MEDICATION_TRIGGER
-            putExtra(MedicationAlarmReceiver.EXTRA_OCCURRENCE_ID, occurrenceId)
-            putExtra(MedicationAlarmReceiver.EXTRA_TRIGGER_ID, triggerId)
-            putExtra(MedicationAlarmReceiver.EXTRA_STAGE, stage)
-            putExtra(MedicationAlarmReceiver.EXTRA_TRIGGER_AT_MS, triggerAtMs)
-            putExtra(MedicationAlarmReceiver.EXTRA_MEDICATION_NAME, medicationName)
-            putExtra(MedicationAlarmReceiver.EXTRA_DOSAGE, dosage)
-        }
-
-        val pendingIntent = PendingIntent.getBroadcast(
-            this,
-            requestCode,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
+        MedicationAlarmNativeScheduler.scheduleTrigger(
+            context = this,
+            occurrenceId = occurrenceId,
+            triggerId = triggerId,
+            stage = stage,
+            triggerAtMs = triggerAtMs,
+            medicationName = medicationName,
+            dosage = dosage,
         )
-
-        val useWindowFallback = MedicationAlarmSchedulingStrategy.shouldUseWindowFallback(
-            Build.MANUFACTURER,
-        )
-        if (useWindowFallback) {
-            alarmManager.setWindow(
-                AlarmManager.RTC_WAKEUP,
-                triggerAtMs,
-                MedicationAlarmSchedulingStrategy.fallbackWindowLengthMs,
-                pendingIntent,
-            )
-            return
-        }
-
-        try {
-            alarmManager.setAndAllowWhileIdle(
-                AlarmManager.RTC_WAKEUP,
-                triggerAtMs,
-                pendingIntent,
-            )
-        } catch (_: SecurityException) {
-            alarmManager.setWindow(
-                AlarmManager.RTC_WAKEUP,
-                triggerAtMs,
-                MedicationAlarmSchedulingStrategy.fallbackWindowLengthMs,
-                pendingIntent,
-            )
-        }
     }
 
     private fun cancelMedicationOccurrence(occurrenceId: String) {
-        val alarmManager = getSystemService<AlarmManager>() ?: return
-        val triggerIds = listOf(
-            "$occurrenceId-level1",
-            "$occurrenceId-level3",
-            "$occurrenceId-level3-now",
-        )
-
-        triggerIds.forEach { triggerId ->
-            val requestCode = triggerId.hashCode()
-            val intent = Intent(this, MedicationAlarmReceiver::class.java).apply {
-                action = MedicationAlarmReceiver.ACTION_MEDICATION_TRIGGER
-            }
-            val pendingIntent = PendingIntent.getBroadcast(
-                this,
-                requestCode,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
-            )
-            alarmManager.cancel(pendingIntent)
-            pendingIntent.cancel()
-        }
+        MedicationAlarmNativeScheduler.cancelOccurrence(this, occurrenceId)
     }
 
     private fun isAccessibilityServiceEnabled(): Boolean {

@@ -90,70 +90,76 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     ),
                     FadeTransition(
                       opacity: _fadeIn,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 14,
-                              vertical: 8,
-                            ),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withValues(alpha: 0.84),
-                              borderRadius: BorderRadius.circular(999),
-                            ),
-                            child: Text(
-                              'Guided setup in 4 short steps',
-                              style: theme.textTheme.labelLarge?.copyWith(
-                                color: const Color(0xFF0E5E6D),
-                                fontWeight: FontWeight.w700,
-                              ),
-                            ),
-                          ),
-                          SizedBox(height: screenHeight * 0.03),
-                          const GuardianBrandMark(size: 108),
-                          SizedBox(height: screenHeight * 0.03),
-                          Row(
+                      child: Center(
+                        child: SingleChildScrollView(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: List<Widget>.generate(
-                              4,
-                              (index) => Container(
-                                margin: EdgeInsets.only(
-                                  right: index == 3 ? 0 : 8,
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 14,
+                                  vertical: 8,
                                 ),
-                                width: index == 0 ? 22 : 8,
-                                height: 8,
                                 decoration: BoxDecoration(
-                                  color: index == 0
-                                      ? const Color(0xFF0E5E6D)
-                                      : Colors.white.withValues(alpha: 0.72),
+                                  color: Colors.white.withValues(alpha: 0.84),
                                   borderRadius: BorderRadius.circular(999),
                                 ),
+                                child: Text(
+                                  'Guided setup in 4 short steps',
+                                  style: theme.textTheme.labelLarge?.copyWith(
+                                    color: const Color(0xFF0E5E6D),
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
                               ),
-                            ),
-                          ),
-                          SizedBox(height: screenHeight * 0.03),
-                          Text(
-                            'Guardian',
-                            style: theme.textTheme.headlineLarge?.copyWith(
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: -0.5,
-                              color: const Color(0xFF0E5E6D),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 48),
-                            child: Text(
-                              'Daily support and live payment protection for families caring for elders',
-                              textAlign: TextAlign.center,
-                              style: theme.textTheme.bodyLarge?.copyWith(
-                                color: cs.onSurfaceVariant,
-                                height: 1.4,
+                              SizedBox(height: screenHeight * 0.03),
+                              const GuardianBrandMark(size: 108),
+                              SizedBox(height: screenHeight * 0.03),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: List<Widget>.generate(
+                                  4,
+                                  (index) => Container(
+                                    margin: EdgeInsets.only(
+                                      right: index == 3 ? 0 : 8,
+                                    ),
+                                    width: index == 0 ? 22 : 8,
+                                    height: 8,
+                                    decoration: BoxDecoration(
+                                      color: index == 0
+                                          ? const Color(0xFF0E5E6D)
+                                          : Colors.white.withValues(alpha: 0.72),
+                                      borderRadius: BorderRadius.circular(999),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
+                              SizedBox(height: screenHeight * 0.03),
+                              Text(
+                                'Guardian',
+                                style: theme.textTheme.headlineLarge?.copyWith(
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: -0.5,
+                                  color: const Color(0xFF0E5E6D),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 48),
+                                child: Text(
+                                  'Daily support and live payment protection for families caring for elders',
+                                  textAlign: TextAlign.center,
+                                  style: theme.textTheme.bodyLarge?.copyWith(
+                                    color: cs.onSurfaceVariant,
+                                    height: 1.4,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ],

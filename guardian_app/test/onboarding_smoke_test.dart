@@ -60,7 +60,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 200));
 
-      expect(find.text('Step 3 of 4'), findsOneWidget);
+      expect(find.text('Step 3 of 5'), findsOneWidget);
       expect(find.text('Enable live payment protection'), findsOneWidget);
       await tester.scrollUntilVisible(
         find.text('Open Android Accessibility settings'),
@@ -91,7 +91,7 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 200));
 
-      expect(find.text('Step 3 of 4'), findsOneWidget);
+      expect(find.text('Step 3 of 5'), findsOneWidget);
       expect(
         find.text('Guardian needs one permission'),
         findsAtLeastNWidgets(1),

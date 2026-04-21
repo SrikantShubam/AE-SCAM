@@ -51,11 +51,14 @@ void main() {
             medicationName: 'Amlodipine',
             dosage: '1 tablet',
             activeWeekdays: <int>{DateTime.monday},
-            timesOfDay: const <ReminderClockTime>[
+            timesOfDay: <ReminderClockTime>[
               ReminderClockTime(hour: 8, minute: 0),
             ],
           ),
         ];
+
+        final expectedOccurrenceId =
+            'med-1-${DateTime(2026, 4, 13, 8, 0).toUtc().millisecondsSinceEpoch}';
 
         final plans = await orchestrator.scheduleWindow(
           schedules: schedules,
@@ -64,7 +67,7 @@ void main() {
         );
 
         expect(plans, hasLength(1));
-        expect(gateway.cancelledOccurrenceIds, <String>['med-1-1776067200000']);
+        expect(gateway.cancelledOccurrenceIds, <String>[expectedOccurrenceId]);
         expect(gateway.reminderTriggers, hasLength(1));
         expect(gateway.alarmTriggers, hasLength(1));
         expect(
@@ -155,11 +158,14 @@ void main() {
           medicationName: 'Amlodipine',
           dosage: '1 tablet',
           activeWeekdays: <int>{DateTime.monday},
-          timesOfDay: const <ReminderClockTime>[
+          timesOfDay: <ReminderClockTime>[
             ReminderClockTime(hour: 8, minute: 0),
           ],
         ),
       ];
+
+      final expectedOccurrenceId =
+          'med-1-${DateTime(2026, 4, 13, 8, 0).toUtc().millisecondsSinceEpoch}';
 
       await expectLater(
         () => orchestrator.scheduleWindow(
@@ -173,7 +179,7 @@ void main() {
       expect(gateway.reminderTriggers, hasLength(1));
       expect(
         gateway.cancelledOccurrenceIds,
-        <String>['med-1-1776067200000', 'med-1-1776067200000'],
+        <String>[expectedOccurrenceId, expectedOccurrenceId],
       );
     });
   });
