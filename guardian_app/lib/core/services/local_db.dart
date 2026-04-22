@@ -1,19 +1,36 @@
 import 'package:path/path.dart' as p;
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common/sql.dart' show ConflictAlgorithm;
+import 'package:sqflite_common/sqlite_api.dart';
 
 import '../constants/app_constants.dart';
+import 'local_db_platform_stub.dart'
+    if (dart.library.ui) 'local_db_platform_flutter.dart'
+    as db_platform;
 
 class LocalDb {
-  LocalDb._({this.databasePath});
+  LocalDb._({
+    this.databasePath,
+    DatabaseFactory? databaseFactory,
+    Future<String> Function()? databasesPathProvider,
+  }) : _databaseFactory = databaseFactory,
+       _databasesPathProvider = databasesPathProvider;
 
   static final LocalDb instance = LocalDb._();
 
-  factory LocalDb.test({required String databasePath}) {
-    return LocalDb._(databasePath: databasePath);
+  factory LocalDb.test({
+    required String databasePath,
+    DatabaseFactory? databaseFactory,
+  }) {
+    return LocalDb._(
+      databasePath: databasePath,
+      databaseFactory: databaseFactory,
+    );
   }
 
   Database? _database;
   final String? databasePath;
+  final DatabaseFactory? _databaseFactory;
+  final Future<String> Function()? _databasesPathProvider;
 
   Future<Database> get database async {
     if (_database != null) {
@@ -26,32 +43,44 @@ class LocalDb {
 
   Future<Database> _openDatabase() async {
     final resolvedDatabasePath = await _resolveDatabasePath();
+    final databaseFactory =
+        _databaseFactory ?? db_platform.databaseFactoryOrNull;
+    if (databaseFactory == null) {
+      throw UnsupportedError(
+        'LocalDb requires a database factory outside Flutter runtime.',
+      );
+    }
 
-    return openDatabase(
+    return databaseFactory.openDatabase(
       resolvedDatabasePath,
-      version: AppConstants.databaseVersion,
-      onConfigure: (db) async {
-        await db.execute('PRAGMA foreign_keys = ON');
-      },
-      onCreate: (db, version) async {
-        await _createPendingEventsTable(db);
-        await _createMedicationTables(db);
-        await _createScamTemplateTable(db);
-      },
-      onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 2) {
+      options: OpenDatabaseOptions(
+        version: AppConstants.databaseVersion,
+        onConfigure: (db) async {
+          await db.execute('PRAGMA foreign_keys = ON');
+        },
+        onCreate: (db, version) async {
+          await _createPendingEventsTable(db);
           await _createMedicationTables(db);
-        }
-        if (oldVersion < 3) {
-          await _migrateMedicationTablesToV3(db);
-        }
-        if (oldVersion < 4) {
           await _createScamTemplateTable(db);
-        }
-        if (oldVersion < 5) {
-          await _migrateScamTemplatesToV5(db);
-        }
-      },
+        },
+        onUpgrade: (db, oldVersion, newVersion) async {
+          if (oldVersion < 2) {
+            await _createMedicationTables(db);
+          }
+          if (oldVersion < 3) {
+            await _migrateMedicationTablesToV3(db);
+          }
+          if (oldVersion < 4) {
+            await _createScamTemplateTable(db);
+          }
+          if (oldVersion < 5) {
+            await _migrateScamTemplatesToV5(db);
+          }
+          if (oldVersion < 6) {
+            await _migrateMedicationSchedulesToV6(db);
+          }
+        },
+      ),
     );
   }
 
@@ -59,7 +88,14 @@ class LocalDb {
     if (databasePath != null) {
       return databasePath!;
     }
-    final databasesPath = await getDatabasesPath();
+    final databasesPathProvider =
+        _databasesPathProvider ?? db_platform.getDatabasesPathOrNull;
+    if (databasesPathProvider == null) {
+      throw UnsupportedError(
+        'LocalDb requires a databases path provider outside Flutter runtime.',
+      );
+    }
+    final databasesPath = await databasesPathProvider();
     return p.join(databasesPath, AppConstants.databaseName);
   }
 
@@ -85,7 +121,8 @@ class LocalDb {
         dose_times TEXT NOT NULL,
         active_days TEXT NOT NULL,
         alarm_escalation_enabled INTEGER NOT NULL DEFAULT 1,
-        is_active INTEGER NOT NULL DEFAULT 1,
+        stop_date INTEGER,
+        note TEXT,
         created_at INTEGER NOT NULL,
         updated_at INTEGER NOT NULL
       )
@@ -115,6 +152,76 @@ class LocalDb {
     await db.execute(
       'CREATE UNIQUE INDEX idx_medication_dose_events_schedule_slot ON medication_dose_events(schedule_id, scheduled_at)',
     );
+  }
+
+  Future<void> _migrateMedicationSchedulesToV6(DatabaseExecutor db) async {
+    final columns = await db.rawQuery(
+      "PRAGMA table_info(medication_schedules)",
+    );
+    final hasIsActiveColumn = columns.any(
+      (column) => column['name'] == 'is_active',
+    );
+    if (!hasIsActiveColumn) {
+      return;
+    }
+
+    await db.execute('PRAGMA foreign_keys = OFF');
+    try {
+      await db.execute('''
+        CREATE TABLE medication_schedules_v6 (
+          id TEXT PRIMARY KEY,
+          name TEXT NOT NULL,
+          dosage TEXT NOT NULL,
+          purpose TEXT,
+          dose_times TEXT NOT NULL,
+          active_days TEXT NOT NULL,
+          alarm_escalation_enabled INTEGER NOT NULL DEFAULT 1,
+          stop_date INTEGER,
+          note TEXT,
+          created_at INTEGER NOT NULL,
+          updated_at INTEGER NOT NULL
+        )
+      ''');
+      await db.execute('''
+        INSERT INTO medication_schedules_v6 (
+          id,
+          name,
+          dosage,
+          purpose,
+          dose_times,
+          active_days,
+          alarm_escalation_enabled,
+          stop_date,
+          note,
+          created_at,
+          updated_at
+        )
+        SELECT
+          id,
+          name,
+          dosage,
+          purpose,
+          dose_times,
+          active_days,
+          alarm_escalation_enabled,
+          NULL,
+          NULL,
+          created_at,
+          updated_at
+        FROM medication_schedules
+        WHERE is_active = 1
+      ''');
+      await db.execute('DROP TABLE medication_schedules');
+      await db.execute(
+        'ALTER TABLE medication_schedules_v6 RENAME TO medication_schedules',
+      );
+      await db.execute('''
+        DELETE FROM medication_dose_events
+        WHERE schedule_id NOT IN (SELECT id FROM medication_schedules)
+      ''');
+    } finally {
+      await db.execute('PRAGMA foreign_keys = ON');
+    }
   }
 
   Future<void> _migrateMedicationTablesToV3(DatabaseExecutor db) async {
@@ -278,15 +385,17 @@ class LocalDb {
     );
   }
 
-  Future<List<Map<String, Object?>>> listMedicationScheduleRows({
-    bool? activeOnly = true,
-  }) async {
+  Future<List<Map<String, Object?>>> listMedicationScheduleRows() async {
     final db = await database;
-    return db.query(
+    return db.query('medication_schedules', orderBy: 'updated_at DESC');
+  }
+
+  Future<int> deleteMedicationScheduleRow(String id) async {
+    final db = await database;
+    return db.delete(
       'medication_schedules',
-      where: activeOnly == null ? null : 'is_active = ?',
-      whereArgs: activeOnly == null ? null : <Object?>[activeOnly ? 1 : 0],
-      orderBy: 'updated_at DESC',
+      where: 'id = ?',
+      whereArgs: <Object?>[id],
     );
   }
 
