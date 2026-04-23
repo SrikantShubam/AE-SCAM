@@ -25,6 +25,8 @@ import java.util.Locale
 internal object PaymentProtectionStore {
     const val PREFS_NAME = "guardian_payment_protection"
     const val LIST_SEPARATOR = "\u001F"
+    private const val MAP_ENTRY_SEPARATOR = "\u001E"
+    private const val MAP_KEY_VALUE_SEPARATOR = "\u001D"
     const val WARNING_WINDOW_MS = 75_000L
     const val AMBER_COOLDOWN_SECONDS = 8
     const val RED_COOLDOWN_SECONDS = 30
@@ -52,6 +54,8 @@ internal object PaymentProtectionStore {
     const val KEY_ESCALATION_RECOMMENDED = "escalation_recommended"
     const val KEY_ESCALATION_REASON = "escalation_reason"
     const val KEY_APPROVED_RECIPIENTS = "approved_recipients"
+    const val KEY_RECIPIENT_CLEAN_INTERACTION_COUNTS = "recipient_clean_interaction_counts"
+    const val KEY_RECIPIENT_RECENT_OUTCOMES = "recipient_recent_outcomes"
     const val KEY_LAST_ESCALATION_ID = "last_escalation_id"
     const val KEY_LAST_ESCALATION_SIGNATURE = "last_escalation_signature"
     const val KEY_LAST_ESCALATION_AT_MS = "last_escalation_at_ms"
@@ -63,6 +67,8 @@ internal object PaymentProtectionStore {
     const val KEY_LAST_ESCALATION_UPI_ID = "last_escalation_upi_id"
     const val KEY_LAST_ESCALATION_PENDING = "last_escalation_pending"
     const val MAX_APPROVED_RECIPIENTS = 8
+    const val PROMOTION_REQUIRED_CLEAN_INTERACTIONS = 3
+    const val RECENT_OUTCOME_WINDOW = 3
 
     val MONITORED_APPS = linkedMapOf(
         "com.google.android.apps.nbu.paisa.user" to "Google Pay",
@@ -80,6 +86,162 @@ internal object PaymentProtectionStore {
             ?.map { it.trim() }
             ?.filter { it.isNotEmpty() }
             ?: emptyList()
+    }
+
+    fun normalizeRecipientKey(upiIdHint: String?, recipientHint: String?): String? {
+        return when {
+            !upiIdHint.isNullOrBlank() -> {
+                upiIdHint.trim().lowercase(Locale.US)
+            }
+            !recipientHint.isNullOrBlank() -> {
+                recipientHint
+                    .trim()
+                    .lowercase(Locale.US)
+                    .replace("\\s+".toRegex(), " ")
+            }
+            else -> null
+        }
+    }
+
+    fun encodeIntMap(values: Map<String, Int>): String? {
+        if (values.isEmpty()) {
+            return null
+        }
+        return values.entries.joinToString(MAP_ENTRY_SEPARATOR) { entry ->
+            "${entry.key}$MAP_KEY_VALUE_SEPARATOR${entry.value}"
+        }
+    }
+
+    fun decodeIntMap(raw: String?): LinkedHashMap<String, Int> {
+        val map = linkedMapOf<String, Int>()
+        if (raw.isNullOrBlank()) {
+            return map
+        }
+        raw.split(MAP_ENTRY_SEPARATOR).forEach { encoded ->
+            val parts = encoded.split(MAP_KEY_VALUE_SEPARATOR, limit = 2)
+            if (parts.size != 2) {
+                return@forEach
+            }
+            val key = parts[0].trim()
+            val value = parts[1].trim().toIntOrNull()
+            if (key.isNotEmpty() && value != null) {
+                map[key] = value
+            }
+        }
+        return map
+    }
+
+    fun encodeOutcomeMap(values: Map<String, List<Boolean>>): String? {
+        if (values.isEmpty()) {
+            return null
+        }
+        return values.entries.joinToString(MAP_ENTRY_SEPARATOR) { entry ->
+            val encodedOutcomes = entry.value.joinToString("") { if (it) "1" else "0" }
+            "${entry.key}$MAP_KEY_VALUE_SEPARATOR$encodedOutcomes"
+        }
+    }
+
+    fun decodeOutcomeMap(raw: String?): LinkedHashMap<String, List<Boolean>> {
+        val map = linkedMapOf<String, List<Boolean>>()
+        if (raw.isNullOrBlank()) {
+            return map
+        }
+        raw.split(MAP_ENTRY_SEPARATOR).forEach { encoded ->
+            val parts = encoded.split(MAP_KEY_VALUE_SEPARATOR, limit = 2)
+            if (parts.size != 2) {
+                return@forEach
+            }
+            val key = parts[0].trim()
+            val value = parts[1].trim()
+            if (key.isEmpty()) {
+                return@forEach
+            }
+            val outcomes = value.mapNotNull { marker ->
+                when (marker) {
+                    '1' -> true
+                    '0' -> false
+                    else -> null
+                }
+            }.takeLast(RECENT_OUTCOME_WINDOW)
+            if (outcomes.isNotEmpty()) {
+                map[key] = outcomes
+            }
+        }
+        return map
+    }
+
+    data class RecipientApprovalUpdate(
+        val approvedRecipients: List<String>,
+        val cleanInteractionCounts: Map<String, Int>,
+        val recentOutcomes: Map<String, List<Boolean>>,
+    )
+
+    fun updateRecipientApprovalOnContinue(
+        state: String,
+        recipientKey: String,
+        approvedRecipients: List<String>,
+        cleanInteractionCounts: Map<String, Int>,
+        recentOutcomes: Map<String, List<Boolean>>,
+    ): RecipientApprovalUpdate {
+        val normalizedState = state.trim().lowercase(Locale.US)
+        val updatedApproved = approvedRecipients.toMutableList()
+        val updatedCounts = cleanInteractionCounts.toMutableMap()
+        val updatedOutcomes = recentOutcomes.toMutableMap()
+
+        fun addApprovedRecipient() {
+            updatedApproved.removeAll { it.equals(recipientKey, ignoreCase = true) }
+            updatedApproved.add(0, recipientKey)
+            while (updatedApproved.size > MAX_APPROVED_RECIPIENTS) {
+                updatedApproved.removeAt(updatedApproved.lastIndex)
+            }
+        }
+
+        fun appendOutcome(isClean: Boolean): List<Boolean> {
+            val current = updatedOutcomes[recipientKey].orEmpty()
+            val next = (current + isClean).takeLast(RECENT_OUTCOME_WINDOW)
+            updatedOutcomes[recipientKey] = next
+            return next
+        }
+
+        if (normalizedState == "red") {
+            updatedCounts[recipientKey] = 0
+            appendOutcome(isClean = false)
+            return RecipientApprovalUpdate(
+                approvedRecipients = updatedApproved,
+                cleanInteractionCounts = updatedCounts,
+                recentOutcomes = updatedOutcomes,
+            )
+        }
+
+        val hasRedHistory = updatedCounts.containsKey(recipientKey) ||
+            updatedOutcomes.containsKey(recipientKey)
+        if (!hasRedHistory) {
+            addApprovedRecipient()
+            return RecipientApprovalUpdate(
+                approvedRecipients = updatedApproved,
+                cleanInteractionCounts = updatedCounts,
+                recentOutcomes = updatedOutcomes,
+            )
+        }
+
+        val nextCount = (updatedCounts[recipientKey] ?: 0) + 1
+        updatedCounts[recipientKey] = nextCount
+        val recent = appendOutcome(isClean = true)
+        if (
+            nextCount >= PROMOTION_REQUIRED_CLEAN_INTERACTIONS &&
+            recent.size == RECENT_OUTCOME_WINDOW &&
+            recent.all { it }
+        ) {
+            addApprovedRecipient()
+            updatedCounts.remove(recipientKey)
+            updatedOutcomes.remove(recipientKey)
+        }
+
+        return RecipientApprovalUpdate(
+            approvedRecipients = updatedApproved,
+            cleanInteractionCounts = updatedCounts,
+            recentOutcomes = updatedOutcomes,
+        )
     }
 }
 
@@ -656,37 +818,44 @@ private class PaymentInterventionOverlayController(
     }
 
     private fun storeApprovedRecipient(intervention: PaymentIntervention) {
-        val recipientKey = when {
-            !intervention.detectedUpiIdHint.isNullOrBlank() -> {
-                intervention.detectedUpiIdHint.trim().lowercase(Locale.US)
-            }
-            !intervention.detectedRecipientHint.isNullOrBlank() -> {
-                intervention.detectedRecipientHint
-                    .trim()
-                    .lowercase(Locale.US)
-                    .replace("\\s+".toRegex(), " ")
-            }
-            else -> null
-        } ?: return
+        val recipientKey = PaymentProtectionStore.normalizeRecipientKey(
+            upiIdHint = intervention.detectedUpiIdHint,
+            recipientHint = intervention.detectedRecipientHint,
+        ) ?: return
 
         val prefs = service.getSharedPreferences(
             PaymentProtectionStore.PREFS_NAME,
             Context.MODE_PRIVATE,
         )
-        val current = PaymentProtectionStore.decodeList(
+        val currentApproved = PaymentProtectionStore.decodeList(
             prefs.getString(PaymentProtectionStore.KEY_APPROVED_RECIPIENTS, null),
-        ).toMutableList()
-
-        current.removeAll { it.equals(recipientKey, ignoreCase = true) }
-        current.add(0, recipientKey)
-        while (current.size > PaymentProtectionStore.MAX_APPROVED_RECIPIENTS) {
-            current.removeAt(current.lastIndex)
-        }
+        )
+        val currentCleanCounts = PaymentProtectionStore.decodeIntMap(
+            prefs.getString(PaymentProtectionStore.KEY_RECIPIENT_CLEAN_INTERACTION_COUNTS, null),
+        )
+        val currentRecentOutcomes = PaymentProtectionStore.decodeOutcomeMap(
+            prefs.getString(PaymentProtectionStore.KEY_RECIPIENT_RECENT_OUTCOMES, null),
+        )
+        val updated = PaymentProtectionStore.updateRecipientApprovalOnContinue(
+            state = intervention.state,
+            recipientKey = recipientKey,
+            approvedRecipients = currentApproved,
+            cleanInteractionCounts = currentCleanCounts,
+            recentOutcomes = currentRecentOutcomes,
+        )
 
         prefs.edit()
             .putString(
                 PaymentProtectionStore.KEY_APPROVED_RECIPIENTS,
-                PaymentProtectionStore.encodeList(current),
+                PaymentProtectionStore.encodeList(updated.approvedRecipients),
+            )
+            .putString(
+                PaymentProtectionStore.KEY_RECIPIENT_CLEAN_INTERACTION_COUNTS,
+                PaymentProtectionStore.encodeIntMap(updated.cleanInteractionCounts),
+            )
+            .putString(
+                PaymentProtectionStore.KEY_RECIPIENT_RECENT_OUTCOMES,
+                PaymentProtectionStore.encodeOutcomeMap(updated.recentOutcomes),
             )
             .apply()
     }
