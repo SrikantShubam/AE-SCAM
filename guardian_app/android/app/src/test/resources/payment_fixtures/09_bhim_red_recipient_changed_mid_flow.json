@@ -1,0 +1,16 @@
+{
+  "app_label": "BHIM",
+  "screen_chunks": ["Pay", "Recipient", "Anita", "Amount Rs 900"],
+  "approved_recipients": ["anita"],
+  "previous_recipient_hint": "Suresh",
+  "expected_state": "red",
+  "expected_flags": {
+    "payment_context_detected": true,
+    "has_high_amount": false,
+    "has_suspicious_language": false,
+    "recipient_recently_changed": true,
+    "recipient_known": true,
+    "escalation_recommended": true,
+    "matched_signals_contains": ["recipient_changed"]
+  }
+}

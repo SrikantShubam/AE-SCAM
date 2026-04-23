@@ -1,0 +1,15 @@
+{
+  "app_label": "Google Pay",
+  "screen_chunks": ["Pay", "Recipient", "Ravi Kumar", "Amount Rs 500"],
+  "approved_recipients": ["ravi kumar"],
+  "expected_state": "amber",
+  "expected_flags": {
+    "payment_context_detected": true,
+    "has_high_amount": false,
+    "has_suspicious_language": false,
+    "recipient_recently_changed": false,
+    "recipient_known": true,
+    "escalation_recommended": false,
+    "matched_signals_contains": ["payment_flow"]
+  }
+}

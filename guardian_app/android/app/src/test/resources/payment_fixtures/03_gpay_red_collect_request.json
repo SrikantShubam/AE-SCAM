@@ -1,0 +1,15 @@
+{
+  "app_label": "Google Pay",
+  "screen_chunks": ["Pay", "collect request", "Amount Rs 450", "Recipient Neha"],
+  "approved_recipients": [],
+  "expected_state": "red",
+  "expected_flags": {
+    "payment_context_detected": true,
+    "has_high_amount": false,
+    "has_suspicious_language": true,
+    "recipient_recently_changed": false,
+    "recipient_known": false,
+    "escalation_recommended": true,
+    "matched_signals_contains": ["collect_request_language", "new_recipient"]
+  }
+}

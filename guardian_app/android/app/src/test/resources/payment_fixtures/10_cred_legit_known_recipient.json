@@ -1,0 +1,15 @@
+{
+  "app_label": "CRED",
+  "screen_chunks": ["Confirm payment", "To", "Merchant Name", "Amount Rs 1500"],
+  "approved_recipients": ["merchant name"],
+  "expected_state": "amber",
+  "expected_flags": {
+    "payment_context_detected": true,
+    "has_high_amount": false,
+    "has_suspicious_language": false,
+    "recipient_recently_changed": false,
+    "recipient_known": true,
+    "escalation_recommended": false,
+    "matched_signals_contains": ["payment_flow"]
+  }
+}

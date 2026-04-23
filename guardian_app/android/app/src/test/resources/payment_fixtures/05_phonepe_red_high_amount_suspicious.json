@@ -1,0 +1,15 @@
+{
+  "app_label": "PhonePe",
+  "screen_chunks": ["Pay", "verify now", "UPI ID", "alert@okaxis", "Amount Rs 25000"],
+  "approved_recipients": [],
+  "expected_state": "red",
+  "expected_flags": {
+    "payment_context_detected": true,
+    "has_high_amount": true,
+    "has_suspicious_language": true,
+    "recipient_recently_changed": false,
+    "recipient_known": false,
+    "escalation_recommended": true,
+    "matched_signals_contains": ["urgent_language", "high_amount", "new_recipient"]
+  }
+}

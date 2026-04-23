@@ -1,0 +1,15 @@
+{
+  "app_label": "Google Pay",
+  "screen_chunks": ["Google Pay home", "offers and rewards"],
+  "approved_recipients": [],
+  "expected_state": "monitoring",
+  "expected_flags": {
+    "payment_context_detected": false,
+    "has_high_amount": false,
+    "has_suspicious_language": false,
+    "recipient_recently_changed": false,
+    "recipient_known": false,
+    "escalation_recommended": false,
+    "matched_signals_contains": []
+  }
+}

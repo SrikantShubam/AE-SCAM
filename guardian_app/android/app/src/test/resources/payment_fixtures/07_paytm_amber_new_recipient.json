@@ -1,0 +1,15 @@
+{
+  "app_label": "Paytm",
+  "screen_chunks": ["Send money", "To", "Kiran", "Amount Rs 300"],
+  "approved_recipients": [],
+  "expected_state": "amber",
+  "expected_flags": {
+    "payment_context_detected": true,
+    "has_high_amount": false,
+    "has_suspicious_language": false,
+    "recipient_recently_changed": false,
+    "recipient_known": false,
+    "escalation_recommended": false,
+    "matched_signals_contains": ["new_recipient"]
+  }
+}
