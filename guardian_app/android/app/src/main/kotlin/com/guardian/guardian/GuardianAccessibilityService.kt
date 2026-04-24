@@ -66,6 +66,10 @@ internal object PaymentProtectionStore {
     const val KEY_LAST_ESCALATION_RECIPIENT = "last_escalation_recipient"
     const val KEY_LAST_ESCALATION_UPI_ID = "last_escalation_upi_id"
     const val KEY_LAST_ESCALATION_PENDING = "last_escalation_pending"
+    const val KEY_HEALTH_ACCESSIBILITY_ENABLED = "health_accessibility_enabled"
+    const val KEY_HEALTH_WAS_ACCESSIBILITY_ENABLED = "health_was_accessibility_enabled"
+    const val KEY_HEALTH_DISABLED_STREAK_START_MS = "health_disabled_streak_start_ms"
+    const val KEY_HEALTH_DISABLED_NOTIFICATION_AT_MS = "health_disabled_notification_at_ms"
     const val MAX_APPROVED_RECIPIENTS = 8
     const val PROMOTION_REQUIRED_CLEAN_INTERACTIONS = 3
     const val RECENT_OUTCOME_WINDOW = 3

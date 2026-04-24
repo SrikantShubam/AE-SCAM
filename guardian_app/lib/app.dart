@@ -11,6 +11,7 @@ import 'features/scam/services/scam_parent_warning_local_notifier.dart';
 import 'features/scam/services/scam_share_intent_bridge.dart';
 import 'features/scam/services/scam_share_intent_processor.dart';
 import 'features/scam/services/scam_template_repository.dart';
+import 'features/protection/payment_protection_bridge.dart';
 import 'router/app_router.dart';
 
 class GuardianApp extends StatefulWidget {
@@ -63,6 +64,11 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
     }
     _isHandlingShareIntent = true;
     try {
+      final route = await PaymentProtectionBridge.consumePendingNavigationRoute();
+      if (route != null && mounted) {
+        appRouter.go(route);
+      }
+
       final sharedText = await _shareIntentBridge.consumePendingSharedText();
       if (sharedText == null) {
         final notificationInput = await _notificationListenerBridge

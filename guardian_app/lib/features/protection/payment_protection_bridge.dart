@@ -44,6 +44,16 @@ class PaymentProtectionBridge {
     }
   }
 
+  static Future<String?> consumePendingNavigationRoute() async {
+    try {
+      return await _channel.invokeMethod<String>('consumePendingNavigationRoute');
+    } on MissingPluginException {
+      return null;
+    } on PlatformException {
+      return null;
+    }
+  }
+
   static Future<bool> markEscalationHandled(String eventId) async {
     try {
       final value = await _channel.invokeMethod<bool>(

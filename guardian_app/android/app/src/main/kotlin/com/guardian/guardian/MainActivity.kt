@@ -22,19 +22,24 @@ class MainActivity : FlutterActivity() {
         private const val SCAM_NOTIFICATION_PREFS = "scam_notification_listener"
         private const val SCAM_NOTIFICATION_PENDING_KEY = "pending_payload_json"
         private const val TAG = "MainActivity"
+        const val EXTRA_NAVIGATION_ROUTE = "guardian_navigation_route"
     }
 
     private var pendingSharedText: String? = null
+    private var pendingNavigationRoute: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MedicationPrimeWorkScheduler.ensurePeriodic(this)
+        ServiceHealthWorkScheduler.ensurePeriodic(this)
+        captureNavigationRouteFromIntent(intent)
         captureShareTextFromIntent(intent)
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+        captureNavigationRouteFromIntent(intent)
         captureShareTextFromIntent(intent)
     }
 
@@ -63,6 +68,12 @@ class MainActivity : FlutterActivity() {
 
                 "getPaymentProtectionSnapshot" -> {
                     result.success(getPaymentProtectionSnapshot())
+                }
+
+                "consumePendingNavigationRoute" -> {
+                    val route = pendingNavigationRoute
+                    pendingNavigationRoute = null
+                    result.success(route)
                 }
 
                 "markEscalationHandled" -> {
@@ -340,6 +351,10 @@ class MainActivity : FlutterActivity() {
         val payload = mutableMapOf<String, Any>(
             "state" to state,
             "serviceEnabled" to serviceEnabled,
+            "accessibilityHealthEnabled" to prefs.getBoolean(
+                PaymentProtectionStore.KEY_HEALTH_ACCESSIBILITY_ENABLED,
+                serviceEnabled,
+            ),
             "paymentContextDetected" to (
                 isRecent &&
                     prefs.getBoolean(PaymentProtectionStore.KEY_PAYMENT_CONTEXT, false)
@@ -470,6 +485,15 @@ class MainActivity : FlutterActivity() {
 
         pendingSharedText = extracted
         Log.d(TAG, "Captured shared text for scam verdict flow.")
+    }
+
+    private fun captureNavigationRouteFromIntent(sourceIntent: Intent?) {
+        val intent = sourceIntent ?: return
+        val route = intent.getStringExtra(EXTRA_NAVIGATION_ROUTE)?.trim()
+        if (route.isNullOrEmpty()) {
+            return
+        }
+        pendingNavigationRoute = route
     }
 
     private fun extractSingleSharedText(intent: Intent): String? {

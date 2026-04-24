@@ -49,6 +49,7 @@ void main() {
             if (call.method == 'getPaymentProtectionSnapshot') {
               return <String, dynamic>{
                 'serviceEnabled': false,
+                'accessibilityHealthEnabled': false,
                 'state': 'inactive',
                 'reasons': <String>['Live payment protection is off.'],
               };
@@ -85,7 +86,6 @@ void main() {
           ],
           activeDays: <MedicationWeekday>{weekday},
           alarmEscalationEnabled: true,
-          isActive: true,
         ),
       );
       final event = await repository.createDoseEvent(
@@ -109,6 +109,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Protection summary'), findsOneWidget);
+      expect(find.text('Guardian payment protection paused'), findsOneWidget);
       expect(find.text('Medicine reminders'), findsOneWidget);
       expect(find.text('Open Android Accessibility settings'), findsOneWidget);
       expect(find.text('Open payment protection'), findsNothing);
@@ -137,6 +138,7 @@ void main() {
             if (call.method == 'getPaymentProtectionSnapshot') {
               return <String, dynamic>{
                 'serviceEnabled': false,
+                'accessibilityHealthEnabled': false,
                 'state': 'inactive',
                 'reasons': <String>['Live payment protection is off.'],
               };

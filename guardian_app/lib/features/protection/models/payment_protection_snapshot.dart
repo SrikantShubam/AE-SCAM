@@ -12,6 +12,7 @@ class PaymentProtectionSnapshot {
   const PaymentProtectionSnapshot({
     required this.state,
     required this.serviceEnabled,
+    required this.accessibilityHealthEnabled,
     required this.reasons,
     this.lastMonitoredPackageName,
     this.lastMonitoredAppLabel,
@@ -46,6 +47,7 @@ class PaymentProtectionSnapshot {
 
   final PaymentProtectionState state;
   final bool serviceEnabled;
+  final bool accessibilityHealthEnabled;
   final List<String> reasons;
   final String? lastMonitoredPackageName;
   final String? lastMonitoredAppLabel;
@@ -100,6 +102,7 @@ class PaymentProtectionSnapshot {
     return const PaymentProtectionSnapshot(
       state: PaymentProtectionState.inactive,
       serviceEnabled: false,
+      accessibilityHealthEnabled: false,
       reasons: <String>['Live payment protection is off.'],
     );
   }
@@ -118,6 +121,9 @@ class PaymentProtectionSnapshot {
     return PaymentProtectionSnapshot(
       state: _parseState(raw['state'] as String?),
       serviceEnabled: raw['serviceEnabled'] as bool? ?? false,
+      accessibilityHealthEnabled:
+          raw['accessibilityHealthEnabled'] as bool? ??
+          (raw['serviceEnabled'] as bool? ?? false),
       reasons: (raw['reasons'] as List<dynamic>?)
               ?.whereType<String>()
               .toList(growable: false) ??
