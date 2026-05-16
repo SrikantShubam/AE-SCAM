@@ -80,6 +80,10 @@ internal object PaymentProtectionStore {
         "net.one97.paytm" to "Paytm",
         "in.org.npci.upiapp" to "BHIM",
         "com.dreamplug.androidapp" to "CRED",
+        "in.amazon.mShop.android.shopping" to "Amazon Pay",
+        "com.whatsapp" to "WhatsApp",
+        "com.mobikwik_new" to "MobiKwik",
+        "com.slice.android" to "Slice",
     )
 
     fun encodeList(values: List<String>): String = values.joinToString(LIST_SEPARATOR)

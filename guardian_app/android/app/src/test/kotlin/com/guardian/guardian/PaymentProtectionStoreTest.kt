@@ -7,6 +7,22 @@ import org.junit.Test
 
 class PaymentProtectionStoreTest {
     @Test
+    fun `monitored apps allowlist includes all nine supported UPI apps`() {
+        val monitoredApps = PaymentProtectionStore.MONITORED_APPS
+
+        assertEquals(9, monitoredApps.size)
+        assertEquals("Google Pay", monitoredApps["com.google.android.apps.nbu.paisa.user"])
+        assertEquals("PhonePe", monitoredApps["com.phonepe.app"])
+        assertEquals("Paytm", monitoredApps["net.one97.paytm"])
+        assertEquals("BHIM", monitoredApps["in.org.npci.upiapp"])
+        assertEquals("CRED", monitoredApps["com.dreamplug.androidapp"])
+        assertEquals("Amazon Pay", monitoredApps["in.amazon.mShop.android.shopping"])
+        assertEquals("WhatsApp", monitoredApps["com.whatsapp"])
+        assertEquals("MobiKwik", monitoredApps["com.mobikwik_new"])
+        assertEquals("Slice", monitoredApps["com.slice.android"])
+    }
+
+    @Test
     fun `amber recipient without red history is approved immediately`() {
         val updated = PaymentProtectionStore.updateRecipientApprovalOnContinue(
             state = "amber",
