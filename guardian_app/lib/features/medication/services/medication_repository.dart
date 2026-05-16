@@ -7,9 +7,7 @@ class MedicationRepository {
 
   final LocalDb localDb;
 
-  Future<MedicationSchedule> upsertSchedule(
-    MedicationSchedule schedule,
-  ) async {
+  Future<MedicationSchedule> upsertSchedule(MedicationSchedule schedule) async {
     final now = DateTime.now().toUtc();
     final existing = await localDb.getMedicationScheduleById(schedule.id);
     final createdAt = existing == null
@@ -24,29 +22,28 @@ class MedicationRepository {
     return MedicationSchedule.fromDbRow(row);
   }
 
-  Future<List<MedicationSchedule>> listSchedules({bool? activeOnly}) async {
-    final rows = await localDb.listMedicationScheduleRows(activeOnly: activeOnly);
-    return rows
-        .map(MedicationSchedule.fromDbRow)
-        .toList(growable: false);
+  Future<List<MedicationSchedule>> listSchedules() async {
+    final rows = await localDb.listMedicationScheduleRows();
+    return rows.map(MedicationSchedule.fromDbRow).toList(growable: false);
   }
 
   Future<List<MedicationSchedule>> listActiveSchedules() async {
-    return listSchedules(activeOnly: true);
+    return listSchedules();
   }
 
-  Future<MedicationSchedule> setScheduleActive({
-    required String scheduleId,
-    required bool isActive,
-  }) async {
-    final existing = await localDb.getMedicationScheduleById(scheduleId);
-    if (existing == null) {
+  Future<MedicationSchedule?> getScheduleById(String scheduleId) async {
+    final row = await localDb.getMedicationScheduleById(scheduleId);
+    if (row == null) {
+      return null;
+    }
+    return MedicationSchedule.fromDbRow(row);
+  }
+
+  Future<void> deleteSchedule(String scheduleId) async {
+    final deletedCount = await localDb.deleteMedicationScheduleRow(scheduleId);
+    if (deletedCount == 0) {
       throw StateError('Medication schedule not found: $scheduleId');
     }
-
-    return upsertSchedule(
-      MedicationSchedule.fromDbRow(existing).copyWith(isActive: isActive),
-    );
   }
 
   Future<MedicationDoseEvent> createDoseEvent({
@@ -88,9 +85,7 @@ class MedicationRepository {
       startMs: dayStart.toUtc().millisecondsSinceEpoch,
       endMs: dayEnd.toUtc().millisecondsSinceEpoch,
     );
-    return rows
-        .map(MedicationDoseEvent.fromDbRow)
-        .toList(growable: false);
+    return rows.map(MedicationDoseEvent.fromDbRow).toList(growable: false);
   }
 
   Future<MedicationDoseEvent> markDoseEventStatus({
@@ -99,14 +94,10 @@ class MedicationRepository {
   }) async {
     final actedAt = switch (status) {
       MedicationDoseStatus.pending || MedicationDoseStatus.alarmActive => null,
-      MedicationDoseStatus.taken || MedicationDoseStatus.skipped =>
-        DateTime.now().toUtc(),
+      MedicationDoseStatus.taken ||
+      MedicationDoseStatus.skipped => DateTime.now().toUtc(),
     };
-    return updateDoseEvent(
-      eventId: eventId,
-      status: status,
-      actedAt: actedAt,
-    );
+    return updateDoseEvent(eventId: eventId, status: status, actedAt: actedAt);
   }
 
   Future<MedicationDoseEvent> updateDoseEvent({

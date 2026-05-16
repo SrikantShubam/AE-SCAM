@@ -1,4 +1,4 @@
-import 'package:flutter_test/flutter_test.dart';
+import 'package:test/test.dart';
 import 'package:guardian/features/medication/models/medication_reminder_plan.dart';
 import 'package:guardian/features/medication/services/medication_reminder_service.dart';
 
@@ -65,6 +65,43 @@ void main() {
 
       expect(occurrences, hasLength(1));
       expect(occurrences.single.scheduledAt, DateTime(2026, 4, 14, 8, 0));
+    });
+
+    test('stops creating occurrences after stopDate', () {
+      final schedules = <MedicationReminderSchedule>[
+        MedicationReminderSchedule(
+          medicationId: 'med-stop',
+          medicationName: 'Short course antibiotic',
+          dosage: '1 tablet',
+          activeWeekdays: <int>{
+            DateTime.monday,
+            DateTime.tuesday,
+            DateTime.wednesday,
+            DateTime.thursday,
+            DateTime.friday,
+            DateTime.saturday,
+            DateTime.sunday,
+          },
+          timesOfDay: <ReminderClockTime>[
+            ReminderClockTime(hour: 9, minute: 0),
+          ],
+          stopDate: DateTime(2026, 4, 14),
+        ),
+      ];
+
+      final from = DateTime(2026, 4, 13, 0, 0);
+      final until = DateTime(2026, 4, 16, 23, 59);
+
+      final occurrences = service.computeOccurrences(
+        schedules: schedules,
+        from: from,
+        until: until,
+      );
+
+      expect(
+        occurrences.map((entry) => entry.scheduledAt).toList(growable: false),
+        <DateTime>[DateTime(2026, 4, 13, 9, 0), DateTime(2026, 4, 14, 9, 0)],
+      );
     });
 
     test('builds level 1 and level 3 trigger plan for an occurrence', () {

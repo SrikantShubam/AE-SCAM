@@ -5,7 +5,7 @@ import 'package:guardian/features/medication/models/medication_schedule.dart';
 void main() {
   test('medication schedule supports db round-trip serialization', () {
     final now = DateTime.utc(2026, 4, 10, 8, 30);
-    const schedule = MedicationSchedule(
+    final schedule = MedicationSchedule(
       id: 'schedule-1',
       name: 'Amlodipine',
       dosage: '1 tablet',
@@ -19,7 +19,8 @@ void main() {
         MedicationWeekday.fri,
       },
       alarmEscalationEnabled: true,
-      isActive: true,
+      stopDate: DateTime.utc(2026, 4, 30),
+      note: 'Give with food',
     );
 
     final row = schedule.toDbRow(createdAt: now, updatedAt: now);
@@ -32,7 +33,8 @@ void main() {
     expect(restored.doseTimes, schedule.doseTimes);
     expect(restored.activeDays, schedule.activeDays);
     expect(restored.alarmEscalationEnabled, isTrue);
-    expect(restored.isActive, isTrue);
+    expect(restored.stopDate, schedule.stopDate);
+    expect(restored.note, schedule.note);
     expect(restored.createdAt, now);
     expect(restored.updatedAt, now);
   });
@@ -75,7 +77,8 @@ void main() {
         'dose_times': '08:00',
         'active_days': 'noday',
         'alarm_escalation_enabled': 1,
-        'is_active': 1,
+        'stop_date': null,
+        'note': null,
         'created_at': 1,
         'updated_at': 1,
       }),

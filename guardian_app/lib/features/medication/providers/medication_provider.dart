@@ -4,7 +4,9 @@ import '../../../core/services/local_db.dart';
 import '../models/medication_dose_event.dart';
 import '../models/medication_schedule.dart';
 import '../services/medication_alarm_platform_bridge.dart';
+import '../services/medication_notification_gateway_impl.dart';
 import '../services/medication_repository.dart';
+import '../services/medication_schedule_deletion_service.dart';
 
 final medicationRepositoryProvider = Provider<MedicationRepository>((ref) {
   return MedicationRepository(localDb: LocalDb.instance);
@@ -12,14 +14,14 @@ final medicationRepositoryProvider = Provider<MedicationRepository>((ref) {
 
 final medicationAlarmPlatformBridgeProvider =
     Provider<MedicationAlarmPlatformBridge>((ref) {
-  return MedicationAlarmPlatformBridge();
-});
+      return MedicationAlarmPlatformBridge();
+    });
 
 final activeMedicationSchedulesProvider =
     FutureProvider<List<MedicationSchedule>>((ref) async {
-  final repository = ref.watch(medicationRepositoryProvider);
-  return repository.listActiveSchedules();
-});
+      final repository = ref.watch(medicationRepositoryProvider);
+      return repository.listActiveSchedules();
+    });
 
 final selectedMedicationDateProvider =
     NotifierProvider<SelectedMedicationDateNotifier, DateTime>(
@@ -28,26 +30,29 @@ final selectedMedicationDateProvider =
 
 final medicationDoseEventsForSelectedDateProvider =
     FutureProvider<List<MedicationDoseEvent>>((ref) async {
-  final repository = ref.watch(medicationRepositoryProvider);
-  final date = ref.watch(selectedMedicationDateProvider);
-  return repository.listDoseEventsForDate(date);
-});
+      final repository = ref.watch(medicationRepositoryProvider);
+      final date = ref.watch(selectedMedicationDateProvider);
+      return repository.listDoseEventsForDate(date);
+    });
 
-final allMedicationSchedulesProvider =
-    FutureProvider<List<MedicationSchedule>>((ref) async {
-  final repository = ref.watch(medicationRepositoryProvider);
-  return repository.listSchedules(activeOnly: null);
-});
+final allMedicationSchedulesProvider = FutureProvider<List<MedicationSchedule>>(
+  (ref) async {
+    final repository = ref.watch(medicationRepositoryProvider);
+    return repository.listSchedules();
+  },
+);
 
-final inactiveMedicationSchedulesProvider =
-    FutureProvider<List<MedicationSchedule>>((ref) async {
-  final repository = ref.watch(medicationRepositoryProvider);
-  return repository.listSchedules(activeOnly: false);
-});
-
-final medicationControllerProvider =
-    Provider<MedicationController>((ref) {
-  return MedicationController(ref, ref.watch(medicationRepositoryProvider));
+final medicationControllerProvider = Provider<MedicationController>((ref) {
+  return MedicationController(
+    ref,
+    ref.watch(medicationRepositoryProvider),
+    MedicationScheduleDeletionService(
+      repository: ref.watch(medicationRepositoryProvider),
+      notificationGateway: PlatformMedicationNotificationGateway(
+        platformBridge: ref.watch(medicationAlarmPlatformBridgeProvider),
+      ),
+    ),
+  );
 });
 
 final exactAlarmPermissionGrantedProvider = FutureProvider<bool>((ref) async {
@@ -69,10 +74,11 @@ class SelectedMedicationDateNotifier extends Notifier<DateTime> {
 }
 
 class MedicationController {
-  MedicationController(this._ref, this._repository);
+  MedicationController(this._ref, this._repository, this._deletionService);
 
   final Ref _ref;
   final MedicationRepository _repository;
+  final MedicationScheduleDeletionService _deletionService;
 
   Future<MedicationSchedule> saveSchedule(MedicationSchedule schedule) async {
     final saved = await _repository.upsertSchedule(schedule);
@@ -80,24 +86,9 @@ class MedicationController {
     return saved;
   }
 
-  Future<MedicationSchedule> setScheduleActive({
-    required String scheduleId,
-    required bool isActive,
-  }) async {
-    final updated = await _repository.setScheduleActive(
-      scheduleId: scheduleId,
-      isActive: isActive,
-    );
+  Future<void> deleteSchedule(String scheduleId) async {
+    await _deletionService.deleteSchedule(scheduleId);
     _invalidateScheduleQueries();
-    return updated;
-  }
-
-  Future<MedicationSchedule> deactivateSchedule(String scheduleId) {
-    return setScheduleActive(scheduleId: scheduleId, isActive: false);
-  }
-
-  Future<MedicationSchedule> reactivateSchedule(String scheduleId) {
-    return setScheduleActive(scheduleId: scheduleId, isActive: true);
   }
 
   Future<MedicationDoseEvent> createDoseEvent({
@@ -145,7 +136,6 @@ class MedicationController {
   void _invalidateScheduleQueries() {
     _ref.invalidate(activeMedicationSchedulesProvider);
     _ref.invalidate(allMedicationSchedulesProvider);
-    _ref.invalidate(inactiveMedicationSchedulesProvider);
   }
 
   void _invalidateDoseQueries() {

@@ -14,19 +14,10 @@ class MedicationListScreen extends ConsumerWidget {
     final schedulesAsync = ref.watch(allMedicationSchedulesProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Medications'),
-      ),
+      appBar: AppBar(title: const Text('Medications')),
       body: SafeArea(
         child: schedulesAsync.when(
           data: (allSchedules) {
-            final activeSchedules = allSchedules
-                .where((schedule) => schedule.isActive)
-                .toList(growable: false);
-            final inactiveSchedules = allSchedules
-                .where((schedule) => !schedule.isActive)
-                .toList(growable: false);
-
             if (allSchedules.isEmpty) {
               return _EmptyMedicationState(
                 onAddMedication: () => _openForm(context),
@@ -41,58 +32,21 @@ class MedicationListScreen extends ConsumerWidget {
                 padding: const EdgeInsets.fromLTRB(20, 20, 20, 28),
                 children: [
                   _SectionHeader(
-                    title: 'Active medications',
+                    title: 'Medication schedule',
                     subtitle:
-                        '${activeSchedules.length} currently reminding your parent',
+                        '${allSchedules.length} medication${allSchedules.length == 1 ? '' : 's'} saved for this parent',
                   ),
                   const SizedBox(height: 10),
-                  if (activeSchedules.isEmpty)
-                    const _InlineEmptyState(
-                      message:
-                          'No active medications right now. You can reactivate from history below.',
-                    )
-                  else
-                    ...activeSchedules.map(
-                      (schedule) => Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: MedicationCard(
-                          schedule: schedule,
-                          onEdit: () => _openForm(context, schedule: schedule),
-                          onDeactivate: () => _confirmDeactivate(
-                            context,
-                            ref,
-                            schedule,
-                          ),
-                        ),
+                  ...allSchedules.map(
+                    (schedule) => Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: MedicationCard(
+                        schedule: schedule,
+                        onEdit: () => _openForm(context, schedule: schedule),
+                        onDelete: () => _confirmDelete(context, ref, schedule),
                       ),
                     ),
-                  const SizedBox(height: 16),
-                  _SectionHeader(
-                    title: 'Inactive medications',
-                    subtitle:
-                        '${inactiveSchedules.length} archived for this parent',
                   ),
-                  const SizedBox(height: 10),
-                  if (inactiveSchedules.isEmpty)
-                    const _InlineEmptyState(
-                      message:
-                          'When you deactivate a medicine, it appears here.',
-                    )
-                  else
-                    ...inactiveSchedules.map(
-                      (schedule) => Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: MedicationCard(
-                          schedule: schedule,
-                          onEdit: () => _openForm(context, schedule: schedule),
-                          onReactivate: () => _confirmReactivate(
-                            context,
-                            ref,
-                            schedule,
-                          ),
-                        ),
-                      ),
-                    ),
                 ],
               ),
             );
@@ -116,7 +70,8 @@ class MedicationListScreen extends ConsumerWidget {
                     ),
                     const SizedBox(height: 12),
                     FilledButton(
-                      onPressed: () => ref.invalidate(allMedicationSchedulesProvider),
+                      onPressed: () =>
+                          ref.invalidate(allMedicationSchedulesProvider),
                       child: const Text('Retry'),
                     ),
                   ],
@@ -145,7 +100,7 @@ class MedicationListScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _confirmDeactivate(
+  Future<void> _confirmDelete(
     BuildContext context,
     WidgetRef ref,
     MedicationSchedule schedule,
@@ -154,9 +109,9 @@ class MedicationListScreen extends ConsumerWidget {
       context: context,
       builder: (dialogContext) {
         return AlertDialog(
-          title: const Text('Deactivate medication?'),
+          title: const Text('Delete medication?'),
           content: Text(
-            '${schedule.name} will stop creating reminders until you reactivate it.',
+            'Delete ${schedule.name}? This permanently removes reminders and past local history for this medication.',
           ),
           actions: [
             TextButton(
@@ -165,7 +120,7 @@ class MedicationListScreen extends ConsumerWidget {
             ),
             FilledButton(
               onPressed: () => Navigator.of(dialogContext).pop(true),
-              child: const Text('Deactivate'),
+              child: const Text('Delete'),
             ),
           ],
         );
@@ -177,71 +132,20 @@ class MedicationListScreen extends ConsumerWidget {
 
     try {
       final controller = ref.read(medicationControllerProvider);
-      await controller.deactivateSchedule(schedule.id);
+      await controller.deleteSchedule(schedule.id);
       if (!context.mounted) {
         return;
       }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${schedule.name} is now inactive.')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('${schedule.name} was deleted.')));
     } catch (_) {
       if (!context.mounted) {
         return;
       }
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Guardian could not deactivate this medication yet.'),
-        ),
-      );
-    }
-  }
-
-  Future<void> _confirmReactivate(
-    BuildContext context,
-    WidgetRef ref,
-    MedicationSchedule schedule,
-  ) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) {
-        return AlertDialog(
-          title: const Text('Reactivate medication?'),
-          content: Text(
-            '${schedule.name} will resume reminders on its saved schedule.',
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(dialogContext).pop(false),
-              child: const Text('Cancel'),
-            ),
-            FilledButton(
-              onPressed: () => Navigator.of(dialogContext).pop(true),
-              child: const Text('Reactivate'),
-            ),
-          ],
-        );
-      },
-    );
-    if (confirmed != true) {
-      return;
-    }
-
-    try {
-      final controller = ref.read(medicationControllerProvider);
-      await controller.reactivateSchedule(schedule.id);
-      if (!context.mounted) {
-        return;
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('${schedule.name} is active again.')),
-      );
-    } catch (_) {
-      if (!context.mounted) {
-        return;
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Guardian could not reactivate this medication yet.'),
+          content: Text('Guardian could not delete this medication yet.'),
         ),
       );
     }
@@ -262,7 +166,9 @@ class _SectionHeader extends StatelessWidget {
       children: [
         Text(
           title,
-          style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.w800,
+          ),
         ),
         const SizedBox(height: 4),
         Text(
@@ -290,10 +196,7 @@ class _InlineEmptyState extends StatelessWidget {
         color: const Color(0xFFF3F5F7),
         borderRadius: BorderRadius.circular(14),
       ),
-      child: Text(
-        message,
-        style: Theme.of(context).textTheme.bodyLarge,
-      ),
+      child: Text(message, style: Theme.of(context).textTheme.bodyLarge),
     );
   }
 }
@@ -311,7 +214,11 @@ class _EmptyMedicationState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const Icon(Icons.medication_outlined, size: 56, color: Color(0xFF0E5E6D)),
+            const Icon(
+              Icons.medication_outlined,
+              size: 56,
+              color: Color(0xFF0E5E6D),
+            ),
             const SizedBox(height: 14),
             Text(
               'No medications added yet',

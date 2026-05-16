@@ -12,6 +12,18 @@ class MedicationReminderService {
 
     while (!cursor.isAfter(endDate)) {
       for (final schedule in schedules) {
+        final stopDate = schedule.stopDate;
+        if (stopDate != null) {
+          final stopDateLocal = DateTime(
+            stopDate.year,
+            stopDate.month,
+            stopDate.day,
+          );
+          if (cursor.isAfter(stopDateLocal)) {
+            continue;
+          }
+        }
+
         if (!schedule.activeWeekdays.contains(cursor.weekday)) {
           continue;
         }

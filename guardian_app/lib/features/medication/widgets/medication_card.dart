@@ -7,21 +7,18 @@ class MedicationCard extends StatelessWidget {
     super.key,
     required this.schedule,
     this.onEdit,
-    this.onDeactivate,
-    this.onReactivate,
+    this.onDelete,
   });
 
   final MedicationSchedule schedule;
   final VoidCallback? onEdit;
-  final VoidCallback? onDeactivate;
-  final VoidCallback? onReactivate;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final canEdit = onEdit != null;
-    final canDeactivate = schedule.isActive && onDeactivate != null;
-    final canReactivate = !schedule.isActive && onReactivate != null;
+    final canDelete = onDelete != null;
 
     return Card(
       child: Padding(
@@ -42,6 +39,16 @@ class MedicationCard extends StatelessWidget {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
+                      if (schedule.note != null &&
+                          schedule.note!.trim().isNotEmpty) ...[
+                        const SizedBox(height: 6),
+                        Text(
+                          schedule.note!,
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: const Color(0xFF455B63),
+                          ),
+                        ),
+                      ],
                       const SizedBox(height: 6),
                       Text(
                         schedule.dosage,
@@ -53,8 +60,7 @@ class MedicationCard extends StatelessWidget {
                     ],
                   ),
                 ),
-                _ActiveBadge(isActive: schedule.isActive),
-                if (canEdit || canDeactivate || canReactivate) ...[
+                if (canEdit || canDelete) ...[
                   const SizedBox(width: 4),
                   PopupMenuButton<_MedicationMenuAction>(
                     tooltip: 'Medication actions',
@@ -62,10 +68,8 @@ class MedicationCard extends StatelessWidget {
                       switch (value) {
                         case _MedicationMenuAction.edit:
                           onEdit?.call();
-                        case _MedicationMenuAction.deactivate:
-                          onDeactivate?.call();
-                        case _MedicationMenuAction.reactivate:
-                          onReactivate?.call();
+                        case _MedicationMenuAction.delete:
+                          onDelete?.call();
                       }
                     },
                     itemBuilder: (context) {
@@ -75,15 +79,10 @@ class MedicationCard extends StatelessWidget {
                             value: _MedicationMenuAction.edit,
                             child: Text('Edit'),
                           ),
-                        if (canDeactivate)
+                        if (canDelete)
                           const PopupMenuItem(
-                            value: _MedicationMenuAction.deactivate,
-                            child: Text('Deactivate'),
-                          ),
-                        if (canReactivate)
-                          const PopupMenuItem(
-                            value: _MedicationMenuAction.reactivate,
-                            child: Text('Reactivate'),
+                            value: _MedicationMenuAction.delete,
+                            child: Text('Delete'),
                           ),
                       ];
                     },
@@ -167,44 +166,12 @@ class MedicationCard extends StatelessWidget {
       return value;
     }
     final period = hour >= 12 ? 'PM' : 'AM';
-    final normalizedHour = hour == 0
-        ? 12
-        : (hour > 12 ? hour - 12 : hour);
+    final normalizedHour = hour == 0 ? 12 : (hour > 12 ? hour - 12 : hour);
     return '$normalizedHour:${minute.toString().padLeft(2, '0')} $period';
   }
 }
 
-enum _MedicationMenuAction { edit, deactivate, reactivate }
-
-class _ActiveBadge extends StatelessWidget {
-  const _ActiveBadge({required this.isActive});
-
-  final bool isActive;
-
-  @override
-  Widget build(BuildContext context) {
-    final color = isActive ? const Color(0xFFDDF4EA) : const Color(0xFFFFF0DE);
-    final textColor = isActive
-        ? const Color(0xFF185B4E)
-        : const Color(0xFF8C4D1D);
-    final label = isActive ? 'Active' : 'Inactive';
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Text(
-        label,
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-          color: textColor,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-    );
-  }
-}
+enum _MedicationMenuAction { edit, delete }
 
 class _Pill extends StatelessWidget {
   const _Pill({required this.label});

@@ -86,15 +86,17 @@ class MedicationReminderDeliveryService {
 
   MedicationReminderSchedule _toReminderSchedule(MedicationSchedule schedule) {
     final weekdays = schedule.activeDays
-        .map((day) => switch (day) {
-              MedicationWeekday.mon => DateTime.monday,
-              MedicationWeekday.tue => DateTime.tuesday,
-              MedicationWeekday.wed => DateTime.wednesday,
-              MedicationWeekday.thu => DateTime.thursday,
-              MedicationWeekday.fri => DateTime.friday,
-              MedicationWeekday.sat => DateTime.saturday,
-              MedicationWeekday.sun => DateTime.sunday,
-            })
+        .map(
+          (day) => switch (day) {
+            MedicationWeekday.mon => DateTime.monday,
+            MedicationWeekday.tue => DateTime.tuesday,
+            MedicationWeekday.wed => DateTime.wednesday,
+            MedicationWeekday.thu => DateTime.thursday,
+            MedicationWeekday.fri => DateTime.friday,
+            MedicationWeekday.sat => DateTime.saturday,
+            MedicationWeekday.sun => DateTime.sunday,
+          },
+        )
         .toSet();
 
     final times = schedule.doseTimes
@@ -119,13 +121,16 @@ class MedicationReminderDeliveryService {
       dosage: schedule.dosage,
       activeWeekdays: weekdays,
       timesOfDay: times,
+      stopDate: schedule.stopDate?.toLocal(),
     );
   }
 
-  DoseAcknowledgementStatus _toAcknowledgementStatus(MedicationDoseStatus status) {
+  DoseAcknowledgementStatus _toAcknowledgementStatus(
+    MedicationDoseStatus status,
+  ) {
     return switch (status) {
-      MedicationDoseStatus.pending || MedicationDoseStatus.alarmActive =>
-        DoseAcknowledgementStatus.pending,
+      MedicationDoseStatus.pending ||
+      MedicationDoseStatus.alarmActive => DoseAcknowledgementStatus.pending,
       MedicationDoseStatus.taken => DoseAcknowledgementStatus.taken,
       MedicationDoseStatus.skipped => DoseAcknowledgementStatus.skipped,
     };

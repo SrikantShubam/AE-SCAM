@@ -19,6 +19,7 @@ class MedicationReminderSchedule {
     required this.dosage,
     required this.activeWeekdays,
     required this.timesOfDay,
+    this.stopDate,
   }) {
     if (activeWeekdays.isEmpty) {
       throw ArgumentError.value(
@@ -51,6 +52,7 @@ class MedicationReminderSchedule {
   final String dosage;
   final Set<int> activeWeekdays;
   final List<ReminderClockTime> timesOfDay;
+  final DateTime? stopDate;
 }
 
 class MedicationDoseOccurrence {

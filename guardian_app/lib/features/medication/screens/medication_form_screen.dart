@@ -12,7 +12,8 @@ class MedicationFormScreen extends ConsumerStatefulWidget {
   bool get isEdit => initialSchedule != null;
 
   @override
-  ConsumerState<MedicationFormScreen> createState() => _MedicationFormScreenState();
+  ConsumerState<MedicationFormScreen> createState() =>
+      _MedicationFormScreenState();
 }
 
 class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
@@ -20,9 +21,11 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
   late final TextEditingController _nameController;
   late final TextEditingController _purposeController;
   late final TextEditingController _dosageController;
+  late final TextEditingController _noteController;
   late Set<MedicationWeekday> _selectedDays;
   late List<TimeOfDay> _selectedTimes;
   late bool _alarmEscalationEnabled;
+  DateTime? _stopDate;
   bool _saving = false;
   bool _showScheduleValidation = false;
 
@@ -33,7 +36,10 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
     _nameController = TextEditingController(text: initial?.name ?? '');
     _purposeController = TextEditingController(text: initial?.purpose ?? '');
     _dosageController = TextEditingController(text: initial?.dosage ?? '');
-    _selectedDays = initial?.activeDays.toSet() ??
+    _noteController = TextEditingController(text: initial?.note ?? '');
+    _stopDate = initial?.stopDate?.toLocal();
+    _selectedDays =
+        initial?.activeDays.toSet() ??
         <MedicationWeekday>{
           MedicationWeekday.mon,
           MedicationWeekday.tue,
@@ -41,7 +47,8 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
           MedicationWeekday.thu,
           MedicationWeekday.fri,
         };
-    _selectedTimes = initial?.doseTimes.map(_parseTime).whereType<TimeOfDay>().toList() ??
+    _selectedTimes =
+        initial?.doseTimes.map(_parseTime).whereType<TimeOfDay>().toList() ??
         <TimeOfDay>[const TimeOfDay(hour: 9, minute: 0)];
     _selectedTimes.sort(_compareTimes);
     _alarmEscalationEnabled = initial?.alarmEscalationEnabled ?? true;
@@ -52,6 +59,7 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
     _nameController.dispose();
     _purposeController.dispose();
     _dosageController.dispose();
+    _noteController.dispose();
     super.dispose();
   }
 
@@ -102,7 +110,7 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
                 textInputAction: TextInputAction.done,
                 decoration: const InputDecoration(
                   labelText: 'Dosage *',
-                  hintText: 'e.g. 1 tablet',
+                  hintText: 'e.g. 1/2 tablet, 5 mL, 2 units, 1/4 cap',
                 ),
                 validator: (value) {
                   if (value == null || value.trim().isEmpty) {
@@ -110,6 +118,25 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
                   }
                   return null;
                 },
+              ),
+              const SizedBox(height: 16),
+              _StopDateField(
+                stopDate: _stopDate,
+                enabled: !_saving,
+                onPickDate: _pickStopDate,
+                onClearDate: _clearStopDate,
+              ),
+              const SizedBox(height: 16),
+              TextFormField(
+                controller: _noteController,
+                enabled: !_saving,
+                textInputAction: TextInputAction.done,
+                minLines: 2,
+                maxLines: 3,
+                decoration: const InputDecoration(
+                  labelText: 'Note (optional)',
+                  hintText: 'e.g. Give after food',
+                ),
               ),
               const SizedBox(height: 22),
               Text(
@@ -122,24 +149,26 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
               Wrap(
                 spacing: 8,
                 runSpacing: 8,
-                children: MedicationWeekday.values.map((day) {
-                  final selected = _selectedDays.contains(day);
-                  return FilterChip(
-                    label: Text(_weekdayLabel(day)),
-                    selected: selected,
-                    onSelected: _saving
-                        ? null
-                        : (value) {
-                            setState(() {
-                              if (value) {
-                                _selectedDays.add(day);
-                              } else {
-                                _selectedDays.remove(day);
-                              }
-                            });
-                          },
-                  );
-                }).toList(growable: false),
+                children: MedicationWeekday.values
+                    .map((day) {
+                      final selected = _selectedDays.contains(day);
+                      return FilterChip(
+                        label: Text(_weekdayLabel(day)),
+                        selected: selected,
+                        onSelected: _saving
+                            ? null
+                            : (value) {
+                                setState(() {
+                                  if (value) {
+                                    _selectedDays.add(day);
+                                  } else {
+                                    _selectedDays.remove(day);
+                                  }
+                                });
+                              },
+                      );
+                    })
+                    .toList(growable: false),
               ),
               if (_showScheduleValidation && _selectedDays.isEmpty)
                 Padding(
@@ -241,9 +270,7 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
                 ),
               ),
               TextButton(
-                onPressed: _saving
-                    ? null
-                    : () => _replaceTime(index, value),
+                onPressed: _saving ? null : () => _replaceTime(index, value),
                 child: const Text('Change'),
               ),
               IconButton(
@@ -314,11 +341,19 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
           ? null
           : _purposeController.text.trim(),
       doseTimes: _selectedTimes
-          .map((time) => '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}')
+          .map(
+            (time) =>
+                '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}',
+          )
           .toList(growable: false),
       activeDays: _selectedDays,
       alarmEscalationEnabled: _alarmEscalationEnabled,
-      isActive: existing?.isActive ?? true,
+      stopDate: _stopDate == null
+          ? null
+          : DateTime(_stopDate!.year, _stopDate!.month, _stopDate!.day),
+      note: _noteController.text.trim().isEmpty
+          ? null
+          : _noteController.text.trim(),
       createdAt: existing?.createdAt,
       updatedAt: existing?.updatedAt,
     );
@@ -343,6 +378,28 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
         ),
       );
     }
+  }
+
+  Future<void> _pickStopDate() async {
+    final now = DateTime.now();
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: _stopDate ?? now,
+      firstDate: DateTime(now.year - 1),
+      lastDate: DateTime(now.year + 10),
+    );
+    if (picked == null) {
+      return;
+    }
+    setState(() {
+      _stopDate = DateTime(picked.year, picked.month, picked.day);
+    });
+  }
+
+  void _clearStopDate() {
+    setState(() {
+      _stopDate = null;
+    });
   }
 
   String _weekdayLabel(MedicationWeekday day) {
@@ -391,5 +448,54 @@ class _MedicationFormScreenState extends ConsumerState<MedicationFormScreen> {
     final minute = value.minute.toString().padLeft(2, '0');
     final suffix = value.hour >= 12 ? 'PM' : 'AM';
     return '$hour:$minute $suffix';
+  }
+}
+
+class _StopDateField extends StatelessWidget {
+  const _StopDateField({
+    required this.stopDate,
+    required this.enabled,
+    required this.onPickDate,
+    required this.onClearDate,
+  });
+
+  final DateTime? stopDate;
+  final bool enabled;
+  final VoidCallback onPickDate;
+  final VoidCallback onClearDate;
+
+  @override
+  Widget build(BuildContext context) {
+    final label = stopDate == null
+        ? 'No stop date (reminders continue)'
+        : _formatDate(stopDate!);
+    return InputDecorator(
+      decoration: const InputDecoration(
+        labelText: 'Stop date (optional)',
+        border: OutlineInputBorder(),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(label, style: Theme.of(context).textTheme.bodyLarge),
+          ),
+          TextButton(
+            onPressed: enabled ? onPickDate : null,
+            child: Text(stopDate == null ? 'Set' : 'Change'),
+          ),
+          if (stopDate != null)
+            TextButton(
+              onPressed: enabled ? onClearDate : null,
+              child: const Text('Clear'),
+            ),
+        ],
+      ),
+    );
+  }
+
+  String _formatDate(DateTime date) {
+    final month = date.month.toString().padLeft(2, '0');
+    final day = date.day.toString().padLeft(2, '0');
+    return '${date.year}-$month-$day';
   }
 }

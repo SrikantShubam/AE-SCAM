@@ -3,7 +3,7 @@ class AppConstants {
 
   static const String appName = 'Guardian';
   static const String databaseName = 'guardian_local.db';
-  static const int databaseVersion = 5;
+  static const int databaseVersion = 6;
 
   static const double minimumButtonHeight = 56;
   static const double screenPadding = 24;

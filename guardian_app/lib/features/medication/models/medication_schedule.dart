@@ -14,9 +14,8 @@ enum MedicationWeekday {
   static MedicationWeekday fromCode(String rawCode) {
     return MedicationWeekday.values.firstWhere(
       (value) => value.code == rawCode,
-      orElse: () => throw FormatException(
-        'Invalid medication weekday code: $rawCode',
-      ),
+      orElse: () =>
+          throw FormatException('Invalid medication weekday code: $rawCode'),
     );
   }
 }
@@ -30,7 +29,8 @@ class MedicationSchedule {
     required this.doseTimes,
     required this.activeDays,
     required this.alarmEscalationEnabled,
-    required this.isActive,
+    this.stopDate,
+    this.note,
     this.createdAt,
     this.updatedAt,
   });
@@ -42,7 +42,8 @@ class MedicationSchedule {
   final List<String> doseTimes;
   final Set<MedicationWeekday> activeDays;
   final bool alarmEscalationEnabled;
-  final bool isActive;
+  final DateTime? stopDate;
+  final String? note;
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
@@ -54,7 +55,8 @@ class MedicationSchedule {
     List<String>? doseTimes,
     Set<MedicationWeekday>? activeDays,
     bool? alarmEscalationEnabled,
-    bool? isActive,
+    DateTime? stopDate,
+    String? note,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -67,7 +69,8 @@ class MedicationSchedule {
       activeDays: activeDays ?? this.activeDays,
       alarmEscalationEnabled:
           alarmEscalationEnabled ?? this.alarmEscalationEnabled,
-      isActive: isActive ?? this.isActive,
+      stopDate: stopDate ?? this.stopDate,
+      note: note ?? this.note,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );
@@ -85,7 +88,8 @@ class MedicationSchedule {
       'dose_times': doseTimes.join(','),
       'active_days': activeDays.map((day) => day.code).join(','),
       'alarm_escalation_enabled': alarmEscalationEnabled ? 1 : 0,
-      'is_active': isActive ? 1 : 0,
+      'stop_date': stopDate?.toUtc().millisecondsSinceEpoch,
+      'note': note,
       'created_at': createdAt.toUtc().millisecondsSinceEpoch,
       'updated_at': updatedAt.toUtc().millisecondsSinceEpoch,
     };
@@ -110,7 +114,8 @@ class MedicationSchedule {
       activeDays: activeDayCodes.map(MedicationWeekday.fromCode).toSet(),
       alarmEscalationEnabled:
           ((row['alarm_escalation_enabled'] as num?)?.toInt() ?? 0) == 1,
-      isActive: ((row['is_active'] as num?)?.toInt() ?? 0) == 1,
+      stopDate: _fromEpoch(row['stop_date']),
+      note: row['note'] as String?,
       createdAt: _fromEpoch(row['created_at']),
       updatedAt: _fromEpoch(row['updated_at']),
     );
