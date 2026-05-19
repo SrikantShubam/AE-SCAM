@@ -4,9 +4,61 @@ import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.ZoneId
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Test
 
 class MedicationAlarmNativeSchedulerTest {
+    @Test
+    fun `schedule loader uses no selection when schema has no is_active column`() {
+        assertNull(
+            MedicationAlarmNativeScheduler.activeScheduleSelection(
+                columnNames = setOf("id", "name", "dosage", "dose_times", "active_days"),
+            ),
+        )
+    }
+
+    @Test
+    fun `schedule loader parses current schema rows and skips invalid entries`() {
+        val valid = MedicationAlarmNativeScheduler.parseScheduleRow(
+            idRaw = "med-1",
+            nameRaw = "Aspirin",
+            dosageRaw = "1 tablet",
+            doseTimesRaw = "08:00,20:30",
+            activeDaysRaw = "mon,wed",
+        )
+        val blankId = MedicationAlarmNativeScheduler.parseScheduleRow(
+            idRaw = " ",
+            nameRaw = "Blank Id",
+            dosageRaw = "1",
+            doseTimesRaw = "08:00",
+            activeDaysRaw = "mon",
+        )
+        val badTimes = MedicationAlarmNativeScheduler.parseScheduleRow(
+            idRaw = "med-2",
+            nameRaw = "Bad Time",
+            dosageRaw = "1",
+            doseTimesRaw = "not-a-time",
+            activeDaysRaw = "mon",
+        )
+        val badDays = MedicationAlarmNativeScheduler.parseScheduleRow(
+            idRaw = "med-3",
+            nameRaw = "Bad Days",
+            dosageRaw = "1",
+            doseTimesRaw = "08:00",
+            activeDaysRaw = "noday",
+        )
+
+        requireNotNull(valid)
+        assertEquals("med-1", valid.id)
+        assertEquals("Aspirin", valid.name)
+        assertEquals("1 tablet", valid.dosage)
+        assertEquals(listOf(LocalTime.of(8, 0), LocalTime.of(20, 30)), valid.clockTimes)
+        assertEquals(setOf(1, 3), valid.activeIsoWeekdays)
+        assertNull(blankId)
+        assertNull(badTimes)
+        assertNull(badDays)
+    }
+
     @Test
     fun `primeWindowCore creates dose-event entries and schedules level1 plus level3 alarms`() {
         val zone = ZoneId.of("UTC")
@@ -36,7 +88,7 @@ class MedicationAlarmNativeSchedulerTest {
             createDoseEventIfMissing = { scheduleId, eventAtMs ->
                 createdEvents.add(scheduleId to eventAtMs)
             },
-            scheduleTrigger = { occurrenceId, triggerId, stage, triggerAtMs, medicationName, dosage ->
+            scheduleTrigger = { occurrenceId, triggerId, stage, triggerAtMs, medicationName, dosage, note ->
                 triggers.add(
                     mapOf(
                         "occurrenceId" to occurrenceId,
@@ -45,6 +97,7 @@ class MedicationAlarmNativeSchedulerTest {
                         "triggerAtMs" to triggerAtMs,
                         "medicationName" to medicationName,
                         "dosage" to dosage,
+                        "note" to note,
                     ),
                 )
             },
@@ -96,7 +149,46 @@ class MedicationAlarmNativeSchedulerTest {
             createDoseEventIfMissing = { scheduleId, eventAtMs ->
                 createdEvents.add(scheduleId to eventAtMs)
             },
-            scheduleTrigger = { _, _, _, _, _, _ -> triggerCount += 1 },
+            scheduleTrigger = { _, _, _, _, _, _, _ -> triggerCount += 1 },
+        )
+
+        assertEquals(emptyList<Pair<String, Long>>(), createdEvents)
+        assertEquals(0, triggerCount)
+    }
+
+    @Test
+    fun `primeWindowCore skips schedules after stop date`() {
+        val zone = ZoneId.of("UTC")
+        val mondayMorningMs = LocalDateTime.of(2024, 3, 11, 8, 0)
+            .atZone(zone)
+            .toInstant()
+            .toEpochMilli()
+        val sundayStopDateMs = LocalDateTime.of(2024, 3, 10, 0, 0)
+            .atZone(zone)
+            .toInstant()
+            .toEpochMilli()
+
+        val createdEvents = mutableListOf<Pair<String, Long>>()
+        var triggerCount = 0
+
+        MedicationAlarmNativeScheduler.primeWindowCore(
+            fromEpochMs = mondayMorningMs - (60L * 60L * 1000L),
+            untilEpochMs = mondayMorningMs + (60L * 60L * 1000L),
+            zoneId = zone,
+            schedules = listOf(
+                MedicationAlarmNativeScheduler.ScheduleRow(
+                    id = "med-expired",
+                    name = "Expired",
+                    dosage = "1 tablet",
+                    clockTimes = listOf(LocalTime.of(8, 0)),
+                    activeIsoWeekdays = setOf(1),
+                    stopDateEpochMs = sundayStopDateMs,
+                ),
+            ),
+            createDoseEventIfMissing = { scheduleId, eventAtMs ->
+                createdEvents.add(scheduleId to eventAtMs)
+            },
+            scheduleTrigger = { _, _, _, _, _, _, _ -> triggerCount += 1 },
         )
 
         assertEquals(emptyList<Pair<String, Long>>(), createdEvents)

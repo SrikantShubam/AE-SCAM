@@ -79,6 +79,9 @@ class LocalDb {
           if (oldVersion < 6) {
             await _migrateMedicationSchedulesToV6(db);
           }
+          if (oldVersion < 7) {
+            await _migrateMedicationDoseEventsToV7(db);
+          }
         },
       ),
     );
@@ -135,6 +138,7 @@ class LocalDb {
         scheduled_at INTEGER NOT NULL,
         status TEXT NOT NULL,
         escalation_level INTEGER NOT NULL DEFAULT 1,
+        skip_reason TEXT,
         reminder_sent_at INTEGER,
         acted_at INTEGER,
         created_at INTEGER NOT NULL,
@@ -284,6 +288,14 @@ class LocalDb {
     } finally {
       await db.execute('PRAGMA foreign_keys = ON');
     }
+  }
+
+  Future<void> _migrateMedicationDoseEventsToV7(DatabaseExecutor db) async {
+    try {
+      await db.execute(
+        'ALTER TABLE medication_dose_events ADD COLUMN skip_reason TEXT',
+      );
+    } catch (_) {}
   }
 
   Future<void> _createScamTemplateTable(DatabaseExecutor db) async {

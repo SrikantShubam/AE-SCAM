@@ -67,6 +67,7 @@ class MedicationRepository {
       scheduledAt: normalizedScheduledAt,
       status: MedicationDoseStatus.pending,
       escalationLevel: MedicationEscalationLevel.level1,
+      skipReason: null,
       reminderSentAt: null,
       actedAt: null,
       createdAt: now,
@@ -91,19 +92,26 @@ class MedicationRepository {
   Future<MedicationDoseEvent> markDoseEventStatus({
     required String eventId,
     required MedicationDoseStatus status,
+    String? skipReason,
   }) async {
     final actedAt = switch (status) {
       MedicationDoseStatus.pending || MedicationDoseStatus.alarmActive => null,
       MedicationDoseStatus.taken ||
       MedicationDoseStatus.skipped => DateTime.now().toUtc(),
     };
-    return updateDoseEvent(eventId: eventId, status: status, actedAt: actedAt);
+    return updateDoseEvent(
+      eventId: eventId,
+      status: status,
+      skipReason: skipReason,
+      actedAt: actedAt,
+    );
   }
 
   Future<MedicationDoseEvent> updateDoseEvent({
     required String eventId,
     MedicationDoseStatus? status,
     MedicationEscalationLevel? escalationLevel,
+    String? skipReason,
     DateTime? reminderSentAt,
     DateTime? actedAt,
   }) async {
@@ -115,6 +123,7 @@ class MedicationRepository {
     final updated = MedicationDoseEvent.fromDbRow(existing).copyWith(
       status: status,
       escalationLevel: escalationLevel,
+      skipReason: status == MedicationDoseStatus.taken ? null : skipReason,
       reminderSentAt: reminderSentAt,
       actedAt: actedAt,
       updatedAt: now,

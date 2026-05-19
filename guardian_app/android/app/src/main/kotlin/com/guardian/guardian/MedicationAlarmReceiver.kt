@@ -24,6 +24,7 @@ class MedicationAlarmReceiver : BroadcastReceiver() {
         val triggerAtMs = intent.getLongExtra(EXTRA_TRIGGER_AT_MS, 0L)
         val medicationName = intent.getStringExtra(EXTRA_MEDICATION_NAME).orEmpty()
         val dosage = intent.getStringExtra(EXTRA_DOSAGE).orEmpty()
+        val note = intent.getStringExtra(EXTRA_NOTE).orEmpty()
         val scheduledDeltaMinutes = if (triggerAtMs > 0L) {
             (System.currentTimeMillis() - triggerAtMs) / 60_000L
         } else {
@@ -82,6 +83,7 @@ class MedicationAlarmReceiver : BroadcastReceiver() {
                     putExtra(EXTRA_MEDICATION_NAME, medicationName)
                     putExtra(EXTRA_DOSAGE, dosage)
                     putExtra(EXTRA_OCCURRENCE_ID, occurrenceId)
+                    putExtra(EXTRA_NOTE, note)
                 },
                 PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
             )
@@ -131,6 +133,7 @@ class MedicationAlarmReceiver : BroadcastReceiver() {
         const val EXTRA_TRIGGER_AT_MS = "trigger_at_ms"
         const val EXTRA_MEDICATION_NAME = "medication_name"
         const val EXTRA_DOSAGE = "dosage"
+        const val EXTRA_NOTE = "note"
         private const val CHANNEL_ID = "medication_reminder"
     }
 }

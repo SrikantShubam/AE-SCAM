@@ -43,6 +43,7 @@ class MedicationDoseEvent {
     required this.scheduledAt,
     required this.status,
     required this.escalationLevel,
+    required this.skipReason,
     required this.reminderSentAt,
     required this.actedAt,
     required this.createdAt,
@@ -54,6 +55,7 @@ class MedicationDoseEvent {
   final DateTime scheduledAt;
   final MedicationDoseStatus status;
   final MedicationEscalationLevel escalationLevel;
+  final String? skipReason;
   final DateTime? reminderSentAt;
   final DateTime? actedAt;
   final DateTime createdAt;
@@ -65,6 +67,7 @@ class MedicationDoseEvent {
     DateTime? scheduledAt,
     MedicationDoseStatus? status,
     MedicationEscalationLevel? escalationLevel,
+    Object? skipReason = _unset,
     DateTime? reminderSentAt,
     DateTime? actedAt,
     DateTime? createdAt,
@@ -76,6 +79,9 @@ class MedicationDoseEvent {
       scheduledAt: scheduledAt ?? this.scheduledAt,
       status: status ?? this.status,
       escalationLevel: escalationLevel ?? this.escalationLevel,
+      skipReason: identical(skipReason, _unset)
+          ? this.skipReason
+          : skipReason as String?,
       reminderSentAt: reminderSentAt ?? this.reminderSentAt,
       actedAt: actedAt ?? this.actedAt,
       createdAt: createdAt ?? this.createdAt,
@@ -90,6 +96,7 @@ class MedicationDoseEvent {
       'scheduled_at': scheduledAt.toUtc().millisecondsSinceEpoch,
       'status': status.code,
       'escalation_level': escalationLevel.value,
+      'skip_reason': skipReason,
       'reminder_sent_at': reminderSentAt?.toUtc().millisecondsSinceEpoch,
       'acted_at': actedAt?.toUtc().millisecondsSinceEpoch,
       'created_at': createdAt.toUtc().millisecondsSinceEpoch,
@@ -106,6 +113,7 @@ class MedicationDoseEvent {
       escalationLevel: MedicationEscalationLevel.fromValue(
         (row['escalation_level'] as num).toInt(),
       ),
+      skipReason: row['skip_reason'] as String?,
       reminderSentAt: _optionalEpoch(row['reminder_sent_at']),
       actedAt: _optionalEpoch(row['acted_at']),
       createdAt: _requiredEpoch(row['created_at']),
@@ -119,6 +127,8 @@ class MedicationDoseEvent {
       isUtc: true,
     );
   }
+
+  static const Object _unset = Object();
 
   static DateTime? _optionalEpoch(Object? value) {
     final epoch = (value as num?)?.toInt();

@@ -47,6 +47,7 @@ void main() {
       scheduledAt: DateTime.utc(2026, 4, 10, 8, 0),
       status: MedicationDoseStatus.pending,
       escalationLevel: MedicationEscalationLevel.level1,
+      skipReason: null,
       reminderSentAt: now,
       actedAt: null,
       createdAt: now,
@@ -94,6 +95,7 @@ void main() {
         'scheduled_at': 1,
         'status': 'pending',
         'escalation_level': 4,
+        'skip_reason': null,
         'reminder_sent_at': null,
         'acted_at': null,
         'created_at': 1,
@@ -101,5 +103,63 @@ void main() {
       }),
       throwsFormatException,
     );
+  });
+
+  test('copyWith can clear nullable stopDate and note fields', () {
+    final original = MedicationSchedule(
+      id: 'schedule-1',
+      name: 'Amlodipine',
+      dosage: '1 tablet',
+      purpose: 'Blood pressure',
+      doseTimes: <String>['08:00', '20:00'],
+      activeDays: <MedicationWeekday>{
+        MedicationWeekday.mon,
+        MedicationWeekday.wed,
+        MedicationWeekday.fri,
+      },
+      alarmEscalationEnabled: true,
+      stopDate: DateTime.utc(2026, 4, 30),
+      note: 'Give with food',
+      createdAt: DateTime.utc(2026, 4, 10, 8, 30),
+      updatedAt: DateTime.utc(2026, 4, 10, 8, 45),
+    );
+
+    final updated = original.copyWith(stopDate: null, note: null);
+
+    expect(updated.stopDate, isNull);
+    expect(updated.note, isNull);
+
+    expect(updated.id, original.id);
+    expect(updated.name, original.name);
+    expect(updated.dosage, original.dosage);
+    expect(updated.purpose, original.purpose);
+    expect(updated.doseTimes, original.doseTimes);
+    expect(updated.activeDays, original.activeDays);
+    expect(
+      updated.alarmEscalationEnabled,
+      original.alarmEscalationEnabled,
+    );
+    expect(updated.createdAt, original.createdAt);
+    expect(updated.updatedAt, original.updatedAt);
+  });
+
+  test('copyWith preserves nullable stopDate and note when omitted', () {
+    final original = MedicationSchedule(
+      id: 'schedule-1',
+      name: 'Amlodipine',
+      dosage: '1 tablet',
+      purpose: 'Blood pressure',
+      doseTimes: <String>['08:00'],
+      activeDays: <MedicationWeekday>{MedicationWeekday.mon},
+      alarmEscalationEnabled: true,
+      stopDate: DateTime.utc(2026, 4, 30),
+      note: 'Give with food',
+    );
+
+    final updated = original.copyWith(name: 'Amlodipine updated');
+
+    expect(updated.name, 'Amlodipine updated');
+    expect(updated.stopDate, original.stopDate);
+    expect(updated.note, original.note);
   });
 }

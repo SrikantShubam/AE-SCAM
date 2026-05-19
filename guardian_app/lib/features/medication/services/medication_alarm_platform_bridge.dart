@@ -43,6 +43,7 @@ class MedicationAlarmPlatformBridge {
       'triggerAtMs': trigger.triggerAt.millisecondsSinceEpoch,
       'medicationName': occurrence.medicationName,
       'dosage': occurrence.dosage,
+      'note': occurrence.note ?? '',
     });
   }
 

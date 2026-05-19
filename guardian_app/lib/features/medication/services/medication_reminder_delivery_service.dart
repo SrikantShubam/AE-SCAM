@@ -52,6 +52,7 @@ class MedicationReminderDeliveryService {
       medicationName: '',
       dosage: '',
       scheduledAt: event.scheduledAt.toLocal(),
+      note: null,
     );
     final status = _toAcknowledgementStatus(event.status);
     final previousStage = _toReminderStage(event.escalationLevel);
@@ -122,6 +123,7 @@ class MedicationReminderDeliveryService {
       activeWeekdays: weekdays,
       timesOfDay: times,
       stopDate: schedule.stopDate?.toLocal(),
+      note: schedule.note,
     );
   }
 

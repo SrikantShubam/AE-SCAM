@@ -98,6 +98,34 @@ void main() {
       expect(updated.actedAt, isNotNull);
     });
 
+    test('persists optional skip reason when dose is skipped', () async {
+      await repository.upsertSchedule(
+        MedicationSchedule(
+          id: 'sched-skip',
+          name: 'Aspirin',
+          dosage: '1 tablet',
+          purpose: null,
+          doseTimes: const <String>['08:00'],
+          activeDays: const <MedicationWeekday>{MedicationWeekday.fri},
+          alarmEscalationEnabled: true,
+        ),
+      );
+
+      final created = await repository.createDoseEvent(
+        scheduleId: 'sched-skip',
+        scheduledAt: DateTime.utc(2026, 4, 10, 8, 0),
+      );
+
+      final skipped = await repository.markDoseEventStatus(
+        eventId: created.id,
+        status: MedicationDoseStatus.skipped,
+        skipReason: 'Out of supply',
+      );
+
+      expect(skipped.status, MedicationDoseStatus.skipped);
+      expect(skipped.skipReason, 'Out of supply');
+    });
+
     test('create dose event is idempotent for schedule and slot', () async {
       await repository.upsertSchedule(
         MedicationSchedule(

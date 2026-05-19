@@ -105,7 +105,7 @@ class MainActivity : FlutterActivity() {
                     val stage = call.argument<String>("stage")
                     val triggerAtMs = call.argument<Number>("triggerAtMs")?.toLong()
                     val medicationName = call.argument<String>("medicationName").orEmpty()
-                    val dosage = call.argument<String>("dosage").orEmpty()
+                    val dosage = call.argument<String>("dosage").orEmpty()`r`n                    val note = call.argument<String>("note").orEmpty()
 
                     if (
                         occurrenceId.isNullOrBlank() ||
@@ -127,7 +127,7 @@ class MainActivity : FlutterActivity() {
                         stage = stage,
                         triggerAtMs = triggerAtMs,
                         medicationName = medicationName,
-                        dosage = dosage,
+                        dosage = dosage,`r`n            note = note,`r`n                        note = note,
                     )
                     result.success(true)
                 }
@@ -195,7 +195,7 @@ class MainActivity : FlutterActivity() {
         stage: String,
         triggerAtMs: Long,
         medicationName: String,
-        dosage: String,
+        dosage: String,`r`n        note: String,
     ) {
         MedicationAlarmNativeScheduler.scheduleTrigger(
             context = this,
@@ -204,7 +204,7 @@ class MainActivity : FlutterActivity() {
             stage = stage,
             triggerAtMs = triggerAtMs,
             medicationName = medicationName,
-            dosage = dosage,
+            dosage = dosage,`r`n            note = note,
         )
     }
 

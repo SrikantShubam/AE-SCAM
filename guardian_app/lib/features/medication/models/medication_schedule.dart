@@ -47,6 +47,8 @@ class MedicationSchedule {
   final DateTime? createdAt;
   final DateTime? updatedAt;
 
+  static const Object _unset = Object();
+
   MedicationSchedule copyWith({
     String? id,
     String? name,
@@ -55,8 +57,8 @@ class MedicationSchedule {
     List<String>? doseTimes,
     Set<MedicationWeekday>? activeDays,
     bool? alarmEscalationEnabled,
-    DateTime? stopDate,
-    String? note,
+    Object? stopDate = _unset,
+    Object? note = _unset,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) {
@@ -69,8 +71,10 @@ class MedicationSchedule {
       activeDays: activeDays ?? this.activeDays,
       alarmEscalationEnabled:
           alarmEscalationEnabled ?? this.alarmEscalationEnabled,
-      stopDate: stopDate ?? this.stopDate,
-      note: note ?? this.note,
+      stopDate: identical(stopDate, _unset)
+          ? this.stopDate
+          : stopDate as DateTime?,
+      note: identical(note, _unset) ? this.note : note as String?,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
     );

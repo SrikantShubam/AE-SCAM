@@ -47,6 +47,7 @@ class MedicationReminderService {
               medicationName: schedule.medicationName,
               dosage: schedule.dosage,
               scheduledAt: scheduledAt,
+              note: schedule.note,
             ),
           );
         }

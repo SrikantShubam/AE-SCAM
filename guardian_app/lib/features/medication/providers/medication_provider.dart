@@ -106,10 +106,12 @@ class MedicationController {
   Future<MedicationDoseEvent> markDoseEventStatus({
     required String eventId,
     required MedicationDoseStatus status,
+    String? skipReason,
   }) async {
     final updated = await _repository.markDoseEventStatus(
       eventId: eventId,
       status: status,
+      skipReason: skipReason,
     );
     _invalidateDoseQueries();
     return updated;
@@ -119,6 +121,7 @@ class MedicationController {
     required String eventId,
     MedicationDoseStatus? status,
     MedicationEscalationLevel? escalationLevel,
+    String? skipReason,
     DateTime? reminderSentAt,
     DateTime? actedAt,
   }) async {
@@ -126,6 +129,7 @@ class MedicationController {
       eventId: eventId,
       status: status,
       escalationLevel: escalationLevel,
+      skipReason: skipReason,
       reminderSentAt: reminderSentAt,
       actedAt: actedAt,
     );

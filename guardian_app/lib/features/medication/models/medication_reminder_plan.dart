@@ -20,6 +20,7 @@ class MedicationReminderSchedule {
     required this.activeWeekdays,
     required this.timesOfDay,
     this.stopDate,
+    this.note,
   }) {
     if (activeWeekdays.isEmpty) {
       throw ArgumentError.value(
@@ -53,6 +54,7 @@ class MedicationReminderSchedule {
   final Set<int> activeWeekdays;
   final List<ReminderClockTime> timesOfDay;
   final DateTime? stopDate;
+  final String? note;
 }
 
 class MedicationDoseOccurrence {
@@ -62,6 +64,7 @@ class MedicationDoseOccurrence {
     required this.medicationName,
     required this.dosage,
     required this.scheduledAt,
+    this.note,
   });
 
   final String occurrenceId;
@@ -69,6 +72,7 @@ class MedicationDoseOccurrence {
   final String medicationName;
   final String dosage;
   final DateTime scheduledAt;
+  final String? note;
 }
 
 enum ReminderEscalationStage { none, level1InAppReminder, level3Alarm }

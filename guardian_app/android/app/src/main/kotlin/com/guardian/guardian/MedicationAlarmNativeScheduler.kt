@@ -38,6 +38,7 @@ object MedicationAlarmNativeScheduler {
         triggerAtMs: Long,
         medicationName: String,
         dosage: String,
+        note: String,
     ) {
         val alarmManager = context.getSystemService<AlarmManager>() ?: return
         val pendingIntent = PendingIntent.getBroadcast(
@@ -51,6 +52,7 @@ object MedicationAlarmNativeScheduler {
                 putExtra(MedicationAlarmReceiver.EXTRA_TRIGGER_AT_MS, triggerAtMs)
                 putExtra(MedicationAlarmReceiver.EXTRA_MEDICATION_NAME, medicationName)
                 putExtra(MedicationAlarmReceiver.EXTRA_DOSAGE, dosage)
+                putExtra(MedicationAlarmReceiver.EXTRA_NOTE, note)
             },
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE,
         )
@@ -136,7 +138,7 @@ object MedicationAlarmNativeScheduler {
                         scheduledAtMs = scheduledAtMs,
                     )
                 },
-                scheduleTrigger = { occurrenceId, triggerId, stage, triggerAtMs, medicationName, dosage ->
+                scheduleTrigger = { occurrenceId, triggerId, stage, triggerAtMs, medicationName, dosage, note ->
                     scheduleTrigger(
                         context = context,
                         occurrenceId = occurrenceId,
@@ -145,6 +147,7 @@ object MedicationAlarmNativeScheduler {
                         triggerAtMs = triggerAtMs,
                         medicationName = medicationName,
                         dosage = dosage,
+                        note = note,
                     )
                 },
             )
@@ -164,6 +167,7 @@ object MedicationAlarmNativeScheduler {
             triggerAtMs: Long,
             medicationName: String,
             dosage: String,
+            note: String,
         ) -> Unit,
     ) {
         val fromLocal = Instant.ofEpochMilli(fromEpochMs).atZone(zoneId).toLocalDateTime()
@@ -175,6 +179,12 @@ object MedicationAlarmNativeScheduler {
             val isoWeekday = dateCursor.dayOfWeek.value
             schedules.forEach { schedule ->
                 if (!schedule.activeIsoWeekdays.contains(isoWeekday)) {
+                    return@forEach
+                }
+                val stopDate = schedule.stopDateEpochMs?.let {
+                    Instant.ofEpochMilli(it).atZone(zoneId).toLocalDate()
+                }
+                if (stopDate != null && dateCursor.isAfter(stopDate)) {
                     return@forEach
                 }
 
@@ -194,6 +204,7 @@ object MedicationAlarmNativeScheduler {
                         scheduledAtMs,
                         schedule.name,
                         schedule.dosage,
+                        schedule.note.orEmpty(),
                     )
                     scheduleTrigger(
                         occurrenceId,
@@ -202,6 +213,7 @@ object MedicationAlarmNativeScheduler {
                         scheduledAtMs + level3DelayMs,
                         schedule.name,
                         schedule.dosage,
+                        schedule.note.orEmpty(),
                     )
                 }
             }
@@ -239,42 +251,85 @@ object MedicationAlarmNativeScheduler {
     }
 
     private fun loadActiveSchedules(database: SQLiteDatabase): List<ScheduleRow> {
-        val rows = mutableListOf<ScheduleRow>()
+        val selection = activeScheduleSelection(loadMedicationScheduleColumnNames(database))
         val cursor = database.query(
             "medication_schedules",
-            arrayOf("id", "name", "dosage", "dose_times", "active_days"),
-            "is_active = 1",
+                arrayOf("id", "name", "dosage", "dose_times", "active_days", "stop_date", "note"),
+            selection,
             null,
             null,
             null,
             null,
         )
         cursor.use { c ->
-            while (c.moveToNext()) {
-                val id = c.getStringByName("id")?.trim().orEmpty()
-                if (id.isEmpty()) {
-                    continue
-                }
-                val name = c.getStringByName("name")?.trim().orEmpty()
-                val dosage = c.getStringByName("dosage")?.trim().orEmpty()
-                val times = parseClockTimes(c.getStringByName("dose_times"))
-                val weekdays = parseIsoWeekdays(c.getStringByName("active_days"))
-                if (times.isEmpty() || weekdays.isEmpty()) {
-                    continue
-                }
+            return readScheduleRowsFromCursor(c)
+        }
+    }
 
-                rows.add(
-                    ScheduleRow(
-                        id = id,
-                        name = name,
-                        dosage = dosage,
-                        clockTimes = times,
-                        activeIsoWeekdays = weekdays,
-                    ),
-                )
+    private fun loadMedicationScheduleColumnNames(database: SQLiteDatabase): Set<String> {
+        val cursor = database.rawQuery("PRAGMA table_info(medication_schedules)", null)
+        cursor.use { c ->
+            val names = mutableSetOf<String>()
+            while (c.moveToNext()) {
+                c.getStringByName("name")?.trim()?.lowercase()?.let { columnName ->
+                    if (columnName.isNotEmpty()) {
+                        names.add(columnName)
+                    }
+                }
             }
+            return names
+        }
+    }
+
+    internal fun activeScheduleSelection(columnNames: Set<String>): String? {
+        return if (columnNames.contains("is_active")) "is_active = 1" else null
+    }
+
+    internal fun readScheduleRowsFromCursor(cursor: Cursor): List<ScheduleRow> {
+        val rows = mutableListOf<ScheduleRow>()
+        while (cursor.moveToNext()) {
+            parseScheduleRow(
+                idRaw = cursor.getStringByName("id"),
+                nameRaw = cursor.getStringByName("name"),
+                dosageRaw = cursor.getStringByName("dosage"),
+                doseTimesRaw = cursor.getStringByName("dose_times"),
+                activeDaysRaw = cursor.getStringByName("active_days"),
+                stopDateEpochMs = cursor.getLongByName("stop_date"),
+                noteRaw = cursor.getStringByName("note"),
+            )?.let(rows::add)
         }
         return rows
+    }
+
+    internal fun parseScheduleRow(
+        idRaw: String?,
+        nameRaw: String?,
+        dosageRaw: String?,
+        doseTimesRaw: String?,
+        activeDaysRaw: String?,
+        stopDateEpochMs: Long? = null,
+        noteRaw: String? = null,
+    ): ScheduleRow? {
+        val id = idRaw?.trim().orEmpty()
+        if (id.isEmpty()) {
+            return null
+        }
+        val name = nameRaw?.trim().orEmpty()
+        val dosage = dosageRaw?.trim().orEmpty()
+        val times = parseClockTimes(doseTimesRaw)
+        val weekdays = parseIsoWeekdays(activeDaysRaw)
+        if (times.isEmpty() || weekdays.isEmpty()) {
+            return null
+        }
+        return ScheduleRow(
+            id = id,
+            name = name,
+            dosage = dosage,
+            clockTimes = times,
+            activeIsoWeekdays = weekdays,
+            stopDateEpochMs = stopDateEpochMs,
+            note = noteRaw?.trim()?.ifEmpty { null },
+        )
     }
 
     private fun parseClockTimes(raw: String?): List<LocalTime> {
@@ -320,11 +375,21 @@ object MedicationAlarmNativeScheduler {
         return getString(index)
     }
 
+    private fun Cursor.getLongByName(name: String): Long? {
+        val index = getColumnIndex(name)
+        if (index < 0 || isNull(index)) {
+            return null
+        }
+        return getLong(index)
+    }
+
     internal data class ScheduleRow(
         val id: String,
         val name: String,
         val dosage: String,
         val clockTimes: List<LocalTime>,
         val activeIsoWeekdays: Set<Int>,
+        val stopDateEpochMs: Long? = null,
+        val note: String? = null,
     )
 }
