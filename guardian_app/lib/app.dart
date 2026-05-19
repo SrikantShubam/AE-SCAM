@@ -11,6 +11,7 @@ import 'features/scam/services/scam_parent_warning_local_notifier.dart';
 import 'features/scam/services/scam_share_intent_bridge.dart';
 import 'features/scam/services/scam_share_intent_processor.dart';
 import 'features/scam/services/scam_template_repository.dart';
+import 'features/scam/widgets/scam_language_scope_notice_host.dart';
 import 'features/protection/payment_protection_bridge.dart';
 import 'router/app_router.dart';
 
@@ -33,6 +34,8 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
       ScamCandidateRepository(localDb: LocalDb.instance);
   late final ScamConfirmedThreatHandler _confirmedThreatHandler =
       ScamConfirmedThreatHandler(notifier: LocalScamParentWarningNotifier());
+  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
+      GlobalKey<ScaffoldMessengerState>();
 
   bool _isHandlingShareIntent = false;
 
@@ -197,6 +200,11 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
       title: 'Guardian',
       debugShowCheckedModeBanner: false,
       routerConfig: appRouter,
+      scaffoldMessengerKey: _scaffoldMessengerKey,
+      builder: (context, child) => ScamLanguageScopeNoticeHost(
+        scaffoldMessengerKey: _scaffoldMessengerKey,
+        child: child ?? const SizedBox.shrink(),
+      ),
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: colorScheme,

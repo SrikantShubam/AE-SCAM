@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 
 import '../../../core/services/local_db.dart';
 import '../models/scam_template.dart';
+import 'scam_language_scope_guard.dart';
 
 class ScamTemplateRepository {
   ScamTemplateRepository({required LocalDb localDb}) : _localDb = localDb;
@@ -43,8 +44,7 @@ class ScamTemplateRepository {
     String language,
   ) async {
     final db = await _db;
-    final normalized = _normalizeLanguage(language);
-
+    final normalized = ScamLanguageScopeGuard.normalizeLanguageTag(language);
     final rows = await db.query(
       _tableName,
       where: 'enabled = 1 AND language = ?',
@@ -52,17 +52,5 @@ class ScamTemplateRepository {
       orderBy: 'updated_at DESC, id ASC',
     );
     return rows.map(ScamTemplate.fromDbRow).toList(growable: false);
-  }
-
-  String _normalizeLanguage(String language) {
-    final trimmed = language.trim().toLowerCase();
-    if (trimmed.isEmpty) {
-      return 'en';
-    }
-    final separatorIndex = trimmed.indexOf(RegExp(r'[-_]'));
-    if (separatorIndex <= 0) {
-      return trimmed;
-    }
-    return trimmed.substring(0, separatorIndex);
   }
 }
