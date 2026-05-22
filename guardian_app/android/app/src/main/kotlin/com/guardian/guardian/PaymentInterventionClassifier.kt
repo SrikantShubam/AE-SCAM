@@ -36,13 +36,19 @@ internal class PaymentInterventionClassifier {
         approvedRecipients: List<String>,
         previousRecipientHint: String?,
         previousUpiIdHint: String?,
+        visibleUrlThreat: String? = null,
     ): PaymentIntervention {
         val baseIntervention = analyzeScreen(
             appLabel = appLabel,
             screenChunks = screenChunks,
         )
-        val adjustedIntervention = maybePromoteForRecipientChange(
+        val urlAdjustedIntervention = maybePromoteForFlaggedUrl(
             intervention = baseIntervention,
+            appLabel = appLabel,
+            visibleUrlThreat = visibleUrlThreat,
+        )
+        val adjustedIntervention = maybePromoteForRecipientChange(
+            intervention = urlAdjustedIntervention,
             appLabel = appLabel,
             previousRecipientHint = previousRecipientHint,
             previousUpiIdHint = previousUpiIdHint,
@@ -51,6 +57,65 @@ internal class PaymentInterventionClassifier {
             intervention = adjustedIntervention,
             appLabel = appLabel,
             approvedRecipients = approvedRecipients,
+        )
+    }
+
+    private fun maybePromoteForFlaggedUrl(
+        intervention: PaymentIntervention,
+        appLabel: String,
+        visibleUrlThreat: String?,
+    ): PaymentIntervention {
+        if (!intervention.paymentContextDetected || !isFlaggedUrlThreat(visibleUrlThreat)) {
+            return intervention
+        }
+
+        val updatedSignals = intervention.matchedSignals.toMutableList()
+        if (!updatedSignals.contains("url_reputation_flagged")) {
+            updatedSignals.add("url_reputation_flagged")
+        }
+
+        val updatedReasons = intervention.reasons.toMutableList()
+        if (!updatedReasons.contains(KNOWN_PHISHING_REASON)) {
+            updatedReasons.add(KNOWN_PHISHING_REASON)
+        }
+
+        val updatedReviewTitle = buildReviewTitle(
+            appLabel = appLabel,
+            amountHint = intervention.detectedAmountHint,
+            recipientHint = intervention.detectedRecipientHint,
+            upiIdHint = intervention.detectedUpiIdHint,
+            isRed = true,
+            hasHighAmount = intervention.hasHighAmount,
+            hasSuspiciousLanguage = intervention.hasSuspiciousLanguage,
+            recipientRecentlyChanged = intervention.recipientRecentlyChanged,
+            recipientKnown = intervention.recipientKnown,
+        )
+        val baseReviewBody = buildReviewBody(
+            appLabel = appLabel,
+            amountHint = intervention.detectedAmountHint,
+            recipientHint = intervention.detectedRecipientHint,
+            upiIdHint = intervention.detectedUpiIdHint,
+            isRed = true,
+            hasHighAmount = intervention.hasHighAmount,
+            hasSuspiciousLanguage = intervention.hasSuspiciousLanguage,
+            recipientRecentlyChanged = intervention.recipientRecentlyChanged,
+            recipientKnown = intervention.recipientKnown,
+        )
+        val updatedReviewBody = if (baseReviewBody.contains(KNOWN_PHISHING_REASON)) {
+            baseReviewBody
+        } else {
+            "$baseReviewBody $KNOWN_PHISHING_REASON"
+        }
+
+        return intervention.copy(
+            state = "red",
+            matchedSignals = updatedSignals.distinct(),
+            reasons = updatedReasons.distinct(),
+            reviewTitle = updatedReviewTitle,
+            reviewBody = updatedReviewBody,
+            cooldownSeconds = PaymentProtectionStore.RED_COOLDOWN_SECONDS,
+            proceedLabel = "Yes, continue after cooldown",
+            safeExitLabel = "No, go back to safety",
         )
     }
 
@@ -681,7 +746,20 @@ internal class PaymentInterventionClassifier {
         return value.replace("\\s+".toRegex(), " ").trim()
     }
 
+    private fun isFlaggedUrlThreat(visibleUrlThreat: String?): Boolean {
+        return when (visibleUrlThreat?.trim()?.lowercase(Locale.US)) {
+            UrlReputationStore.THREAT_PHISHING,
+            UrlReputationStore.THREAT_MALWARE,
+            UrlReputationStore.THREAT_UNWANTED,
+            -> true
+
+            else -> false
+        }
+    }
+
     companion object {
+        private const val KNOWN_PHISHING_REASON = "This link appears on a known phishing list."
+
         private val PAYMENT_ACTION_PATTERNS = linkedMapOf(
             "payment_action" to listOf(
                 "pay",
@@ -794,4 +872,3 @@ internal class PaymentInterventionClassifier {
         private val AMOUNT_VALUE_REGEX = Pattern.compile("""([0-9][0-9,]*(?:\.\d{1,2})?)""")
     }
 }
-

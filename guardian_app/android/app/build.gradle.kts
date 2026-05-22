@@ -66,4 +66,5 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.google.code.gson:gson:2.11.0")
+    testImplementation("androidx.test:core:1.6.1")
 }

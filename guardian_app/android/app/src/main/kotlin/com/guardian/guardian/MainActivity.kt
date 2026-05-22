@@ -16,7 +16,7 @@ import io.flutter.plugin.common.MethodChannel
 class MainActivity : FlutterActivity() {
     companion object {
         private const val SETTINGS_CHANNEL = "com.guardian/settings"
-        private const val MEDICATION_ALARM_CHANNEL = "com.guardian/medication_alarm"
+        private const val MEDICATION_ALARM_CHANNEL = "com.guardian/medication_alarm"`r`n        private const val URL_REPUTATION_CHANNEL = "com.guardian/url_reputation"
         private const val SHARE_INTENT_CHANNEL = "com.guardian/scam_share_intent"
         private const val SCAM_NOTIFICATION_CHANNEL = "com.guardian/scam_notification_listener"
         private const val SCAM_NOTIFICATION_PREFS = "scam_notification_listener"
@@ -127,7 +127,7 @@ class MainActivity : FlutterActivity() {
                         stage = stage,
                         triggerAtMs = triggerAtMs,
                         medicationName = medicationName,
-                        dosage = dosage,`r`n            note = note,`r`n                        note = note,
+                        dosage = dosage,`r`n            note = note,
                     )
                     result.success(true)
                 }

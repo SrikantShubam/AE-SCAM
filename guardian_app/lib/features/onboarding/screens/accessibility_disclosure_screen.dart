@@ -181,6 +181,11 @@ class _AccessibilityDisclosureScreenState
                   text:
                       'On supported payment screens only: amount, recipient name, UPI ID, and payment note.',
                 ),
+                SizedBox(height: 12),
+                DisclosureBullet(
+                  text:
+                      'URL safety checks use Google Safe Browsing. URLs are checked locally against a downloaded list; full URLs are not sent to Google.',
+                ),
               ],
             ),
             const SizedBox(height: 16),

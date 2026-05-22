@@ -260,6 +260,8 @@ private fun PaymentIntervention.isOverlayCandidate(): Boolean {
 class GuardianAccessibilityService : AccessibilityService() {
     private lateinit var overlayController: PaymentInterventionOverlayController
     private val classifier = PaymentInterventionClassifier()
+    private val urlReputationStore by lazy { UrlReputationStore(this) }
+    private val urlThreatCache = LinkedHashMap<String, String>(32, 0.75f, true)
 
     override fun onServiceConnected() {
         super.onServiceConnected()
@@ -307,12 +309,14 @@ class GuardianAccessibilityService : AccessibilityService() {
         val approvedRecipients = PaymentProtectionStore.decodeList(
             prefs.getString(PaymentProtectionStore.KEY_APPROVED_RECIPIENTS, null),
         )
+        val visibleUrlThreat = lookupVisibleUrlThreat(extractVisibleUrl(screenChunks))
         val enrichedIntervention = classifier.analyze(
             appLabel = appLabel,
             screenChunks = screenChunks,
             approvedRecipients = approvedRecipients,
             previousRecipientHint = previousRecipientHint,
             previousUpiIdHint = previousUpiIdHint,
+            visibleUrlThreat = visibleUrlThreat,
         )
 
         prefs.edit()
@@ -499,6 +503,45 @@ class GuardianAccessibilityService : AccessibilityService() {
 
     private fun normalizeWhitespace(value: String): String {
         return value.replace("\\s+".toRegex(), " ").trim()
+    }
+
+    private fun extractVisibleUrl(screenChunks: List<String>): String? {
+        for (chunk in screenChunks) {
+            val match = URL_PATTERN.find(chunk) ?: continue
+            val candidate = match.value.trim().trimEnd('.', ',', ';', ':', ')', ']')
+            if (candidate.isNotEmpty()) {
+                return candidate
+            }
+        }
+        return null
+    }
+
+    private fun lookupVisibleUrlThreat(visibleUrl: String?): String? {
+        val raw = visibleUrl?.trim()
+        if (raw.isNullOrEmpty()) {
+            return null
+        }
+        val normalizedUrl = UrlReputationStore.normalizeUrl(raw) ?: raw.lowercase(Locale.US)
+        val cached = synchronized(urlThreatCache) { urlThreatCache[normalizedUrl] }
+        if (cached != null) {
+            return cached
+        }
+        val verdict = urlReputationStore.checkUrl(normalizedUrl)
+        synchronized(urlThreatCache) {
+            urlThreatCache[normalizedUrl] = verdict
+            while (urlThreatCache.size > MAX_URL_THREAT_CACHE_SIZE) {
+                val eldest = urlThreatCache.entries.iterator().next()
+                urlThreatCache.remove(eldest.key)
+            }
+        }
+        return verdict
+    }
+
+    companion object {
+        private const val MAX_URL_THREAT_CACHE_SIZE = 32
+        private val URL_PATTERN = Regex(
+            """(?i)\b(?:https?://)?(?:www\.)?[a-z0-9][a-z0-9-]{0,62}(?:\.[a-z0-9][a-z0-9-]{0,62})+(?:/[^\s]*)?""",
+        )
     }
 }
 

@@ -11,6 +11,30 @@ class PaymentInterventionClassifierTest {
     private val classifier = PaymentInterventionClassifier()
 
     @Test
+    fun `flagged visible url forces red state and phishing reason`() {
+        val result = classifier.analyze(
+            appLabel = "Google Pay",
+            screenChunks = listOf(
+                "Pay now",
+                "To",
+                "Anita Stores",
+                "Amount",
+                "Rs 500",
+                "https://bonus-pay.test/claim",
+            ),
+            approvedRecipients = listOf("anita stores"),
+            previousRecipientHint = "Anita Stores",
+            previousUpiIdHint = null,
+            visibleUrlThreat = UrlReputationStore.THREAT_PHISHING,
+        )
+
+        assertEquals("red", result.state)
+        assertTrue(result.matchedSignals.contains("url_reputation_flagged"))
+        assertTrue(result.reasons.contains("This link appears on a known phishing list."))
+        assertTrue(result.reviewBody.orEmpty().contains("This link appears on a known phishing list."))
+    }
+
+    @Test
     fun `fixture corpus validates expected state and flags`() {
         val fixtures = listOf(
             "01_gpay_legit_known_recipient.json",
