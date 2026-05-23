@@ -17,6 +17,13 @@ class MedicationAlarmReceiver : BroadcastReceiver() {
         if (intent?.action != ACTION_MEDICATION_TRIGGER) {
             return
         }
+        val prefs = context.getSharedPreferences(
+            PaymentProtectionStore.PREFS_NAME,
+            Context.MODE_PRIVATE,
+        )
+        if (prefs.getBoolean(PaymentProtectionStore.KEY_EMERGENCY_DISABLED, false)) {
+            return
+        }
 
         val occurrenceId = intent.getStringExtra(EXTRA_OCCURRENCE_ID) ?: return
         val triggerId = intent.getStringExtra(EXTRA_TRIGGER_ID) ?: return

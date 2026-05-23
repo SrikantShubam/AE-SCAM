@@ -15,6 +15,7 @@ import 'features/scam/services/scam_template_repository.dart';
 import 'features/scam/widgets/scam_language_scope_notice_host.dart';
 import 'features/protection/payment_protection_bridge.dart';
 import 'features/protection/services/diagnostics_service.dart';
+import 'features/protection/services/emergency_disable_sync_service.dart';
 import 'router/app_router.dart';
 
 class GuardianApp extends StatefulWidget {
@@ -37,6 +38,8 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
       ScamCandidateRepository(localDb: LocalDb.instance);
   late final ScamConfirmedThreatHandler _confirmedThreatHandler =
       ScamConfirmedThreatHandler(notifier: LocalScamParentWarningNotifier());
+  final EmergencyDisableSyncService _emergencyDisableSyncService =
+      EmergencyDisableSyncService();
   final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
@@ -51,6 +54,7 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
       _checkSharedIntentAndRoute,
     );
     WidgetsBinding.instance.addObserver(this);
+    _emergencyDisableSyncService.start();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkSharedIntentAndRoute();
     });
@@ -61,6 +65,7 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
     _shareIntentBridge.setOnSharedTextAvailable(null);
     _notificationListenerBridge.setOnNotificationPayloadAvailable(null);
     WidgetsBinding.instance.removeObserver(this);
+    _emergencyDisableSyncService.dispose();
     super.dispose();
   }
 
@@ -77,6 +82,9 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
     }
     _isHandlingShareIntent = true;
     try {
+      if (await _emergencyDisableSyncService.isEmergencyDisabled()) {
+        return;
+      }
       final localeTag = _currentLocaleTag();
 
       final route = await PaymentProtectionBridge.consumePendingNavigationRoute();

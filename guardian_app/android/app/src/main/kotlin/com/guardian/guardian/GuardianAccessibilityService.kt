@@ -73,6 +73,7 @@ internal object PaymentProtectionStore {
     const val KEY_HEALTH_WAS_ACCESSIBILITY_ENABLED = "health_was_accessibility_enabled"
     const val KEY_HEALTH_DISABLED_STREAK_START_MS = "health_disabled_streak_start_ms"
     const val KEY_HEALTH_DISABLED_NOTIFICATION_AT_MS = "health_disabled_notification_at_ms"
+    const val KEY_EMERGENCY_DISABLED = "emergency_disabled"
     const val MAX_APPROVED_RECIPIENTS = 8
     const val PROMOTION_REQUIRED_CLEAN_INTERACTIONS = 3
     const val RECENT_OUTCOME_WINDOW = 3
@@ -268,6 +269,10 @@ class GuardianAccessibilityService : AccessibilityService() {
 
     override fun onServiceConnected() {
         super.onServiceConnected()
+        val prefs = getSharedPreferences(PaymentProtectionStore.PREFS_NAME, Context.MODE_PRIVATE)
+        if (prefs.getBoolean(PaymentProtectionStore.KEY_EMERGENCY_DISABLED, false)) {
+            return
+        }
         overlayController = PaymentInterventionOverlayController(this)
     }
 
@@ -307,6 +312,12 @@ class GuardianAccessibilityService : AccessibilityService() {
             root?.recycle()
         }
         val prefs = getSharedPreferences(PaymentProtectionStore.PREFS_NAME, Context.MODE_PRIVATE)
+        if (prefs.getBoolean(PaymentProtectionStore.KEY_EMERGENCY_DISABLED, false)) {
+            if (::overlayController.isInitialized) {
+                overlayController.hide(via = "app_backgrounded")
+            }
+            return
+        }
         val previousRecipientHint = prefs.getString(PaymentProtectionStore.KEY_DETECTED_RECIPIENT, null)
         val previousUpiIdHint = prefs.getString(PaymentProtectionStore.KEY_DETECTED_UPI_ID, null)
         val approvedRecipients = PaymentProtectionStore.decodeList(

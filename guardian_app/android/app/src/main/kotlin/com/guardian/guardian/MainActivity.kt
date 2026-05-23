@@ -49,7 +49,9 @@ class MainActivity : FlutterActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         urlReputationStore = UrlReputationStore(this)
-        MedicationPrimeWorkScheduler.ensurePeriodic(this)
+        if (!isEmergencyDisabled()) {
+            MedicationPrimeWorkScheduler.ensurePeriodic(this)
+        }
         ServiceHealthWorkScheduler.ensurePeriodic(this)
         registerScamNotificationReceiver()
         captureNavigationRouteFromIntent(intent)
@@ -246,7 +248,7 @@ class MainActivity : FlutterActivity() {
             "accessibilityEvents" to decodeJsonObjectList(
                 prefs.getString(PaymentProtectionStore.KEY_ACCESSIBILITY_EVENT_SUMMARIES, null),
             ),
-            "emergencyDisabled" to prefs.getBoolean("emergency_disabled", false),
+            "emergencyDisabled" to prefs.getBoolean(PaymentProtectionStore.KEY_EMERGENCY_DISABLED, false),
         )
 
         prefs.getString("pair_id", null)?.let { payload["pairId"] = it }
@@ -282,6 +284,9 @@ class MainActivity : FlutterActivity() {
         dosage: String,
         note: String,
     ) {
+        if (isEmergencyDisabled()) {
+            return
+        }
         MedicationAlarmNativeScheduler.scheduleTrigger(
             context = this,
             occurrenceId = occurrenceId,
@@ -371,6 +376,7 @@ class MainActivity : FlutterActivity() {
     private fun getPaymentProtectionSnapshot(): Map<String, Any> {
         val prefs = getSharedPreferences(PaymentProtectionStore.PREFS_NAME, Context.MODE_PRIVATE)
         val serviceEnabled = isAccessibilityServiceEnabled()
+        val emergencyDisabled = prefs.getBoolean(PaymentProtectionStore.KEY_EMERGENCY_DISABLED, false)
         val lastPackageName = prefs.getString(PaymentProtectionStore.KEY_LAST_PACKAGE, null)
         val lastLabel = prefs.getString(PaymentProtectionStore.KEY_LAST_LABEL, null)
         val lastSeenAtMs = prefs.getLong(PaymentProtectionStore.KEY_LAST_SEEN_AT_MS, 0L)
@@ -456,6 +462,7 @@ class MainActivity : FlutterActivity() {
             now - lastSeenAtMs <= PaymentProtectionStore.WARNING_WINDOW_MS
 
         val state = when {
+            emergencyDisabled -> "inactive"
             !serviceEnabled -> "inactive"
             !isRecent -> "monitoring"
             storedState == "red" -> "red"
@@ -464,6 +471,7 @@ class MainActivity : FlutterActivity() {
         }
 
         val reasons = when {
+            emergencyDisabled -> listOf("Protection paused by caregiver.")
             !serviceEnabled -> listOf("Live payment protection is off.")
             storedReasons.isNotEmpty() && isRecent -> storedReasons
             lastLabel != null -> listOf(
@@ -494,6 +502,7 @@ class MainActivity : FlutterActivity() {
                 0
             },
             "warningWindowMs" to PaymentProtectionStore.WARNING_WINDOW_MS,
+            "emergencyDisabled" to emergencyDisabled,
         )
 
         if (lastPackageName != null) {
@@ -580,6 +589,11 @@ class MainActivity : FlutterActivity() {
             .putBoolean(PaymentProtectionStore.KEY_LAST_ESCALATION_PENDING, false)
             .apply()
         return true
+    }
+
+    private fun isEmergencyDisabled(): Boolean {
+        val prefs = getSharedPreferences(PaymentProtectionStore.PREFS_NAME, Context.MODE_PRIVATE)
+        return prefs.getBoolean(PaymentProtectionStore.KEY_EMERGENCY_DISABLED, false)
     }
 
     private fun consumePendingScamNotificationPayloadJson(): String? {

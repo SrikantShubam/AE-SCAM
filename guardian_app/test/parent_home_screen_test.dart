@@ -51,6 +51,7 @@ void main() {
                 'serviceEnabled': false,
                 'accessibilityHealthEnabled': false,
                 'state': 'inactive',
+                'emergencyDisabled': true,
                 'reasons': <String>['Live payment protection is off.'],
               };
             }
@@ -110,6 +111,7 @@ void main() {
 
       expect(find.text('Protection summary'), findsOneWidget);
       expect(find.text('Guardian payment protection paused'), findsOneWidget);
+      expect(find.text('Protection paused by caregiver'), findsOneWidget);
       expect(find.text('Medicine reminders'), findsOneWidget);
       expect(find.text('Open Android Accessibility settings'), findsOneWidget);
       expect(find.text('Open payment protection'), findsNothing);

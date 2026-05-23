@@ -43,6 +43,7 @@ class PaymentProtectionSnapshot {
     this.lastEscalationRecipientHint,
     this.lastEscalationUpiIdHint,
     this.lastEscalationPending = false,
+    this.emergencyDisabled = false,
   });
 
   final PaymentProtectionState state;
@@ -78,6 +79,7 @@ class PaymentProtectionSnapshot {
   final String? lastEscalationRecipientHint;
   final String? lastEscalationUpiIdHint;
   final bool lastEscalationPending;
+  final bool emergencyDisabled;
 
   bool get isInactive => state == PaymentProtectionState.inactive;
   bool get isMonitoring => state == PaymentProtectionState.monitoring;
@@ -168,6 +170,7 @@ class PaymentProtectionSnapshot {
           raw['lastEscalationRecipientHint'] as String?,
       lastEscalationUpiIdHint: raw['lastEscalationUpiIdHint'] as String?,
       lastEscalationPending: raw['lastEscalationPending'] as bool? ?? false,
+      emergencyDisabled: raw['emergencyDisabled'] as bool? ?? false,
     );
   }
 

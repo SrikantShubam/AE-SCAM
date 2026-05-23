@@ -9,6 +9,13 @@ class MedicationPrimeWorker(
     params: WorkerParameters,
 ) : CoroutineWorker(appContext, params) {
     override suspend fun doWork(): Result {
+        val prefs = applicationContext.getSharedPreferences(
+            PaymentProtectionStore.PREFS_NAME,
+            Context.MODE_PRIVATE,
+        )
+        if (prefs.getBoolean(PaymentProtectionStore.KEY_EMERGENCY_DISABLED, false)) {
+            return Result.success()
+        }
         return executePrimeWindow(
             nowEpochMs = System.currentTimeMillis(),
             runPrime = { fromEpochMs, untilEpochMs ->
