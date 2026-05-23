@@ -67,4 +67,17 @@ class PaymentProtectionBridge {
       return false;
     }
   }
+
+  static Future<Map<String, dynamic>> loadDiagnosticsSnapshot() async {
+    try {
+      final payload = await _channel.invokeMapMethod<String, dynamic>(
+        'getDiagnosticsSnapshot',
+      );
+      return payload ?? const <String, dynamic>{};
+    } on MissingPluginException {
+      return const <String, dynamic>{};
+    } on PlatformException {
+      return const <String, dynamic>{};
+    }
+  }
 }

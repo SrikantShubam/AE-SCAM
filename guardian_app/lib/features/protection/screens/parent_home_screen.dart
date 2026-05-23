@@ -13,6 +13,7 @@ import '../../medication/widgets/medication_reminder_section.dart';
 import '../../onboarding/services/battery_optimization_bridge.dart';
 import '../models/payment_protection_snapshot.dart';
 import '../payment_protection_bridge.dart';
+import '../services/diagnostics_gate.dart';
 
 class ParentHomeScreen extends StatefulWidget {
   const ParentHomeScreen({super.key});
@@ -30,6 +31,8 @@ class _ParentHomeScreenState extends State<ParentHomeScreen>
   late Future<PaymentProtectionSnapshot> _snapshotFuture;
   late final MedicationReminderDeliveryService _medicationDeliveryService;
   bool _showBatteryBanner = false;
+  int _logoTapCount = 0;
+  DateTime? _lastLogoTapAt;
 
   @override
   void initState() {
@@ -148,6 +151,23 @@ class _ParentHomeScreenState extends State<ParentHomeScreen>
     context.go('/home/parent');
   }
 
+  void _handleLogoTap() {
+    if (!kDiagnosticsEnabled) {
+      return;
+    }
+    final now = DateTime.now();
+    if (_lastLogoTapAt == null ||
+        now.difference(_lastLogoTapAt!) > const Duration(seconds: 3)) {
+      _logoTapCount = 0;
+    }
+    _lastLogoTapAt = now;
+    _logoTapCount += 1;
+    if (_logoTapCount >= 5) {
+      _logoTapCount = 0;
+      context.push('/debug/diagnostics');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -169,7 +189,7 @@ class _ParentHomeScreenState extends State<ParentHomeScreen>
                   vertical: 16,
                 ),
                 children: [
-                  _ParentHeader(onBack: _handleBack),
+                  _ParentHeader(onBack: _handleBack, onLogoTap: _handleLogoTap),
                   const SizedBox(height: 28),
                   _ParentHeroCard(data: data),
                   const SizedBox(height: 20),
@@ -223,9 +243,10 @@ class _ParentHomeScreenState extends State<ParentHomeScreen>
 }
 
 class _ParentHeader extends StatelessWidget {
-  const _ParentHeader({required this.onBack});
+  const _ParentHeader({required this.onBack, required this.onLogoTap});
 
   final VoidCallback onBack;
+  final VoidCallback onLogoTap;
 
   @override
   Widget build(BuildContext context) {
@@ -242,7 +263,14 @@ class _ParentHeader extends StatelessWidget {
           icon: const Icon(Icons.arrow_back_rounded),
         ),
         const SizedBox(width: 12),
-        Image.asset('assets/branding/guardian_logo.png', height: 48, width: 48),
+        GestureDetector(
+          onTap: onLogoTap,
+          child: Image.asset(
+            'assets/branding/guardian_logo.png',
+            height: 48,
+            width: 48,
+          ),
+        ),
         const SizedBox(width: 14),
         Expanded(
           child: Column(

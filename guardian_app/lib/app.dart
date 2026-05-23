@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'core/services/local_db.dart';
 import 'features/scam/models/scam_match_result.dart';
@@ -13,6 +14,7 @@ import 'features/scam/services/scam_share_intent_processor.dart';
 import 'features/scam/services/scam_template_repository.dart';
 import 'features/scam/widgets/scam_language_scope_notice_host.dart';
 import 'features/protection/payment_protection_bridge.dart';
+import 'features/protection/services/diagnostics_service.dart';
 import 'router/app_router.dart';
 
 class GuardianApp extends StatefulWidget {
@@ -23,6 +25,7 @@ class GuardianApp extends StatefulWidget {
 }
 
 class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
+  static const String _scamSeedAssetPath = 'assets/scam_templates/seed_en.json';
   final ScamShareIntentBridge _shareIntentBridge =
       MethodChannelScamShareIntentBridge();
   final ScamNotificationListenerBridge _notificationListenerBridge =
@@ -38,10 +41,15 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
       GlobalKey<ScaffoldMessengerState>();
 
   bool _isHandlingShareIntent = false;
+  bool _seedTemplatesHydrated = false;
 
   @override
   void initState() {
     super.initState();
+    _shareIntentBridge.setOnSharedTextAvailable(_checkSharedIntentAndRoute);
+    _notificationListenerBridge.setOnNotificationPayloadAvailable(
+      _checkSharedIntentAndRoute,
+    );
     WidgetsBinding.instance.addObserver(this);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkSharedIntentAndRoute();
@@ -50,6 +58,8 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
+    _shareIntentBridge.setOnSharedTextAvailable(null);
+    _notificationListenerBridge.setOnNotificationPayloadAvailable(null);
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -67,56 +77,77 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
     }
     _isHandlingShareIntent = true;
     try {
+      final localeTag = _currentLocaleTag();
+
       final route = await PaymentProtectionBridge.consumePendingNavigationRoute();
       if (route != null && mounted) {
         appRouter.go(route);
       }
 
+      await _ensureSeedTemplatesHydrated();
       final sharedText = await _shareIntentBridge.consumePendingSharedText();
       if (sharedText == null) {
-        final notificationInput = await _notificationListenerBridge
-            .consumePendingNotificationInput();
-        if (notificationInput == null) {
+        final notificationInputs = await _notificationListenerBridge
+            .consumePendingNotificationInputs();
+        if (notificationInputs.isEmpty) {
           return;
         }
-        final localeTag = WidgetsBinding.instance.platformDispatcher.locale
-            .toLanguageTag();
-        final templates = await _templateRepository
-            .listEnabledTemplatesByLanguage(localeTag);
-        final notificationVerdict = ScamNotificationIntentProcessor.evaluate(
-          input: notificationInput,
-          templates: templates,
-        );
-        if (notificationVerdict == null || notificationVerdict.result.matched) {
-          return;
-        }
-        final queueResult = await _scamCandidateRepository
-            .evaluateAndQueueIfSuspicious(
-          text: notificationVerdict.input.messageBody,
-          sender: notificationVerdict.input.sender,
-          source: 'notification_listener',
-        );
-        final handled = await _confirmedThreatHandler.handle(
-          confirmedThreat: queueResult.confirmedThreat,
-          messageBody: notificationVerdict.input.messageBody,
-        );
-        if (handled) {
-          if (!mounted) {
-            return;
-          }
-          appRouter.push(
-            '/scam/verdict',
-            extra: ScamVerdictRouteData(
-              sharedText: notificationVerdict.input.messageBody,
-              result: ScamMatchResult.confirmedUrlThreat(),
-            ),
+        for (final notificationInput in notificationInputs) {
+          final templates = await _templateRepository
+              .listEnabledTemplatesByLanguage(localeTag);
+          final notificationVerdict = ScamNotificationIntentProcessor.evaluate(
+            input: notificationInput,
+            templates: templates,
           );
+          if (notificationVerdict == null) {
+            continue;
+          }
+          await DiagnosticsService.appendNotificationEvent(
+            sender: notificationVerdict.input.sender,
+            messageBody: notificationVerdict.input.messageBody,
+            matchResult: notificationVerdict.result.matched
+                ? 'matched'
+                : 'unmatched',
+          );
+          if (notificationVerdict.result.matched) {
+            if (!mounted) {
+              return;
+            }
+            appRouter.push(
+              '/scam/verdict',
+              extra: ScamVerdictRouteData(
+                sharedText: notificationVerdict.input.messageBody,
+                result: notificationVerdict.result,
+              ),
+            );
+            continue;
+          }
+          final queueResult = await _scamCandidateRepository
+              .evaluateAndQueueIfSuspicious(
+                text: notificationVerdict.input.messageBody,
+                sender: notificationVerdict.input.sender,
+                source: 'notification_listener',
+              );
+          final handled = await _confirmedThreatHandler.handle(
+            confirmedThreat: queueResult.confirmedThreat,
+            messageBody: notificationVerdict.input.messageBody,
+          );
+          if (handled) {
+            if (!mounted) {
+              return;
+            }
+            appRouter.push(
+              '/scam/verdict',
+              extra: ScamVerdictRouteData(
+                sharedText: notificationVerdict.input.messageBody,
+                result: ScamMatchResult.confirmedUrlThreat(),
+              ),
+            );
+          }
         }
         return;
       }
 
-      final localeTag = WidgetsBinding.instance.platformDispatcher.locale
-          .toLanguageTag();
       final templates = await _templateRepository
           .listEnabledTemplatesByLanguage(localeTag);
       final verdict = ScamShareIntentProcessor.evaluate(
@@ -167,6 +198,31 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
     } finally {
       _isHandlingShareIntent = false;
     }
+  }
+
+  Future<void> _ensureSeedTemplatesHydrated() async {
+    if (_seedTemplatesHydrated) {
+      return;
+    }
+    final existing = await _templateRepository.listEnabledTemplatesByLanguage(
+      'en',
+    );
+    if (existing.isNotEmpty) {
+      _seedTemplatesHydrated = true;
+      return;
+    }
+
+    final seedBundleJson = await rootBundle.loadString(_scamSeedAssetPath);
+    await _templateRepository.upsertSeedBundleJson(seedBundleJson);
+    _seedTemplatesHydrated = true;
+  }
+
+  String _currentLocaleTag() {
+    final locales = WidgetsBinding.instance.platformDispatcher.locales;
+    if (locales.isNotEmpty) {
+      return locales.first.toLanguageTag();
+    }
+    return WidgetsBinding.instance.platformDispatcher.locale.toLanguageTag();
   }
 
   @override

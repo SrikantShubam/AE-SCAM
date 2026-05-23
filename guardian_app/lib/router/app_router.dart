@@ -8,6 +8,8 @@ import '../features/dashboard/screens/child_dashboard_screen.dart';
 import '../features/medication/screens/medication_list_screen.dart';
 import '../features/protection/screens/parent_home_screen.dart';
 import '../features/protection/screens/protection_home_screen.dart';
+import '../features/protection/screens/diagnostics_screen.dart';
+import '../features/protection/services/diagnostics_gate.dart';
 import '../features/scam/screens/scam_verdict_screen.dart';
 import '../features/scam/models/scam_match_result.dart';
 import '../features/onboarding/screens/accessibility_disclosure_screen.dart';
@@ -45,6 +47,13 @@ final GoRouter appRouter = GoRouter(
         return const ParentHomeScreen();
       },
     ),
+    if (kDiagnosticsEnabled)
+      GoRoute(
+        path: '/debug/diagnostics',
+        builder: (BuildContext context, GoRouterState state) {
+          return const DiagnosticsScreen();
+        },
+      ),
     GoRoute(
       path: '/home/child',
       builder: (BuildContext context, GoRouterState state) {

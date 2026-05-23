@@ -1,8 +1,11 @@
 package com.guardian.guardian
 
 import android.accessibilityservice.AccessibilityServiceInfo
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.text.TextUtils
@@ -12,35 +15,59 @@ import androidx.core.content.getSystemService
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import org.json.JSONArray
+import org.json.JSONObject
 
 class MainActivity : FlutterActivity() {
     companion object {
         private const val SETTINGS_CHANNEL = "com.guardian/settings"
-        private const val MEDICATION_ALARM_CHANNEL = "com.guardian/medication_alarm"`r`n        private const val URL_REPUTATION_CHANNEL = "com.guardian/url_reputation"
+        private const val MEDICATION_ALARM_CHANNEL = "com.guardian/medication_alarm"
+        private const val URL_REPUTATION_CHANNEL = "com.guardian/url_reputation"
         private const val SHARE_INTENT_CHANNEL = "com.guardian/scam_share_intent"
         private const val SCAM_NOTIFICATION_CHANNEL = "com.guardian/scam_notification_listener"
         private const val SCAM_NOTIFICATION_PREFS = "scam_notification_listener"
-        private const val SCAM_NOTIFICATION_PENDING_KEY = "pending_payload_json"
+        private const val SCAM_NOTIFICATION_PENDING_KEY = "pending_payload_queue_json"
+        private const val SCAM_NOTIFICATION_LEGACY_PENDING_KEY = "pending_payload_json"
         private const val TAG = "MainActivity"
         const val EXTRA_NAVIGATION_ROUTE = "guardian_navigation_route"
     }
 
     private var pendingSharedText: String? = null
     private var pendingNavigationRoute: String? = null
+    private lateinit var urlReputationStore: UrlReputationStore
+    private var shareIntentChannel: MethodChannel? = null
+    private var scamNotificationChannel: MethodChannel? = null
+    private val scamNotificationReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            if (intent?.action != ScamNotificationListener.ACTION_SCAM_NOTIFICATION_PAYLOAD_AVAILABLE) {
+                return
+            }
+            scamNotificationChannel?.invokeMethod("notificationPayloadAvailable", null)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        urlReputationStore = UrlReputationStore(this)
         MedicationPrimeWorkScheduler.ensurePeriodic(this)
         ServiceHealthWorkScheduler.ensurePeriodic(this)
+        registerScamNotificationReceiver()
         captureNavigationRouteFromIntent(intent)
         captureShareTextFromIntent(intent)
+    }
+
+    override fun onDestroy() {
+        unregisterReceiver(scamNotificationReceiver)
+        super.onDestroy()
     }
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
         captureNavigationRouteFromIntent(intent)
-        captureShareTextFromIntent(intent)
+        if (captureShareTextFromIntent(intent)) {
+            shareIntentChannel?.invokeMethod("sharedTextAvailable", null)
+        }
     }
 
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
@@ -68,6 +95,9 @@ class MainActivity : FlutterActivity() {
 
                 "getPaymentProtectionSnapshot" -> {
                     result.success(getPaymentProtectionSnapshot())
+                }
+                "getDiagnosticsSnapshot" -> {
+                    result.success(getDiagnosticsSnapshot())
                 }
 
                 "consumePendingNavigationRoute" -> {
@@ -105,7 +135,8 @@ class MainActivity : FlutterActivity() {
                     val stage = call.argument<String>("stage")
                     val triggerAtMs = call.argument<Number>("triggerAtMs")?.toLong()
                     val medicationName = call.argument<String>("medicationName").orEmpty()
-                    val dosage = call.argument<String>("dosage").orEmpty()`r`n                    val note = call.argument<String>("note").orEmpty()
+                    val dosage = call.argument<String>("dosage").orEmpty()
+                    val note = call.argument<String>("note").orEmpty()
 
                     if (
                         occurrenceId.isNullOrBlank() ||
@@ -127,7 +158,8 @@ class MainActivity : FlutterActivity() {
                         stage = stage,
                         triggerAtMs = triggerAtMs,
                         medicationName = medicationName,
-                        dosage = dosage,`r`n            note = note,
+                        dosage = dosage,
+                        note = note,
                     )
                     result.success(true)
                 }
@@ -152,8 +184,27 @@ class MainActivity : FlutterActivity() {
 
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
-            SHARE_INTENT_CHANNEL,
+            URL_REPUTATION_CHANNEL,
         ).setMethodCallHandler { call, result ->
+            when (call.method) {
+                "checkUrlThreat" -> {
+                    val url = call.argument<String>("url").orEmpty()
+                    if (url.isBlank()) {
+                        result.success(UrlReputationStore.THREAT_UNKNOWN)
+                        return@setMethodCallHandler
+                    }
+                    result.success(urlReputationStore.checkUrl(url))
+                }
+
+                else -> result.notImplemented()
+            }
+        }
+
+        shareIntentChannel = MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            SHARE_INTENT_CHANNEL,
+        )
+        shareIntentChannel?.setMethodCallHandler { call, result ->
             when (call.method) {
                 "consumePendingSharedText" -> {
                     val shared = pendingSharedText
@@ -165,17 +216,50 @@ class MainActivity : FlutterActivity() {
             }
         }
 
-        MethodChannel(
+        scamNotificationChannel = MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
             SCAM_NOTIFICATION_CHANNEL,
-        ).setMethodCallHandler { call, result ->
+        )
+        scamNotificationChannel?.setMethodCallHandler { call, result ->
             when (call.method) {
                 "consumePendingNotificationPayloadJson" -> {
                     result.success(consumePendingScamNotificationPayloadJson())
                 }
 
+                "consumePendingNotificationPayloadJsonList" -> {
+                    result.success(consumePendingScamNotificationPayloadJsonList())
+                }
+
                 else -> result.notImplemented()
             }
+        }
+    }
+
+    private fun getDiagnosticsSnapshot(): Map<String, Any> {
+        val prefs = getSharedPreferences(PaymentProtectionStore.PREFS_NAME, Context.MODE_PRIVATE)
+        val safeBrowsingRefreshes = urlReputationStore.recentRefreshTimestamps()
+        val payload = mutableMapOf<String, Any>(
+            "accessibilityEnabled" to isAccessibilityServiceEnabled(),
+            "notificationListenerEnabled" to isNotificationListenerEnabled(),
+            "safeBrowsingHitCount" to urlReputationStore.hitCount(),
+            "safeBrowsingRefreshesMs" to safeBrowsingRefreshes,
+            "accessibilityEvents" to decodeJsonObjectList(
+                prefs.getString(PaymentProtectionStore.KEY_ACCESSIBILITY_EVENT_SUMMARIES, null),
+            ),
+            "emergencyDisabled" to prefs.getBoolean("emergency_disabled", false),
+        )
+
+        prefs.getString("pair_id", null)?.let { payload["pairId"] = it }
+        prefs.getString("last_fcm_token", null)?.let { payload["lastFcmToken"] = it }
+        return payload
+    }
+
+    private fun registerScamNotificationReceiver() {
+        val filter = IntentFilter(ScamNotificationListener.ACTION_SCAM_NOTIFICATION_PAYLOAD_AVAILABLE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(scamNotificationReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(scamNotificationReceiver, filter)
         }
     }
 
@@ -195,7 +279,8 @@ class MainActivity : FlutterActivity() {
         stage: String,
         triggerAtMs: Long,
         medicationName: String,
-        dosage: String,`r`n        note: String,
+        dosage: String,
+        note: String,
     ) {
         MedicationAlarmNativeScheduler.scheduleTrigger(
             context = this,
@@ -204,7 +289,8 @@ class MainActivity : FlutterActivity() {
             stage = stage,
             triggerAtMs = triggerAtMs,
             medicationName = medicationName,
-            dosage = dosage,`r`n            note = note,
+            dosage = dosage,
+            note = note,
         )
     }
 
@@ -239,6 +325,47 @@ class MainActivity : FlutterActivity() {
         }
 
         return false
+    }
+
+    private fun isNotificationListenerEnabled(): Boolean {
+        val expectedId = "$packageName/${ScamNotificationListener::class.java.name}"
+        val enabledSetting = Settings.Secure.getString(
+            contentResolver,
+            "enabled_notification_listeners",
+        ) ?: return false
+
+        val splitter = TextUtils.SimpleStringSplitter(':')
+        splitter.setString(enabledSetting)
+        while (splitter.hasNext()) {
+            if (splitter.next().equals(expectedId, ignoreCase = true)) {
+                return true
+            }
+        }
+        return false
+    }
+
+    private fun decodeJsonObjectList(raw: String?): List<Map<String, Any>> {
+        if (raw.isNullOrBlank()) {
+            return emptyList()
+        }
+        return runCatching {
+            val array = JSONArray(raw)
+            val list = mutableListOf<Map<String, Any>>()
+            for (index in 0 until array.length()) {
+                val item = array.optJSONObject(index) ?: continue
+                val map = mutableMapOf<String, Any>()
+                val keys = item.keys()
+                while (keys.hasNext()) {
+                    val key = keys.next()
+                    val value = item.opt(key)
+                    if (value != null && value != JSONObject.NULL) {
+                        map[key] = value
+                    }
+                }
+                list.add(map)
+            }
+            list
+        }.getOrDefault(emptyList())
     }
 
     private fun getPaymentProtectionSnapshot(): Map<String, Any> {
@@ -456,21 +583,32 @@ class MainActivity : FlutterActivity() {
     }
 
     private fun consumePendingScamNotificationPayloadJson(): String? {
-        val prefs = getSharedPreferences(SCAM_NOTIFICATION_PREFS, Context.MODE_PRIVATE)
-        val payload = prefs.getString(SCAM_NOTIFICATION_PENDING_KEY, null)
-        if (payload != null) {
-            prefs.edit().remove(SCAM_NOTIFICATION_PENDING_KEY).apply()
-        }
-        return payload
+        val all = consumePendingScamNotificationPayloadJsonList()
+        return all.firstOrNull()
     }
 
-    private fun captureShareTextFromIntent(sourceIntent: Intent?) {
-        val intent = sourceIntent ?: return
-        val action = intent.action ?: return
-        val type = intent.type ?: return
+    private fun consumePendingScamNotificationPayloadJsonList(): List<String> {
+        val prefs = getSharedPreferences(SCAM_NOTIFICATION_PREFS, Context.MODE_PRIVATE)
+        val queued = prefs.getString(SCAM_NOTIFICATION_PENDING_KEY, null)
+        val legacy = prefs.getString(SCAM_NOTIFICATION_LEGACY_PENDING_KEY, null)
+        val payloads = ScamNotificationPayloadQueueCodec.consumeAll(queued) +
+            ScamNotificationPayloadQueueCodec.consumeAll(legacy)
+        if (queued != null || legacy != null) {
+            prefs.edit()
+                .remove(SCAM_NOTIFICATION_PENDING_KEY)
+                .remove(SCAM_NOTIFICATION_LEGACY_PENDING_KEY)
+                .apply()
+        }
+        return payloads
+    }
+
+    private fun captureShareTextFromIntent(sourceIntent: Intent?): Boolean {
+        val intent = sourceIntent ?: return false
+        val action = intent.action ?: return false
+        val type = intent.type ?: return false
 
         if (type != "text/plain") {
-            return
+            return false
         }
 
         val extracted = when (action) {
@@ -480,11 +618,12 @@ class MainActivity : FlutterActivity() {
         }?.trim()
 
         if (extracted.isNullOrEmpty()) {
-            return
+            return false
         }
 
         pendingSharedText = extracted
         Log.d(TAG, "Captured shared text for scam verdict flow.")
+        return true
     }
 
     private fun captureNavigationRouteFromIntent(sourceIntent: Intent?) {

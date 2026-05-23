@@ -444,6 +444,17 @@ class LocalDb {
     );
   }
 
+  Future<List<Map<String, Object?>>> listRecentMedicationDoseEventRows({
+    int limit = 20,
+  }) async {
+    final db = await database;
+    return db.query(
+      'medication_dose_events',
+      orderBy: 'scheduled_at DESC',
+      limit: limit,
+    );
+  }
+
   Future<Map<String, Object?>?> getMedicationDoseEventById(String id) async {
     final db = await database;
     final rows = await db.query(

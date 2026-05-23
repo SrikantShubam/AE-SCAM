@@ -21,6 +21,8 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import java.util.Locale
+import org.json.JSONArray
+import org.json.JSONObject
 
 internal object PaymentProtectionStore {
     const val PREFS_NAME = "guardian_payment_protection"
@@ -66,6 +68,7 @@ internal object PaymentProtectionStore {
     const val KEY_LAST_ESCALATION_RECIPIENT = "last_escalation_recipient"
     const val KEY_LAST_ESCALATION_UPI_ID = "last_escalation_upi_id"
     const val KEY_LAST_ESCALATION_PENDING = "last_escalation_pending"
+    const val KEY_ACCESSIBILITY_EVENT_SUMMARIES = "accessibility_event_summaries"
     const val KEY_HEALTH_ACCESSIBILITY_ENABLED = "health_accessibility_enabled"
     const val KEY_HEALTH_WAS_ACCESSIBILITY_ENABLED = "health_was_accessibility_enabled"
     const val KEY_HEALTH_DISABLED_STREAK_START_MS = "health_disabled_streak_start_ms"
@@ -384,6 +387,12 @@ class GuardianAccessibilityService : AccessibilityService() {
                 enrichedIntervention.escalationReason,
             )
             .apply()
+        appendAccessibilityEventSummary(
+            prefs = prefs,
+            packageName = packageName,
+            appLabel = appLabel,
+            intervention = enrichedIntervention,
+        )
 
         if (::overlayController.isInitialized) {
             if (enrichedIntervention.isOverlayCandidate()) {
@@ -537,7 +546,49 @@ class GuardianAccessibilityService : AccessibilityService() {
         return verdict
     }
 
+    private fun appendAccessibilityEventSummary(
+        prefs: android.content.SharedPreferences,
+        packageName: String,
+        appLabel: String,
+        intervention: PaymentIntervention,
+    ) {
+        val array = runCatching {
+            JSONArray(
+                prefs.getString(PaymentProtectionStore.KEY_ACCESSIBILITY_EVENT_SUMMARIES, "[]"),
+            )
+        }.getOrElse { JSONArray() }
+
+        val updated = JSONArray()
+        updated.put(
+            JSONObject()
+                .put("timestampMs", System.currentTimeMillis())
+                .put("packageName", packageName)
+                .put("appLabel", appLabel)
+                .put("amountHint", intervention.detectedAmountHint ?: "")
+                .put("recipientHint", intervention.detectedRecipientHint ?: "")
+                .put("upiIdHint", intervention.detectedUpiIdHint ?: "")
+                .put("classifierState", intervention.state)
+                .put("signals", JSONArray(intervention.matchedSignals)),
+        )
+
+        var copied = 0
+        var index = 0
+        while (index < array.length() && copied < MAX_ACCESSIBILITY_SUMMARIES - 1) {
+            val existing = array.optJSONObject(index)
+            if (existing != null) {
+                updated.put(existing)
+                copied += 1
+            }
+            index += 1
+        }
+
+        prefs.edit()
+            .putString(PaymentProtectionStore.KEY_ACCESSIBILITY_EVENT_SUMMARIES, updated.toString())
+            .apply()
+    }
+
     companion object {
+        private const val MAX_ACCESSIBILITY_SUMMARIES = 20
         private const val MAX_URL_THREAT_CACHE_SIZE = 32
         private val URL_PATTERN = Regex(
             """(?i)\b(?:https?://)?(?:www\.)?[a-z0-9][a-z0-9-]{0,62}(?:\.[a-z0-9][a-z0-9-]{0,62})+(?:/[^\s]*)?""",

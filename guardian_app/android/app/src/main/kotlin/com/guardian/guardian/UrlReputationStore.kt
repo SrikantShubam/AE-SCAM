@@ -52,6 +52,7 @@ class UrlReputationStore(context: Context) : SQLiteOpenHelper(
     fun checkUrl(url: String): String {
         val normalized = normalizeUrl(url) ?: return THREAT_UNKNOWN
         val prefix = sha256Prefix32(normalized)
+        incrementHitCount()
         val db = readableDatabase
         val cursor = db.query(
             "url_hash_prefixes",
@@ -102,6 +103,12 @@ class UrlReputationStore(context: Context) : SQLiteOpenHelper(
 
     fun markRefreshAttempt(nowMs: Long = System.currentTimeMillis()) {
         setMeta(writableDatabase, KEY_LAST_REFRESH_MS, nowMs.toString())
+        val existing = recentRefreshTimestamps().toMutableList()
+        existing.add(0, nowMs)
+        while (existing.size > MAX_REFRESH_HISTORY) {
+            existing.removeAt(existing.lastIndex)
+        }
+        setMeta(writableDatabase, KEY_RECENT_REFRESHES_MS, existing.joinToString(","))
     }
 
     fun lastRefreshMs(): Long {
@@ -124,6 +131,54 @@ class UrlReputationStore(context: Context) : SQLiteOpenHelper(
         }
     }
 
+    fun hitCount(): Int {
+        val db = readableDatabase
+        val cursor = db.query(
+            "url_store_meta",
+            arrayOf("value"),
+            "key = ?",
+            arrayOf(KEY_HIT_COUNT),
+            null,
+            null,
+            null,
+            "1",
+        )
+        cursor.use { c ->
+            if (!c.moveToFirst()) {
+                return 0
+            }
+            return c.getString(0)?.toIntOrNull() ?: 0
+        }
+    }
+
+    fun recentRefreshTimestamps(): List<Long> {
+        val db = readableDatabase
+        val cursor = db.query(
+            "url_store_meta",
+            arrayOf("value"),
+            "key = ?",
+            arrayOf(KEY_RECENT_REFRESHES_MS),
+            null,
+            null,
+            null,
+            "1",
+        )
+        cursor.use { c ->
+            if (!c.moveToFirst()) {
+                return emptyList()
+            }
+            val raw = c.getString(0).orEmpty()
+            return raw.split(',')
+                .mapNotNull { it.trim().toLongOrNull() }
+                .take(MAX_REFRESH_HISTORY)
+        }
+    }
+
+    private fun incrementHitCount() {
+        val next = hitCount() + 1
+        setMeta(writableDatabase, KEY_HIT_COUNT, next.toString())
+    }
+
     private fun setMeta(db: SQLiteDatabase, key: String, value: String) {
         val values = ContentValues().apply {
             put("key", key)
@@ -141,6 +196,9 @@ class UrlReputationStore(context: Context) : SQLiteOpenHelper(
         private const val DATABASE_NAME = "guardian_url_reputation.db"
         private const val DATABASE_VERSION = 2
         private const val KEY_LAST_REFRESH_MS = "last_refresh_ms"
+        private const val KEY_HIT_COUNT = "hit_count"
+        private const val KEY_RECENT_REFRESHES_MS = "recent_refreshes_ms"
+        private const val MAX_REFRESH_HISTORY = 20
 
         const val THREAT_UNKNOWN = "unknown"
         const val THREAT_SAFE = "safe"
