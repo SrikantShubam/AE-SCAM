@@ -1,0 +1,387 @@
+summary:
+  authoritative_spec: docs/plans/GUARDIAN_V1_FEATURE_SPEC_2026_04.md
+  audited_on: 2026-05-16
+  active_branch: new_direction/making-agents
+  remote_branch: origin/new_direction/making-agents
+  github_main_branch: origin/main
+  counts:
+    total_work_orders: 27
+    done_landed: 13
+    partial_landed: 4
+    local_only: 2
+    not_done: 8
+    firebase_required: 11
+    firebase_not_required: 16
+
+items:
+  - id: WO-BE-01
+    title: Firebase project setup + google-services.json + Firestore rules + Crashlytics init
+    phase: A
+    status: partial_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: true
+    verification_artifacts: []
+    evidence:
+      - guardian_app/lib/main.dart
+      - guardian_app/firestore.rules
+      - guardian_app/android/app/google-services.json
+    notes: Firebase init, Crashlytics, and rules exist; real google-services wiring remains incomplete/untracked.
+
+  - id: WO-P-01
+    title: Pairing code flow
+    phase: A
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: true
+    verification_artifacts:
+      - guardian_app/tmp/wo-med-01-final/flutter-test.txt
+    evidence:
+      - guardian_app/lib/core/services/pairing_service.dart
+      - guardian_app/lib/features/onboarding/screens/caregiver_pairing_screen.dart
+      - guardian_app/lib/features/onboarding/screens/parent_pairing_screen.dart
+      - guardian_app/test/core/services/pairing_service_test.dart
+    notes: Implemented and pushed.
+
+  - id: WO-OBS-01
+    title: Crashlytics + telemetry events
+    phase: A
+    status: partial_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: true
+    verification_artifacts: []
+    evidence:
+      - guardian_app/lib/core/services/guardian_telemetry.dart
+      - guardian_app/android/app/src/main/kotlin/com/guardian/guardian/GuardianTelemetry.kt
+    notes: Crashlytics and some telemetry exist; spec event coverage is incomplete.
+
+  - id: WO-MED-02
+    title: Inexact alarm migration
+    phase: B
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts: []
+    evidence:
+      - commit:b3c6dc6
+      - guardian_app/android/app/src/main/kotlin/com/guardian/guardian/MedicationAlarmNativeScheduler.kt
+      - guardian_app/android/app/src/main/kotlin/com/guardian/guardian/MainActivity.kt
+    notes: Landed.
+
+  - id: WO-MED-03
+    title: BootReceiver + WorkManager periodic re-prime
+    phase: B
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts: []
+    evidence:
+      - commit:76a8ede
+      - guardian_app/android/app/src/main/kotlin/com/guardian/guardian/MedicationBootReceiver.kt
+      - guardian_app/android/app/src/main/kotlin/com/guardian/guardian/MedicationPrimeWorker.kt
+    notes: Landed.
+
+  - id: WO-MED-04
+    title: OEM battery-optimization onboarding step
+    phase: B
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts:
+      - guardian_app/tmp/wo-med-04-fix1/flutter-test-expanded.txt
+      - guardian_app/tmp/wo-med-04-fix1/gradle-testDebugUnitTest.txt
+    evidence:
+      - commit:76a8ede
+      - guardian_app/lib/features/onboarding/screens/battery_optimization_screen.dart
+    notes: Landed with test artifacts.
+
+  - id: WO-MED-05
+    title: Dose acknowledgement round-trip to SQLite + Firestore
+    phase: B
+    status: not_done
+    github_state: not_landed
+    landed_branch: null
+    firebase_required: true
+    verification_artifacts: []
+    evidence:
+      - guardian_app/android/app/src/main/kotlin/com/guardian/guardian/MedicationAlarmActivity.kt
+      - guardian_app/lib/features/medication/services/medication_reminder_delivery_service.dart
+    notes: Alarm activity still lacks taken/skipped UX and Firestore replication.
+
+  - id: WO-MED-01
+    title: Medication data model changes
+    phase: B
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts:
+      - guardian_app/tmp/wo-med-01-final/flutter-test.txt
+      - guardian_app/tmp/wo-med-01-final/gradle-testDebugUnitTest.txt
+    evidence:
+      - commit:4175c58
+      - guardian_app/lib/features/medication/models/medication_schedule.dart
+      - guardian_app/lib/features/medication/screens/medication_form_screen.dart
+      - guardian_app/lib/features/medication/screens/medication_list_screen.dart
+    notes: Landed.
+
+  - id: WO-MED-06
+    title: Alarm UX refinements
+    phase: B
+    status: partial_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts: []
+    evidence:
+      - commit:cf74afb
+      - guardian_app/android/app/src/main/kotlin/com/guardian/guardian/MedicationAlarmActivity.kt
+    notes: Review slice landed, but full spec UX remains incomplete.
+
+  - id: WO-PAY-01
+    title: Pure classifier refactor
+    phase: C
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts:
+      - guardian_app/tmp/wo-pay-01/flutter-test.txt
+    evidence:
+      - commit:9c8f1d8
+      - guardian_app/android/app/src/main/kotlin/com/guardian/guardian/PaymentInterventionClassifier.kt
+    notes: Landed.
+
+  - id: WO-PAY-02
+    title: Snapshot-test corpus
+    phase: C
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts: []
+    evidence:
+      - commit:64802cf
+      - guardian_app/android/app/src/test/kotlin/com/guardian/guardian/PaymentInterventionClassifierTest.kt
+      - guardian_app/android/app/src/test/resources/payment_fixtures
+    notes: 12 fixture corpus present.
+
+  - id: WO-PAY-03
+    title: Red-bypass hardening
+    phase: C
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts: []
+    evidence:
+      - commit:5cda71a
+    notes: Landed for core hardening path; caregiver-approval path is still tied to later remote features.
+
+  - id: WO-PAY-04
+    title: Service health watchdog
+    phase: C
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: true
+    verification_artifacts: []
+    evidence:
+      - commit:011192f
+      - guardian_app/android/app/src/main/kotlin/com/guardian/guardian/ServiceHealthWorker.kt
+      - guardian_app/android/app/src/test/kotlin/com/guardian/guardian/ServiceHealthWorkerTest.kt
+    notes: Includes Firestore health-sync requirement in the spec, so classified Firebase-required.
+
+  - id: WO-PAY-05
+    title: UPI app allowlist expansion
+    phase: C
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts: []
+    evidence:
+      - commit:08bdae4
+      - guardian_app/android/app/src/main/kotlin/com/guardian/guardian/GuardianAccessibilityService.kt
+    notes: Landed.
+
+  - id: WO-PAY-07
+    title: Red-event caregiver push + event write
+    phase: C
+    status: not_done
+    github_state: not_landed
+    landed_branch: null
+    firebase_required: true
+    verification_artifacts: []
+    evidence: []
+    notes: No spec-complete Firestore event write + caregiver FCM push found.
+
+  - id: WO-SCAM-06
+    title: Template authoring pipeline
+    phase: D
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: true
+    verification_artifacts: []
+    evidence:
+      - assets/scam_templates/seed_en.json
+      - scripts/build_scam_template_seed.py
+      - docs/plans/GUARDIAN_V1_FEATURE_SPEC_2026_04.md
+    notes: Spec explicitly marks this done; Firestore hydrate/admin write remain part of the WO shape, so classified Firebase-required.
+
+  - id: WO-SCAM-01
+    title: Template matcher engine
+    phase: D
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts: []
+    evidence:
+      - guardian_app/lib/features/scam/services/scam_template_matcher.dart
+      - guardian_app/test/features/scam/services/scam_template_matcher_test.dart
+      - docs/plans/GUARDIAN_V1_FEATURE_SPEC_2026_04.md
+    notes: Engine itself is local/SQLite-first.
+
+  - id: WO-SCAM-03
+    title: Share-intent input path
+    phase: D
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts: []
+    evidence:
+      - commit:129d250
+      - guardian_app/android/app/src/main/kotlin/com/guardian/guardian/MainActivity.kt
+      - guardian_app/lib/features/scam/screens/scam_verdict_screen.dart
+    notes: Landed.
+
+  - id: WO-SCAM-02
+    title: NotificationListenerService
+    phase: D
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts: []
+    evidence:
+      - commit:129d250
+      - guardian_app/android/app/src/main/kotlin/com/guardian/guardian/ScamNotificationListener.kt
+      - guardian_app/android/app/src/main/AndroidManifest.xml
+    notes: Landed.
+
+  - id: WO-SCAM-04
+    title: Unmatched-suspicious heuristic + review queue
+    phase: D
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: true
+    verification_artifacts: []
+    evidence:
+      - commit:129d250
+      - guardian_app/lib/features/scam/services/scam_candidate_repository.dart
+      - commit:6e13d40
+    notes: Spec-required review bucket writes make this Firebase-required.
+
+  - id: WO-SCAM-05
+    title: Warning UX
+    phase: D
+    status: partial_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: true
+    verification_artifacts: []
+    evidence:
+      - guardian_app/lib/features/scam/services/scam_parent_warning_local_notifier.dart
+      - guardian_app/lib/features/scam/screens/scam_verdict_screen.dart
+    notes: Parent-side UX exists; full caregiver dashboard/event-sync scope is incomplete.
+
+  - id: WO-SCAM-07
+    title: Language scope guard
+    phase: D
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts: []
+    evidence:
+      - commit:5ceb54e
+      - guardian_app/lib/features/scam/services/scam_language_scope_guard.dart
+      - guardian_app/lib/features/scam/widgets/scam_language_scope_notice_host.dart
+    notes: Landed.
+
+  - id: WO-SCAM-08
+    title: Runtime precision telemetry
+    phase: D
+    status: partial_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: true
+    verification_artifacts: []
+    evidence:
+      - guardian_app/lib/features/scam/services/scam_candidate_repository.dart
+      - guardian_app/lib/features/scam/models/scam_template.dart
+      - guardian_app/lib/core/services/local_db.dart
+    notes: Hashing and some precision fields exist; full Firestore log/writeback flow is incomplete.
+
+  - id: WO-URL-01
+    title: UrlReputationChecker
+    phase: E
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts: []
+    evidence:
+      - commit:f5afcb8
+      - guardian_app/lib/features/protection/services/url_reputation_checker.dart
+      - guardian_app/android/app/src/main/kotlin/com/guardian/guardian/UrlReputationStore.kt
+    notes: Landed together with dependent payment-overlay URL enforcement.
+
+  - id: WO-PAY-06
+    title: URL check integration in payment overlay
+    phase: E
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts: []
+    evidence:
+      - commit:f5afcb8
+      - guardian_app/android/app/src/main/kotlin/com/guardian/guardian/PaymentInterventionClassifier.kt
+      - guardian_app/android/app/src/main/kotlin/com/guardian/guardian/GuardianAccessibilityService.kt
+    notes: Landed together with WO-URL-01.
+
+  - id: WO-P-02
+    title: Emergency disable
+    phase: F
+    status: not_done
+    github_state: not_landed
+    landed_branch: null
+    firebase_required: true
+    verification_artifacts: []
+    evidence:
+      - guardian_app/firestore.rules
+    notes: Rules groundwork exists, but caregiver toggle and parent-side runtime disable flow were not found.
+
+  - id: WO-DBG-01
+    title: Field diagnostics screen
+    phase: F
+    status: done_landed
+    github_state: landed_on_feature_branch
+    landed_branch: origin/new_direction/making-agents
+    firebase_required: false
+    verification_artifacts: []
+    evidence:
+      - commit:7029fb1
+      - guardian_app/lib/features/protection/screens/diagnostics_screen.dart
+      - guardian_app/lib/features/protection/services/diagnostics_service.dart
+    notes: Landed.
