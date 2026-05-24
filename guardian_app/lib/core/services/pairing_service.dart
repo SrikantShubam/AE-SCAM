@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -9,13 +10,20 @@ class PairingService {
     FirebaseFirestore? firestore,
     SharedPreferences? prefs,
     Random? random,
+    Future<String?> Function()? currentAuthUidProvider,
+    void Function()? onBeforeCreateCommit,
+    void Function()? onBeforeClaimCommit,
   }) : _firestore = firestore,
        _prefs = prefs,
-       _random = random ?? Random.secure();
+       _random = random ?? Random.secure(),
+       _currentAuthUidProvider = currentAuthUidProvider,
+       _onBeforeCreateCommit = onBeforeCreateCommit,
+       _onBeforeClaimCommit = onBeforeClaimCommit;
 
   static const allowedAlphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
   static const pairingCodeLength = 6;
   static const pairingDocCollection = 'pairing';
+  static const pairsCollection = 'pairs';
   static const pairingExpiry = Duration(hours: 24);
 
   static const pairIdKey = 'pair_id';
@@ -31,6 +39,9 @@ class PairingService {
   final FirebaseFirestore? _firestore;
   final SharedPreferences? _prefs;
   final Random _random;
+  final Future<String?> Function()? _currentAuthUidProvider;
+  final void Function()? _onBeforeCreateCommit;
+  final void Function()? _onBeforeClaimCommit;
 
   static String generatePairingCode({Random? random}) {
     final source = random ?? Random.secure();
@@ -50,6 +61,7 @@ class PairingService {
     }
 
     final caregiverDeviceId = await _ensureDeviceId(prefs);
+    final caregiverUid = await _currentAuthUid();
     final pairId = prefs.getString(pairIdKey) ?? _generatePairId();
     final now = DateTime.now();
     final expiresAt = now.add(pairingExpiry);
@@ -59,30 +71,45 @@ class PairingService {
       final doc = firestore.collection(pairingDocCollection).doc(code);
 
       try {
-        final snapshot = await doc.get();
-        if (snapshot.exists) {
-          final data = snapshot.data() ?? <String, dynamic>{};
-          final expiresAtMs = _readInt(data['expires_at_ms']);
-          final claimedAtMs = _readInt(data['claimed_at_ms']);
-          final isExpired =
-              expiresAtMs != null &&
-              DateTime.fromMillisecondsSinceEpoch(expiresAtMs).isBefore(now);
-          final isClaimed = claimedAtMs != null;
-          if (!isExpired && !isClaimed) {
-            continue;
+        final reserved = await firestore.runTransaction<bool>((transaction) async {
+          _onBeforeCreateCommit?.call();
+          final snapshot = await transaction.get(doc);
+          if (snapshot.exists) {
+            final data = snapshot.data() ?? <String, dynamic>{};
+            final expiresAtMs = _readInt(data['expires_at_ms']);
+            final claimedAtMs = _readInt(data['claimed_at_ms']);
+            final isExpired =
+                expiresAtMs != null &&
+                DateTime.fromMillisecondsSinceEpoch(expiresAtMs).isBefore(now);
+            final isClaimed = claimedAtMs != null;
+            if (!isExpired && !isClaimed) {
+              return false;
+            }
           }
-        }
 
-        await doc.set(<String, dynamic>{
-          'code': code,
-          'pair_id': pairId,
-          'caregiver_device_id': caregiverDeviceId,
-          'created_at_ms': now.millisecondsSinceEpoch,
-          'expires_at_ms': expiresAt.millisecondsSinceEpoch,
-          'claimed_at_ms': null,
-          'claimed_by_device_id': null,
-          'status': 'pending',
+          transaction.set(doc, <String, dynamic>{
+            'code': code,
+            'pair_id': pairId,
+            'caregiver_device_id': caregiverDeviceId,
+            'created_at_ms': now.millisecondsSinceEpoch,
+            'expires_at_ms': expiresAt.millisecondsSinceEpoch,
+            'claimed_at_ms': null,
+            'claimed_by_device_id': null,
+            'status': 'pending',
+          });
+          _upsertPairRootTransaction(
+            transaction,
+            firestore: firestore,
+            pairId: pairId,
+            caregiverUid: caregiverUid,
+            caregiverDeviceId: caregiverDeviceId,
+            createdAtMs: now.millisecondsSinceEpoch,
+          );
+          return true;
         });
+        if (!reserved) {
+          continue;
+        }
 
         await prefs.setString(pairIdKey, pairId);
         await prefs.setString(familyIdKey, pairId);
@@ -136,10 +163,12 @@ class PairingService {
     }
 
     final parentDeviceId = await _ensureDeviceId(prefs);
+    final parentUid = await _currentAuthUid();
     final doc = firestore.collection(pairingDocCollection).doc(code);
 
     try {
       final result = await firestore.runTransaction((transaction) async {
+        _onBeforeClaimCommit?.call();
         final snapshot = await transaction.get(doc);
         if (!snapshot.exists) {
           return PairingClaimResult.failure(
@@ -180,6 +209,14 @@ class PairingService {
           'claimed_by_device_id': parentDeviceId,
           'status': 'claimed',
         });
+        transaction.update(
+          firestore.collection(pairsCollection).doc(pairId),
+          <String, dynamic>{
+            'parent_uid': parentUid,
+            'parent_device_id': parentDeviceId,
+            'updated_at_ms': DateTime.now().millisecondsSinceEpoch,
+          },
+        );
 
         return PairingClaimResult.success(pairId: pairId, code: code);
       });
@@ -245,10 +282,32 @@ class PairingService {
   }
 
   FirebaseFirestore? get _activeFirestore {
+    if (_firestore != null) {
+      return _firestore;
+    }
     if (Firebase.apps.isEmpty) {
       return null;
     }
-    return _firestore ?? FirebaseFirestore.instance;
+    return FirebaseFirestore.instance;
+  }
+
+  Future<String?> _currentAuthUid() async {
+    final injected = _currentAuthUidProvider;
+    if (injected != null) {
+      final uid = await injected();
+      if (uid != null && uid.isNotEmpty) {
+        return uid;
+      }
+      return null;
+    }
+    if (Firebase.apps.isEmpty) {
+      return null;
+    }
+    final uid = FirebaseAuth.instance.currentUser?.uid;
+    if (uid == null || uid.isEmpty) {
+      return null;
+    }
+    return uid;
   }
 
   Future<String> _ensureDeviceId(SharedPreferences prefs) async {
@@ -280,6 +339,26 @@ class PairingService {
       return value.millisecondsSinceEpoch;
     }
     return null;
+  }
+
+  void _upsertPairRootTransaction(
+    Transaction transaction, {
+    required FirebaseFirestore firestore,
+    required String pairId,
+    required String? caregiverUid,
+    required String caregiverDeviceId,
+    required int createdAtMs,
+  }) {
+    transaction.set(firestore.collection(pairsCollection).doc(pairId), <String, dynamic>{
+      'pair_id': pairId,
+      'caregiver_uid': caregiverUid,
+      'parent_uid': null,
+      'caregiver_device_id': caregiverDeviceId,
+      'parent_device_id': null,
+      'created_at_ms': createdAtMs,
+      'updated_at_ms': createdAtMs,
+      'settings': <String, dynamic>{'emergency_disabled': false},
+    }, SetOptions(merge: true));
   }
 }
 
