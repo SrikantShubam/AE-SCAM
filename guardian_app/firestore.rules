@@ -9,12 +9,18 @@ service cloud.firestore {
       return get(/databases/$(database)/documents/pairs/$(pairId));
     }
 
+    function pairExists(pairId) {
+      return exists(/databases/$(database)/documents/pairs/$(pairId));
+    }
+
     function isCaregiver(pairId) {
-      return signedIn() && pairDoc(pairId).data.caregiver_uid == request.auth.uid;
+      return signedIn() && pairExists(pairId)
+        && pairDoc(pairId).data.caregiver_uid == request.auth.uid;
     }
 
     function isParent(pairId) {
-      return signedIn() && pairDoc(pairId).data.parent_uid == request.auth.uid;
+      return signedIn() && pairExists(pairId)
+        && pairDoc(pairId).data.parent_uid == request.auth.uid;
     }
 
     function isPairMember(pairId) {
@@ -32,8 +38,53 @@ service cloud.firestore {
 
     match /pairs/{pairId} {
       allow read: if isPairMember(pairId);
-      allow create: if signedIn() && request.resource.data.caregiver_uid == request.auth.uid;
-      allow update: if isPairMember(pairId);
+      allow create: if signedIn()
+        && request.resource.data.pair_id == pairId
+        && request.resource.data.caregiver_uid == request.auth.uid
+        && request.resource.data.parent_uid == null
+        && request.resource.data.caregiver_device_id is string
+        && request.resource.data.parent_device_id == null
+        && request.resource.data.created_at_ms is int
+        && request.resource.data.updated_at_ms is int
+        && request.resource.data.keys().hasOnly([
+          'pair_id',
+          'caregiver_uid',
+          'parent_uid',
+          'caregiver_device_id',
+          'parent_device_id',
+          'created_at_ms',
+          'updated_at_ms',
+          'settings',
+        ])
+        && request.resource.data.settings.emergency_disabled == false;
+      allow update: if signedIn()
+        && request.resource.data.pair_id == resource.data.pair_id
+        && request.resource.data.caregiver_uid == resource.data.caregiver_uid
+        && request.resource.data.caregiver_device_id == resource.data.caregiver_device_id
+        && request.resource.data.created_at_ms == resource.data.created_at_ms
+        && (
+          (
+            request.auth.uid == request.resource.data.parent_uid
+            && resource.data.parent_uid == null
+            && request.resource.data.settings == resource.data.settings
+            && request.resource.data.diff(resource.data).changedKeys().hasOnly([
+              'parent_uid',
+              'parent_device_id',
+              'updated_at_ms',
+            ])
+          )
+          ||
+          (
+            isCaregiver(pairId)
+            && request.resource.data.parent_uid == resource.data.parent_uid
+            && request.resource.data.parent_device_id == resource.data.parent_device_id
+            && request.resource.data.settings.emergency_disabled is bool
+            && request.resource.data.diff(resource.data).changedKeys().hasOnly([
+              'settings',
+              'updated_at_ms',
+            ])
+          )
+        );
       allow delete: if false;
 
       match /settings/{settingId} {
@@ -53,13 +104,13 @@ service cloud.firestore {
 
       match /medication_events/{eventId} {
         allow read: if isPairMember(pairId);
-        allow write: if isPairMember(pairId);
+        allow create, update: if isParent(pairId);
+        allow delete: if false;
       }
 
       match /payment_events/{eventId} {
         allow read: if isPairMember(pairId);
-        allow create: if isParent(pairId);
-        allow update: if isPairMember(pairId);
+        allow create, update: if isParent(pairId);
         allow delete: if false;
       }
 
@@ -81,13 +132,64 @@ service cloud.firestore {
         allow read: if isPairMember(pairId);
         allow write: if isPairMember(pairId);
       }
+
+      match /devices/{deviceId} {
+        allow read: if isPairMember(pairId);
+        allow create, update: if signedIn()
+          && pairExists(pairId)
+          && request.resource.data.role in ['parent', 'caregiver']
+          && request.resource.data.fcm_token is string
+          && request.resource.data.updated_at_ms is int
+          && (
+            (
+              request.resource.data.role == 'caregiver'
+              && isCaregiver(pairId)
+              && pairDoc(pairId).data.caregiver_device_id == deviceId
+            )
+            ||
+            (
+              request.resource.data.role == 'parent'
+              && isParent(pairId)
+              && pairDoc(pairId).data.parent_device_id == deviceId
+            )
+          );
+        allow delete: if false;
+      }
     }
 
     match /pairing/{code} {
       allow read: if signedIn();
-      allow create: if signedIn() && request.resource.data.caregiver_uid == request.auth.uid;
-      allow update: if signedIn();
-      allow delete: if signedIn();
+      allow create: if signedIn()
+        && request.resource.data.code == code
+        && request.resource.data.pair_id is string
+        && request.resource.data.caregiver_device_id is string
+        && request.resource.data.created_at_ms is int
+        && request.resource.data.expires_at_ms is int
+        && request.resource.data.claimed_at_ms == null
+        && request.resource.data.claimed_by_device_id == null
+        && request.resource.data.status == 'pending';
+      allow update: if signedIn()
+        && resource.data.claimed_at_ms == null
+        && request.resource.data.code == resource.data.code
+        && request.resource.data.pair_id == resource.data.pair_id
+        && request.resource.data.caregiver_device_id == resource.data.caregiver_device_id
+        && request.resource.data.created_at_ms == resource.data.created_at_ms
+        && request.resource.data.expires_at_ms == resource.data.expires_at_ms
+        && request.resource.data.status == 'claimed'
+        && request.resource.data.claimed_by_device_id is string
+        && request.resource.data.diff(resource.data).changedKeys().hasOnly([
+          'claimed_at_ms',
+          'claimed_by_device_id',
+          'status',
+        ]);
+      allow delete: if signedIn()
+        && resource.data.pair_id is string
+        && resource.data.claimed_at_ms == null
+        && resource.data.claimed_by_device_id == null
+        && getAfter(/databases/$(database)/documents/pairs/$(resource.data.pair_id)).data.pair_id == resource.data.pair_id
+        && getAfter(/databases/$(database)/documents/pairs/$(resource.data.pair_id)).data.parent_uid == request.auth.uid
+        && getAfter(/databases/$(database)/documents/pairs/$(resource.data.pair_id)).data.caregiver_device_id == resource.data.caregiver_device_id
+        && getAfter(/databases/$(database)/documents/pairs/$(resource.data.pair_id)).data.parent_device_id is string;
     }
 
     match /templates/{templateId} {
