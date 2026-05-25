@@ -8,7 +8,7 @@
   "emulators": {
     "firestore": {
       "host": "0.0.0.0",
-      "port": 58081
+      "port": 59081
     }
   }
 }

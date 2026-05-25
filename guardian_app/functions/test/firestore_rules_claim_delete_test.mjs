@@ -100,6 +100,35 @@ async function main() {
     // Denied: delete pairing code without parent-link update.
     await assertFails(deleteDoc(codeRef));
 
+    // Denied: already-linked pair + standalone delete (no same-batch link mutation).
+    await testEnv.withSecurityRulesDisabled(async (context) => {
+      const adminDb = context.firestore();
+      const pairLinkedRef = doc(adminDb, "pairs/pair-1");
+      const codeLinkedRef = doc(adminDb, "pairing/ABC234");
+      const linkedBatch = writeBatch(adminDb);
+      linkedBatch.set(
+        pairLinkedRef,
+        {
+          parent_uid: "parent-uid-9",
+          parent_device_id: "parent-device-9",
+          updated_at_ms: 1700000002500,
+        },
+        { merge: true },
+      );
+      linkedBatch.set(codeLinkedRef, {
+        code: "ABC234",
+        pair_id: "pair-1",
+        caregiver_device_id: "caregiver-device-1",
+        created_at_ms: 1700000000000,
+        expires_at_ms: 1700003600000,
+        claimed_at_ms: null,
+        claimed_by_device_id: null,
+        status: "pending",
+      });
+      await linkedBatch.commit();
+    });
+    await assertFails(deleteDoc(codeRef));
+
     // Denied: caregiver cannot perform parent-link delete batch.
     const caregiverDb = testEnv
       .authenticatedContext("caregiver-uid-1")

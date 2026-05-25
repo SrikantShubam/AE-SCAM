@@ -186,6 +186,8 @@ service cloud.firestore {
         && resource.data.pair_id is string
         && resource.data.claimed_at_ms == null
         && resource.data.claimed_by_device_id == null
+        && pairDoc(resource.data.pair_id).data.parent_uid == null
+        && pairDoc(resource.data.pair_id).data.parent_device_id == null
         && getAfter(/databases/$(database)/documents/pairs/$(resource.data.pair_id)).data.pair_id == resource.data.pair_id
         && getAfter(/databases/$(database)/documents/pairs/$(resource.data.pair_id)).data.parent_uid == request.auth.uid
         && getAfter(/databases/$(database)/documents/pairs/$(resource.data.pair_id)).data.caregiver_device_id == resource.data.caregiver_device_id
