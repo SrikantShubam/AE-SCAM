@@ -79,4 +79,42 @@ void main() {
     expect(prefs.getBool('emergency_disabled'), isTrue);
     await service.dispose();
   });
+
+  test('start registers the parent device token under pairs devices', () async {
+    final firestore = FakeFirebaseFirestore();
+    await firestore.collection('pairs').doc('pair-live').set(<String, dynamic>{
+      'pair_id': 'pair-live',
+      'caregiver_uid': 'caregiver-uid-1',
+      'parent_uid': 'parent-uid-7',
+      'caregiver_device_id': 'device-caregiver-1',
+      'parent_device_id': 'device-parent-9',
+      'created_at_ms': 1,
+      'updated_at_ms': 1,
+      'settings': <String, dynamic>{'emergency_disabled': false},
+    });
+    SharedPreferences.setMockInitialValues(<String, Object>{
+      'pair_id': 'pair-live',
+      'user_role': 'parent',
+      'guardian_device_id': 'device-parent-9',
+    });
+    final prefs = await SharedPreferences.getInstance();
+    final service = EmergencyDisableSyncService(
+      firestore: firestore,
+      prefs: prefs,
+      fcmTokenProvider: () async => 'token-parent-9',
+    );
+
+    await service.start();
+
+    final snapshot = await firestore
+        .collection('pairs')
+        .doc('pair-live')
+        .collection('devices')
+        .doc('device-parent-9')
+        .get();
+    expect(snapshot.exists, isTrue);
+    expect(snapshot.data()?['role'], 'parent');
+    expect(snapshot.data()?['fcm_token'], 'token-parent-9');
+    await service.dispose();
+  });
 }

@@ -9,12 +9,15 @@ class EmergencyDisableSyncService {
   EmergencyDisableSyncService({
     FirebaseFirestore? firestore,
     SharedPreferences? prefs,
+    Future<String?> Function()? fcmTokenProvider,
   }) : _firestore = firestore,
-       _prefs = prefs;
+       _prefs = prefs,
+       _fcmTokenProvider = fcmTokenProvider;
 
   static const String _prefsKey = 'emergency_disabled';
   final FirebaseFirestore? _firestore;
   final SharedPreferences? _prefs;
+  final Future<String?> Function()? _fcmTokenProvider;
 
   StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? _subscription;
   StreamSubscription<RemoteMessage>? _foregroundFcmSubscription;
@@ -114,9 +117,12 @@ class EmergencyDisableSyncService {
     }
     String? token;
     try {
-      token = await FirebaseMessaging.instance
-          .getToken()
-          .timeout(const Duration(seconds: 5), onTimeout: () => null);
+      final provider =
+          _fcmTokenProvider ??
+          () => FirebaseMessaging.instance
+              .getToken()
+              .timeout(const Duration(seconds: 5), onTimeout: () => null);
+      token = await provider();
     } catch (_) {
       token = null;
     }

@@ -4,6 +4,9 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 class GuardianTelemetry {
   GuardianTelemetry._();
 
+  static void Function(String eventName, Map<String, String> fields)?
+  debugEventSink;
+
   static void logTemplateFetchFailed({
     required String stage,
     String? errorCode,
@@ -27,6 +30,11 @@ class GuardianTelemetry {
   }
 
   static void _logEvent(String eventName, Map<String, String> fields) {
+    final sink = debugEventSink;
+    if (sink != null) {
+      sink(eventName, fields);
+      return;
+    }
     try {
       final crashlytics = FirebaseCrashlytics.instance;
       final safeEventName = _normalizeToken(eventName, fallback: 'unknown_event');

@@ -17,7 +17,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.guardian.guardian"
+    namespace = "com.vectorveda.guardian"
     compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
@@ -32,7 +32,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.guardian.guardian"
+        applicationId = "com.vectorveda.guardian"
         minSdk = 24
         targetSdk = 35
         versionCode = flutter.versionCode
@@ -68,3 +68,4 @@ dependencies {
     testImplementation("com.google.code.gson:gson:2.11.0")
     testImplementation("androidx.test:core:1.6.1")
 }
+

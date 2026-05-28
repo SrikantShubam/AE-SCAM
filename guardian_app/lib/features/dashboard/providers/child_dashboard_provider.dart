@@ -1,4 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../medication/models/medication_dose_event.dart';
 import '../../medication/models/medication_reminder_summary.dart';
@@ -14,10 +17,56 @@ final childProtectionAlertsProvider =
   return ProtectionAlertRepository.instance.listAlerts(limit: 3);
 });
 
+final childMedicationDoseEventsProvider =
+    FutureProvider<List<MedicationDoseEvent>>((ref) async {
+      final date = ref.watch(selectedMedicationDateProvider);
+      final pairId = (await SharedPreferences.getInstance()).getString('pair_id');
+      if (pairId == null || pairId.trim().isEmpty || Firebase.apps.isEmpty) {
+        final repository = ref.watch(medicationRepositoryProvider);
+        return repository.listDoseEventsForDate(date);
+      }
+
+      final dayStartLocal = DateTime(date.year, date.month, date.day);
+      final dayEndLocal = dayStartLocal.add(const Duration(days: 1));
+      final start = Timestamp.fromDate(dayStartLocal.toUtc());
+      final end = Timestamp.fromDate(dayEndLocal.toUtc());
+
+      final snapshot = await FirebaseFirestore.instance
+          .collection('pairs')
+          .doc(pairId)
+          .collection('medication_events')
+          .where('scheduled_at', isGreaterThanOrEqualTo: start)
+          .where('scheduled_at', isLessThan: end)
+          .get();
+
+      return snapshot.docs.map((doc) {
+        final data = doc.data();
+        final scheduledAt =
+            (data['scheduled_at'] as Timestamp?)?.toDate().toUtc() ??
+            DateTime.now().toUtc();
+        final acknowledgedAt =
+            (data['acknowledged_at'] as Timestamp?)?.toDate().toUtc();
+        return MedicationDoseEvent(
+          id: doc.id,
+          scheduleId: (data['schedule_id'] as String? ?? '').trim(),
+          scheduledAt: scheduledAt,
+          status: MedicationDoseStatus.fromCode(
+            (data['status'] as String? ?? MedicationDoseStatus.pending.code).trim(),
+          ),
+          escalationLevel: MedicationEscalationLevel.level1,
+          skipReason: (data['skip_reason'] as String?)?.trim(),
+          reminderSentAt: null,
+          actedAt: acknowledgedAt,
+          createdAt: scheduledAt,
+          updatedAt: acknowledgedAt ?? scheduledAt,
+        );
+      }).toList(growable: false);
+    });
+
 final childMedicationAdherenceSummaryProvider =
     Provider<ChildMedicationAdherenceSummary>((ref) {
   final schedulesAsync = ref.watch(activeMedicationSchedulesProvider);
-  final eventsAsync = ref.watch(medicationDoseEventsForSelectedDateProvider);
+  final eventsAsync = ref.watch(childMedicationDoseEventsProvider);
   final selectedDate = ref.watch(selectedMedicationDateProvider);
   final reminderSummary = ref.watch(medicationReminderSummaryProvider);
 

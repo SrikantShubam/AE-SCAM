@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'core/services/local_db.dart';
+import 'core/services/guardian_telemetry.dart';
 import 'features/scam/models/scam_match_result.dart';
 import 'features/scam/screens/scam_verdict_screen.dart';
 import 'features/scam/services/scam_candidate_repository.dart';
@@ -16,6 +17,9 @@ import 'features/scam/widgets/scam_language_scope_notice_host.dart';
 import 'features/protection/payment_protection_bridge.dart';
 import 'features/protection/services/diagnostics_service.dart';
 import 'features/protection/services/emergency_disable_sync_service.dart';
+import 'features/medication/services/medication_alarm_ack_sync_service.dart';
+import 'features/medication/services/medication_alarm_platform_bridge.dart';
+import 'features/medication/services/medication_repository.dart';
 import 'router/app_router.dart';
 
 class GuardianApp extends StatefulWidget {
@@ -40,6 +44,11 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
       ScamConfirmedThreatHandler(notifier: LocalScamParentWarningNotifier());
   final EmergencyDisableSyncService _emergencyDisableSyncService =
       EmergencyDisableSyncService();
+  late final MedicationAlarmAckSyncService _medicationAlarmAckSyncService =
+      MedicationAlarmAckSyncService(
+        bridge: MedicationAlarmPlatformBridge(),
+        repository: MedicationRepository(localDb: LocalDb.instance),
+      );
   final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey =
       GlobalKey<ScaffoldMessengerState>();
 
@@ -56,6 +65,7 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
     WidgetsBinding.instance.addObserver(this);
     _emergencyDisableSyncService.start();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _syncPendingMedicationAlarmAcknowledgements();
       _checkSharedIntentAndRoute();
     });
   }
@@ -72,7 +82,16 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
+      _syncPendingMedicationAlarmAcknowledgements();
       _checkSharedIntentAndRoute();
+    }
+  }
+
+  Future<void> _syncPendingMedicationAlarmAcknowledgements() async {
+    try {
+      await _medicationAlarmAckSyncService.syncPendingAcknowledgements();
+    } catch (_) {
+      // Keep alarm acknowledgement sync best-effort.
     }
   }
 
@@ -212,17 +231,22 @@ class _GuardianAppState extends State<GuardianApp> with WidgetsBindingObserver {
     if (_seedTemplatesHydrated) {
       return;
     }
-    final existing = await _templateRepository.listEnabledTemplatesByLanguage(
-      'en',
-    );
-    if (existing.isNotEmpty) {
-      _seedTemplatesHydrated = true;
-      return;
-    }
+    try {
+      final existing = await _templateRepository.listEnabledTemplatesByLanguage(
+        'en',
+      );
+      if (existing.isNotEmpty) {
+        _seedTemplatesHydrated = true;
+        return;
+      }
 
-    final seedBundleJson = await rootBundle.loadString(_scamSeedAssetPath);
-    await _templateRepository.upsertSeedBundleJson(seedBundleJson);
-    _seedTemplatesHydrated = true;
+      final seedBundleJson = await rootBundle.loadString(_scamSeedAssetPath);
+      await _templateRepository.upsertSeedBundleJson(seedBundleJson);
+      _seedTemplatesHydrated = true;
+    } catch (_) {
+      GuardianTelemetry.logTemplateFetchFailed(stage: 'seed_hydration');
+      rethrow;
+    }
   }
 
   String _currentLocaleTag() {

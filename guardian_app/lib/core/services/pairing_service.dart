@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'guardian_telemetry.dart';
 
 class PairingService {
   PairingService({
@@ -204,11 +205,7 @@ class PairingService {
           );
         }
 
-        transaction.update(doc, <String, dynamic>{
-          'claimed_at_ms': FieldValue.serverTimestamp(),
-          'claimed_by_device_id': parentDeviceId,
-          'status': 'claimed',
-        });
+        transaction.delete(doc);
         transaction.update(
           firestore.collection(pairsCollection).doc(pairId),
           <String, dynamic>{
@@ -298,13 +295,16 @@ class PairingService {
       if (uid != null && uid.isNotEmpty) {
         return uid;
       }
+      GuardianTelemetry.logFirebaseAuthFailed(operation: 'current_user_lookup');
       return null;
     }
     if (Firebase.apps.isEmpty) {
+      GuardianTelemetry.logFirebaseAuthFailed(operation: 'firebase_uninitialized');
       return null;
     }
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null || uid.isEmpty) {
+      GuardianTelemetry.logFirebaseAuthFailed(operation: 'current_user_lookup');
       return null;
     }
     return uid;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/services/pairing_service.dart';
 
@@ -35,6 +36,16 @@ class _CaregiverPairingScreenState extends State<CaregiverPairingScreen> {
       _loading = false;
       _result = result;
     });
+  }
+
+  Future<void> _finishCaregiverOnboarding() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('onboarding_complete', true);
+    await prefs.setBool('payment_protection_setup_complete', true);
+    if (!mounted) {
+      return;
+    }
+    context.go('/home/child');
   }
 
   @override
@@ -112,7 +123,7 @@ class _CaregiverPairingScreenState extends State<CaregiverPairingScreen> {
               ),
               const SizedBox(height: 20),
               FilledButton(
-                onPressed: success ? () => context.go('/onboarding/disclosure') : null,
+                onPressed: success ? _finishCaregiverOnboarding : null,
                 style: FilledButton.styleFrom(
                   backgroundColor: const Color(0xFF0E5E6D),
                   foregroundColor: Colors.white,

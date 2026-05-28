@@ -5,7 +5,9 @@ import 'package:flutter/services.dart';
 import '../models/scam_notification_input.dart';
 
 abstract class ScamNotificationListenerBridge {
-  Future<ScamNotificationInput?> consumePendingNotificationInput();
+  Future<List<ScamNotificationInput>> consumePendingNotificationInputs();
+
+  void setOnNotificationPayloadAvailable(Future<void> Function()? onAvailable);
 }
 
 class MethodChannelScamNotificationListenerBridge
@@ -17,10 +19,40 @@ class MethodChannelScamNotificationListenerBridge
   final MethodChannel _channel;
 
   @override
-  Future<ScamNotificationInput?> consumePendingNotificationInput() async {
+  void setOnNotificationPayloadAvailable(Future<void> Function()? onAvailable) {
+    _channel.setMethodCallHandler((call) async {
+      if (call.method == 'notificationPayloadAvailable') {
+        await onAvailable?.call();
+      }
+    });
+  }
+
+  @override
+  Future<List<ScamNotificationInput>> consumePendingNotificationInputs() async {
+    final payloadJsonList = await _channel.invokeMethod<List<dynamic>>(
+      'consumePendingNotificationPayloadJsonList',
+    );
+    if (payloadJsonList != null) {
+      final parsed = payloadJsonList
+          .map((entry) => _parsePayload(entry?.toString()))
+          .whereType<ScamNotificationInput>()
+          .toList(growable: false);
+      if (parsed.isNotEmpty) {
+        return parsed;
+      }
+    }
+
     final payloadJson = await _channel.invokeMethod<String>(
       'consumePendingNotificationPayloadJson',
     );
+    final legacyParsed = _parsePayload(payloadJson);
+    if (legacyParsed == null) {
+      return const [];
+    }
+    return [legacyParsed];
+  }
+
+  ScamNotificationInput? _parsePayload(String? payloadJson) {
     if (payloadJson == null || payloadJson.trim().isEmpty) {
       return null;
     }

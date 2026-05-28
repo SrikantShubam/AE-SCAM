@@ -1,5 +1,6 @@
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:guardian/core/services/guardian_telemetry.dart';
 import 'package:guardian/core/services/pairing_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -90,6 +91,34 @@ void main() {
     expect(pairData?['parent_uid'], 'parent-uid-9');
   });
 
+  test('claimParentCode deletes pairing code document on success', () async {
+    final firestore = FakeFirebaseFirestore();
+
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    final caregiverPrefs = await SharedPreferences.getInstance();
+    final caregiverService = PairingService(
+      firestore: firestore,
+      prefs: caregiverPrefs,
+      currentAuthUidProvider: () async => 'caregiver-uid-1',
+    );
+    final draft = await caregiverService.createCaregiverCode();
+    expect(draft.isSuccess, isTrue);
+
+    SharedPreferences.setMockInitialValues(<String, Object>{});
+    final parentPrefs = await SharedPreferences.getInstance();
+    final parentService = PairingService(
+      firestore: firestore,
+      prefs: parentPrefs,
+      currentAuthUidProvider: () async => 'parent-uid-9',
+    );
+
+    final claim = await parentService.claimParentCode(draft.code!);
+    expect(claim.isSuccess, isTrue);
+
+    final codeSnapshot = await firestore.collection('pairing').doc(draft.code!).get();
+    expect(codeSnapshot.exists, isFalse);
+  });
+
   test('createCaregiverCode rollback leaves no orphan pairing code when commit fails', () async {
     final firestore = FakeFirebaseFirestore();
     final prefs = await SharedPreferences.getInstance();
@@ -146,5 +175,58 @@ void main() {
     final pairData = pairSnapshot.data()!;
     expect(pairData['parent_device_id'], isNull);
     expect(pairData['parent_uid'], isNull);
+  });
+
+  test('logs firebase_auth_failed current_user_lookup when injected uid is missing', () async {
+    final firestore = FakeFirebaseFirestore();
+    final prefs = await SharedPreferences.getInstance();
+    final events = <Map<String, Object?>>[];
+    GuardianTelemetry.debugEventSink = (eventName, fields) {
+      events.add(<String, Object?>{'eventName': eventName, 'fields': fields});
+    };
+    addTearDown(() => GuardianTelemetry.debugEventSink = null);
+
+    final service = PairingService(
+      firestore: firestore,
+      prefs: prefs,
+      currentAuthUidProvider: () async => null,
+    );
+
+    await service.createCaregiverCode();
+
+    expect(
+      events.any((event) {
+        final fields = event['fields']! as Map<String, String>;
+        return event['eventName'] == 'firebase_auth_failed' &&
+            fields['operation'] == 'current_user_lookup';
+      }),
+      isTrue,
+    );
+  });
+
+  test('logs firebase_auth_failed firebase_uninitialized when app is not initialized', () async {
+    final firestore = FakeFirebaseFirestore();
+    final prefs = await SharedPreferences.getInstance();
+    final events = <Map<String, Object?>>[];
+    GuardianTelemetry.debugEventSink = (eventName, fields) {
+      events.add(<String, Object?>{'eventName': eventName, 'fields': fields});
+    };
+    addTearDown(() => GuardianTelemetry.debugEventSink = null);
+
+    final service = PairingService(
+      firestore: firestore,
+      prefs: prefs,
+    );
+
+    await service.createCaregiverCode();
+
+    expect(
+      events.any((event) {
+        final fields = event['fields']! as Map<String, String>;
+        return event['eventName'] == 'firebase_auth_failed' &&
+            fields['operation'] == 'firebase_uninitialized';
+      }),
+      isTrue,
+    );
   });
 }

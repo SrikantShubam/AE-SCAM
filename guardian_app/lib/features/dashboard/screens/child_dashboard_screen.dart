@@ -51,6 +51,7 @@ class _ChildDashboardScreenState extends ConsumerState<ChildDashboardScreen>
   Future<void> _refresh() async {
     ref.invalidate(activeMedicationSchedulesProvider);
     ref.invalidate(medicationDoseEventsForSelectedDateProvider);
+    ref.invalidate(childMedicationDoseEventsProvider);
     ref.invalidate(medicationReminderSummaryProvider);
     ref.invalidate(childMedicationAdherenceSummaryProvider);
     ref.invalidate(childMedicationAlertFeedProvider);

@@ -2,6 +2,8 @@ import 'package:flutter/services.dart';
 
 abstract class ScamShareIntentBridge {
   Future<String?> consumePendingSharedText();
+
+  void setOnSharedTextAvailable(Future<void> Function()? onAvailable);
 }
 
 class MethodChannelScamShareIntentBridge implements ScamShareIntentBridge {
@@ -10,6 +12,15 @@ class MethodChannelScamShareIntentBridge implements ScamShareIntentBridge {
 
   static const String _channelName = 'com.guardian/scam_share_intent';
   final MethodChannel _channel;
+
+  @override
+  void setOnSharedTextAvailable(Future<void> Function()? onAvailable) {
+    _channel.setMethodCallHandler((call) async {
+      if (call.method == 'sharedTextAvailable') {
+        await onAvailable?.call();
+      }
+    });
+  }
 
   @override
   Future<String?> consumePendingSharedText() async {

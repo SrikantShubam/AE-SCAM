@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'dart:convert';
 
 import '../models/medication_reminder_plan.dart';
 
@@ -51,5 +52,29 @@ class MedicationAlarmPlatformBridge {
     await _channel.invokeMethod<void>('cancelMedicationOccurrence', <String, Object>{
       'occurrenceId': occurrenceId,
     });
+  }
+
+  Future<List<Map<String, dynamic>>> consumePendingAlarmAcknowledgements() async {
+    final payloads = await _channel.invokeMethod<List<dynamic>>(
+      'consumePendingAlarmAcknowledgements',
+    );
+    if (payloads == null || payloads.isEmpty) {
+      return const <Map<String, dynamic>>[];
+    }
+    return payloads
+        .map((raw) => _decodeAckPayload(raw?.toString()))
+        .whereType<Map<String, dynamic>>()
+        .toList(growable: false);
+  }
+
+  Map<String, dynamic>? _decodeAckPayload(String? raw) {
+    if (raw == null || raw.trim().isEmpty) {
+      return null;
+    }
+    final decoded = jsonDecode(raw);
+    if (decoded is! Map<String, dynamic>) {
+      return null;
+    }
+    return decoded;
   }
 }
